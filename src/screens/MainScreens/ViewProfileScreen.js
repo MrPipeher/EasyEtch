@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, FlatList } from 'react-native';
 
 const fetchProfiles = async (profileOwner) => {
   try {
-    const response = await fetch(`http://192.168.1.134:5000/profiles?profileOwner=${profileOwner}`);
+    const response = await fetch(`http://10.0.0.70:5000/profiles?profileOwner=${profileOwner}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

@@ -1,4 +1,3 @@
-
 import { NativeWindStyleSheet } from "nativewind";
 import AuthNavigation from './src/screens/AuthScreens/AuthNavigation';
 

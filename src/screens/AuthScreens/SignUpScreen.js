@@ -9,7 +9,7 @@ const SignUpScreen = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.1.134:5000/signup', {
+      const response = await fetch('http://10.0.0.70:5000/signup', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
