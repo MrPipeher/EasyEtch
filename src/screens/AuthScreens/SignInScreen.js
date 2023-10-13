@@ -13,11 +13,8 @@ const SignInScreen = () => {
     try {
       const auth = FIREBASE_AUTH;
       await signInWithEmailAndPassword(auth, email, password);
-      // Signin successful, navigate to another screen here
-      navigation.navigate('Home');
     } catch (error) {
       console.error('Error signing in:', error);
-      // Handle error, show error message to the user, etc.
     }
   };
 
