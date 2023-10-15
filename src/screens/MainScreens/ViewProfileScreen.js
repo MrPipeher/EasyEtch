@@ -1,48 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { useProfileContext } from '../../components/ProfileContext';
 
-const fetchProfiles = async (profileOwner) => {
-  try {
-    const response = await fetch(`http://10.0.0.70:5000/profiles?profileOwner=${profileOwner}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching profiles:', error);
-    throw error;
-  }
-};
-
-const ViewProfileScreen = ({ route }) => {
-  const { profileOwner } = route.params;
-  const [profiles, setProfiles] = useState([]);
-  const [selectedProfile, setSelectedProfile] = useState(null);
-
-  useEffect(() => {
-    if (profileOwner) {
-      // Fetch profiles when the component mounts or when the profile owner changes
-      const fetchProfilesData = async () => {
-        try {
-          const profilesData = await fetchProfiles(profileOwner);
-          setProfiles(profilesData);
-          // Select the first profile by default
-          if (profilesData.length > 0) {
-            setSelectedProfile(profilesData[0]);
-          }
-        } catch (error) {
-          console.error('Error fetching profiles:', error);
-          // Handle error
-        }
-      };
-
-      fetchProfilesData();
-    } else {
-      console.log('no profile owner');
-    }
-  }, [profileOwner]); // Run this effect whenever profileOwner changes
+const ViewProfileScreen = () => {
+  const { profiles, selectedProfile, updateProfile, deleteProfile, setSelectedProfile } = useProfileContext();
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
@@ -50,58 +11,17 @@ const ViewProfileScreen = ({ route }) => {
 
   const handleUpdateProfile = async () => {
     try {
-      const response = await fetch('http://192.168.1.134:5000/updateprofile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          profileOwner: profileOwner,
-          profileId: selectedProfile.profileId,
-          updatedProfileData: selectedProfile
-        })
-      });
-
-      if (response.ok) {
-        console.log('Profile updated successfully!');
-        // Handle success, e.g., show a success message to the user
-      } else {
-        console.error('Failed to update profile');
-        // Handle error, e.g., show an error message to the user
-      }
+      await updateProfile(selectedProfile);
+      console.log('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
-      // Handle error, e.g., show an error message to the user
     }
   };
 
   const handleDeleteProfile = async () => {
     try {
-      const response = await fetch('http://192.168.1.134:5000/deleteprofile', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          profileOwner: profileOwner,
-          profileId: selectedProfile.profileId
-        })
-      });
-
-      if (response.ok) {
-        console.log('Profile deleted successfully!');
-        const updatedProfiles = profiles.filter(profile => profile.profileId !== selectedProfile.profileId);
-        setProfiles(updatedProfiles);
-
-        // Select the first profile by default if any profiles are left
-        if (updatedProfiles.length > 0) {
-          setSelectedProfile(updatedProfiles[0]);
-        } else {
-          setSelectedProfile(null);
-        }
-      } else {
-        console.error('Failed to delete profile');
-      }
+      await deleteProfile(selectedProfile.profileId);
+      console.log('Profile deleted successfully!');
     } catch (error) {
       console.error('Error deleting profile:', error);
     }
@@ -112,7 +32,7 @@ const ViewProfileScreen = ({ route }) => {
       <Text>Select a Profile:</Text>
       <FlatList
         data={profiles}
-        keyExtractor={(item) => item.profileId}
+        keyExtractor={(item) => item.profileId.toString()} // Assuming profileId is a number
         renderItem={({ item }) => (
           <Button
             title={item.profileName}
@@ -123,7 +43,7 @@ const ViewProfileScreen = ({ route }) => {
       />
       {selectedProfile && (
         <View>
-            <Button title="Delete Profile" onPress={handleDeleteProfile} />
+          <Button title="Delete Profile" onPress={handleDeleteProfile} />
           <Text>Profile Gender:</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}

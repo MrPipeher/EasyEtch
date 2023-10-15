@@ -1,56 +1,57 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import { useProfileContext } from '../../components/ProfileContext';
 
 const CreateProfileScreen = () => {
-  const navigation = useNavigation();
-  const { params } = useRoute();
-  const { profileOwner } = params;
+  const { createProfile } = useProfileContext();
 
   const [profileName, setProfileName] = useState('');
-  const [profileGender, setProfileGender] = useState('male'); // Default value is male
+  const [profileGender, setProfileGender] = useState('male');
   const [profileObjective, setProfileObjective] = useState('');
   const [profileIntervention, setProfileIntervention] = useState('');
   const [profileGoals, setProfileGoals] = useState('');
+
+  const handleProfileCreation = async () => {
+    if (
+      !profileName.trim() ||
+      !profileGender.trim() ||
+      !profileObjective.trim() ||
+      !profileIntervention.trim() ||
+      !profileGoals.trim()
+    ) {
+      console.error('All fields are required.');
+      return;
+    }
+  
+    const newProfileData = {
+      profileName,
+      profileGender,
+      profileObjective,
+      profileIntervention,
+      profileGoals,
+    };
+  
+    try {
+      await createProfile(newProfileData);
+
+      // Reset state variables to default values
+      setProfileName('');
+      setProfileGender('male');
+      setProfileObjective('');
+      setProfileIntervention('');
+      setProfileGoals('');
+  
+    } catch (error) {
+      console.log('Error creating profile:', error.message);
+    }
+  };  
 
   const handleGenderToggle = () => {
     setProfileGender(prevGender => (prevGender === 'male' ? 'female' : 'male'));
   };
 
-  const handleProfileCreation = async () => {
-    try {
-      const response = await fetch('http://10.0.0.70:5000/createprofile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          profileOwner,
-          profileName,
-          profileGender,
-          profileObjective,
-          profileIntervention,
-          profileGoals,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Profile created successfully, handle the response if needed
-        console.log('Profile created successfully:', data);
-      } else {
-        // Handle error response from the server
-        console.error('Error creating profile:', data.error);
-      }
-    } catch (error) {
-      console.error('Error creating profile:', error);
-    }
-  };
-
   return (
     <View>
-      <Text>Profile Owner: {profileOwner}</Text>
       <TextInput
         placeholder="Profile Name"
         value={profileName}
@@ -74,7 +75,7 @@ const CreateProfileScreen = () => {
         value={profileGoals}
         onChangeText={text => setProfileGoals(text)}
       />
-      <Button title="Create Profile" onPress={handleProfileCreation} />
+      <Button title="Create" onPress={handleProfileCreation}></Button>
     </View>
   );
 };

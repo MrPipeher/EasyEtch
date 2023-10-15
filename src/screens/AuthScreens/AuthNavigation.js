@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
+import { ProfileProvider } from '../../components/ProfileContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import WelcomeScreen from './WelcomeScreen';
-import HomeScreen from '../HomeScreen';
+import GenerateScreen from '../MainScreens/GenerateScreen';
 import StripeCheckoutScreen from '../StripeCheckoutScreen';
 import CreateProfileScreen from '../MainScreens/CreateProfileScreen';
 import ViewProfileScreen from '../MainScreens/ViewProfileScreen';
-import { onAuthStateChanged } from 'firebase/auth';
-import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const HomeStack = ({ route }) => {
-  const { profileOwner } = route.params;
- return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} initialParams={{ profileOwner: profileOwner }} />
-      <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen} initialParams={{ profileOwner: profileOwner }}/>
-    </Stack.Navigator>
-  );
-};
 
 const AuthNavigation = () => {
   const [profileOwner, setProfileOwner] = useState(null);
@@ -36,29 +27,38 @@ const AuthNavigation = () => {
         setProfileOwner(null);
       }
     });
+
     return () => unsubscribe();
   }, []);
+
+  const GenerateStack = () => {
+    return (
+       <Stack.Navigator screenOptions={{ headerShown: false }}>
+         <Stack.Screen name="Generate" component={GenerateScreen}/>
+         <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen}/>
+       </Stack.Navigator>
+     );
+  };
 
   return (
     <NavigationContainer>
       {profileOwner ? (
-        <Tab.Navigator screenOptions={{ headerShown: false }} >
-          <Tab.Screen
-            name="Generate"
-            component={HomeStack}
-            initialParams={{ profileOwner: profileOwner }}
-          />
-          <Tab.Screen
-            name="CreateProfile"
-            component={CreateProfileScreen}
-            initialParams={{ profileOwner: profileOwner }}
-          />
-          <Tab.Screen
-            name="ViewProfile"
-            component={ViewProfileScreen}
-            initialParams={{ profileOwner: profileOwner }}
-          />
-        </Tab.Navigator>
+        <ProfileProvider profileOwner={profileOwner}>
+          <Tab.Navigator screenOptions={{ headerShown: false }} >
+            <Tab.Screen
+              name="Create"
+              component={GenerateStack}
+            />
+            <Tab.Screen
+              name="CreateProfile"
+              component={CreateProfileScreen}
+            />
+            <Tab.Screen
+              name="ViewProfile"
+              component={ViewProfileScreen}
+            />
+          </Tab.Navigator>
+        </ProfileProvider>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -68,7 +68,6 @@ const AuthNavigation = () => {
       )}
     </NavigationContainer>
   );
- 
 };
 
 export default AuthNavigation;

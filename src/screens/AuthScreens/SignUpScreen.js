@@ -18,7 +18,7 @@ const SignUpScreen = () => {
       });
 
       if (response) {
-          navigation.navigate('Welcome');
+        navigateToWelcome();
       } else {
           console.error('Error signing up on server:', errorData.error);
       }
