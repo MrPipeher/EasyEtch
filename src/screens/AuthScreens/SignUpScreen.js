@@ -10,20 +10,20 @@ const SignUpScreen = () => {
   const handleSignup = async () => {
     try {
       const response = await fetch('http://10.0.0.70:5000/signup', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
       });
 
       if (response) {
         navigateToWelcome();
       } else {
-          console.error('Error signing up on server:', errorData.error);
+        console.error('Error signing up on server:', errorData.error);
       }
     } catch (error) {
-        console.error('Error signing up:', error);
+      console.error('Error signing up:', error);
     }
   };
 
