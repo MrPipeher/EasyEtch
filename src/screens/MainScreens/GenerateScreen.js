@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useProfileContext } from '../../components/ProfileContext';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
+import { useNavigation } from '@react-navigation/native';
 
 const GenerateScreen = () => {
   const { profiles, selectedProfile, setSelectedProfile, profileOwner } = useProfileContext();
@@ -11,10 +11,10 @@ const GenerateScreen = () => {
 
   const handleSignOut = async () => {
     try {
-        const auth = FIREBASE_AUTH;
-        await signOut(auth);
+      const auth = FIREBASE_AUTH;
+      await signOut(auth);
     } catch (error) {
-        console.error('Error signing out:', error);
+      console.error('Error signing out:', error);
     }
   };
 
@@ -24,25 +24,25 @@ const GenerateScreen = () => {
 
   const handlePurchase = async () => {
     try {
-        const response = await fetch('http://10.0.0.70:5000/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              productId: 'price_1Nyke1ErsDMwjHJbsrjYiQC9',
-              productTitle: 'Credits1',
-              profileOwner: profileOwner,
-            }),
-        });
+      const response = await fetch('http://10.0.0.70:5000/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          productId: 'price_1Nyke1ErsDMwjHJbsrjYiQC9',
+          productTitle: 'Credits1',
+          profileOwner: profileOwner,
+        }),
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (data.url) {
-            navigation.navigate('StripeCheckout', { checkoutUrl: data.url });
-        } else {
-            console.log('Unable to connect to stripe.')
-        }
+      if (data.url) {
+        navigation.navigate('StripeCheckout', { checkoutUrl: data.url });
+      } else {
+        console.log('Unable to connect to stripe.')
+      }
     } catch (error) {
       console.error('Error during checkout:', error);
     }

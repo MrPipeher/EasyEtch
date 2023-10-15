@@ -33,10 +33,10 @@ const Navigator = () => {
 
   const GenerateStack = () => {
     return (
-       <Stack.Navigator screenOptions={{ headerShown: false }}>
-         <Stack.Screen name="Generate" component={GenerateScreen}/>
-         <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen}/>
-       </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Generate" component={GenerateScreen}/>
+        <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen}/>
+      </Stack.Navigator>
      );
   };
 

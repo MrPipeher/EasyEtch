@@ -42,6 +42,7 @@ const ViewProfileScreen = () => {
       {selectedProfile && (
         <View>
           <Button title="Delete Profile" onPress={handleDeleteProfile} />
+          
           <Text>Profile Gender:</Text>
           <TextInput
             style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
