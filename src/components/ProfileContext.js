@@ -128,13 +128,13 @@ export const ProfileProvider = ({ children, profileOwner }) => {
   return (
     <ProfileContext.Provider 
       value={{ 
+          profileOwner,
           profiles, 
           selectedProfile, 
-          createProfile, 
           setSelectedProfile, 
+          createProfile, 
           updateProfile, 
           deleteProfile,
-          profileOwner, 
         }}>
       {children}
     </ProfileContext.Provider>
