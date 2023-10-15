@@ -12,7 +12,6 @@ const ViewProfileScreen = () => {
   const handleUpdateProfile = async () => {
     try {
       await updateProfile(selectedProfile);
-      console.log('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -21,7 +20,6 @@ const ViewProfileScreen = () => {
   const handleDeleteProfile = async () => {
     try {
       await deleteProfile(selectedProfile.profileId);
-      console.log('Profile deleted successfully!');
     } catch (error) {
       console.error('Error deleting profile:', error);
     }

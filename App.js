@@ -1,5 +1,5 @@
 import { NativeWindStyleSheet } from "nativewind";
-import AuthNavigation from './src/screens/AuthScreens/AuthNavigation';
+import Navigator from './src/screens/Navigator';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -7,6 +7,6 @@ NativeWindStyleSheet.setOutput({
 
 export default function App() {
   return (
-    <AuthNavigation />
+    <Navigator />
   );
 }

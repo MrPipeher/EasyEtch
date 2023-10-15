@@ -127,16 +127,16 @@ export const ProfileProvider = ({ children, profileOwner }) => {
 
   return (
     <ProfileContext.Provider 
-    value={{ 
-        profiles, 
-        selectedProfile, 
-        createProfile, 
-        setSelectedProfile, 
-        updateProfile, 
-        deleteProfile,
-        profileOwner, 
-      }}>
-    {children}
+      value={{ 
+          profiles, 
+          selectedProfile, 
+          createProfile, 
+          setSelectedProfile, 
+          updateProfile, 
+          deleteProfile,
+          profileOwner, 
+        }}>
+      {children}
     </ProfileContext.Provider>
   );
 };
