@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
 import { useProfileContext } from '../../components/ProfileContext';
 
 const CreateProfileScreen = () => {
-  const { createProfile } = useProfileContext();
+  const { createProfile, credits } = useProfileContext();
 
   const [profileName, setProfileName] = useState('');
   const [profileGender, setProfileGender] = useState('male');
@@ -52,6 +52,7 @@ const CreateProfileScreen = () => {
 
   return (
     <View>
+      <Text>Credits: {credits}</Text>
       <TextInput
         placeholder="Profile Name"
         value={profileName}

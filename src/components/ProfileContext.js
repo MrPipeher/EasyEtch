@@ -11,10 +11,25 @@ export const useProfileContext = () => {
 export const ProfileProvider = ({ children, profileOwner }) => {
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [credits, setCredits] = useState(null);
 
   const fetchProfiles = async (profileOwner) => {
     try {
       const response = await fetch(`${serverURL}/profiles?profileOwner=${profileOwner}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching profiles:', error);
+      throw error;
+    }
+  };
+
+  const fetchCredits = async (profileOwner) => {
+    try {
+      const response = await fetch(`${serverURL}/credits?profileOwner=${profileOwner}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -117,6 +132,8 @@ export const ProfileProvider = ({ children, profileOwner }) => {
         if (profilesData.length > 0) {
           setSelectedProfile(profilesData[0]);
         }
+        const creditsData = await fetchCredits(profileOwner);
+        setCredits(creditsData);
       } catch (error) {
         console.error('Error fetching profiles:', error);
       }
@@ -130,6 +147,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
       value={{ 
           profileOwner,
           profiles, 
+          credits,
           selectedProfile, 
           setSelectedProfile, 
           createProfile, 
