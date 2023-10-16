@@ -149,6 +149,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
           profiles, 
           credits,
           selectedProfile, 
+          setCredits,
           setSelectedProfile, 
           createProfile, 
           updateProfile, 

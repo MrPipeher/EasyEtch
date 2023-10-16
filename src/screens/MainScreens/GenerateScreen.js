@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import { useProfileContext } from '../../components/ProfileContext';
 import { signOut } from 'firebase/auth';
@@ -6,8 +6,9 @@ import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 
 const GenerateScreen = () => {
-  const { profiles, selectedProfile, setSelectedProfile, profileOwner } = useProfileContext();
+  const { profiles, selectedProfile, setSelectedProfile, profileOwner, credits, setCredits } = useProfileContext();
   const navigation = useNavigation();
+  const [output, setOutput] = useState(null)
 
   const handleSignOut = async () => {
     try {
@@ -20,6 +21,32 @@ const GenerateScreen = () => {
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
+  };
+
+  const handleGenerate = async () => {
+    try {
+      const response = await fetch(`http://10.0.0.70:5000/generate?profileOwner=${profileOwner}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedProfile),
+      });
+  
+      const data = await response.json();
+  
+      if (data) {
+        
+        console.log(`Generated Prompt: `, data.generatedText);
+
+        setOutput(String(data.generatedText));
+        setCredits(data.remainingCredits)
+      } else {
+        console.error('Error:', data.error);
+      }
+    } catch (error) {
+      console.error('Error sending selected profile to server:', error);
+    }
   };
 
   const handlePurchase = async () => {
@@ -62,9 +89,11 @@ const GenerateScreen = () => {
           />
         )}
       />
+      {output && <Text>Output is: {output}</Text>}
       {selectedProfile && (
         <View>
-          <Text>Product Title</Text>
+          <Button title="Generate!" onPress={handleGenerate} />
+          <Text>Credits: {credits}</Text>
           <Button title="Purchase!" onPress={handlePurchase} />
           <Text>Profile Gender: {selectedProfile.profileGender}</Text>
           <Text>Profile Goals: {selectedProfile.profileGoals}</Text>

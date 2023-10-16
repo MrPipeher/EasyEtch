@@ -30,7 +30,7 @@ const ViewProfileScreen = () => {
       <Text>Select a Profile:</Text>
       <FlatList
         data={profiles}
-        keyExtractor={(item) => item.profileId.toString()} // Assuming profileId is a number
+        keyExtractor={(item) => item.profileId.toString()}
         renderItem={({ item }) => (
           <Button
             title={item.profileName}

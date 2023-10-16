@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
 import { useProfileContext } from '../../components/ProfileContext';
 
 const CreateProfileScreen = () => {
-  const { createProfile, credits } = useProfileContext();
+  const { createProfile } = useProfileContext();
 
   const [profileName, setProfileName] = useState('');
   const [profileGender, setProfileGender] = useState('male');
@@ -34,7 +34,7 @@ const CreateProfileScreen = () => {
     try {
       await createProfile(newProfileData);
 
-      // Reset state variables to default values
+      //Reset Fields
       setProfileName('');
       setProfileGender('male');
       setProfileObjective('');
@@ -52,7 +52,6 @@ const CreateProfileScreen = () => {
 
   return (
     <View>
-      <Text>Credits: {credits}</Text>
       <TextInput
         placeholder="Profile Name"
         value={profileName}
