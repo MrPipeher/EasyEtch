@@ -4,7 +4,6 @@ import { useProfileContext } from '../../components/ProfileContext';
 
 const CreateProfileScreen = () => {
   const { createProfile } = useProfileContext();
-
   const [profileName, setProfileName] = useState('');
   const [profileGender, setProfileGender] = useState('male');
   const [profileObjective, setProfileObjective] = useState('');
