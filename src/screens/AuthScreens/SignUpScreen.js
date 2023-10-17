@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useServerURL } from '../../components/ServerURLContext';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const serverURL = useServerURL();
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://10.0.0.70:5000/signup', {
+      const response = await fetch(`${serverURL}/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

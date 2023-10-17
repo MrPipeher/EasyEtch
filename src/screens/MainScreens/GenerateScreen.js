@@ -4,11 +4,13 @@ import { useProfileContext } from '../../components/ProfileContext';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { useNavigation } from '@react-navigation/native';
+import { useServerURL } from '../../components/ServerURLContext';
 
 const GenerateScreen = () => {
-  const { profiles, selectedProfile, setSelectedProfile, profileOwner, credits, setCredits } = useProfileContext();
+  const { profiles, selectedProfile, setSelectedProfile, profileOwner, credits, setCredits} = useProfileContext();
   const navigation = useNavigation();
-  const [output, setOutput] = useState(null)
+  const [output, setOutput] = useState(null);
+  const serverURL = useServerURL();
 
   const handleSignOut = async () => {
     try {
@@ -19,13 +21,9 @@ const GenerateScreen = () => {
     }
   };
 
-  const handleProfileSelect = (profile) => {
-    setSelectedProfile(profile);
-  };
-
   const handleGenerate = async () => {
     try {
-      const response = await fetch(`http://10.0.0.70:5000/generate?profileOwner=${profileOwner}`, {
+      const response = await fetch(`${serverURL}/generate?profileOwner=${profileOwner}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,9 +34,7 @@ const GenerateScreen = () => {
       const data = await response.json();
   
       if (data) {
-        
         console.log(`Generated Prompt: `, data.generatedText);
-
         setOutput(String(data.generatedText));
         setCredits(data.remainingCredits)
       } else {
@@ -49,30 +45,12 @@ const GenerateScreen = () => {
     }
   };
 
-  const handlePurchase = async () => {
-    try {
-      const response = await fetch('http://10.0.0.70:5000/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          productId: 'price_1Nyke1ErsDMwjHJbsrjYiQC9',
-          productTitle: 'Credits1',
-          profileOwner: profileOwner,
-        }),
-      });
+  const handleProfileSelect = (profile) => {
+    setSelectedProfile(profile);
+  };
 
-      const data = await response.json();
-
-      if (data.url) {
-        navigation.navigate('StripeCheckout', { checkoutUrl: data.url });
-      } else {
-        console.log('Unable to connect to stripe.')
-      }
-    } catch (error) {
-      console.error('Error during checkout:', error);
-    }
+  const navigateToPurchase = () => {
+    navigation.navigate('Purchase');
   };
 
   return (
@@ -94,7 +72,7 @@ const GenerateScreen = () => {
         <View>
           <Button title="Generate!" onPress={handleGenerate} />
           <Text>Credits: {credits}</Text>
-          <Button title="Purchase!" onPress={handlePurchase} />
+          <Button title="Purchase!" onPress={navigateToPurchase} />
           <Text>Profile Gender: {selectedProfile.profileGender}</Text>
           <Text>Profile Goals: {selectedProfile.profileGoals}</Text>
           <Text>Profile Intervention: {selectedProfile.profileIntervention}</Text>

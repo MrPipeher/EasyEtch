@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useServerURL } from './ServerURLContext';
 
-const serverURL = 'http://10.0.0.70:5000';
-
+const serverURL = useServerURL();
 const ProfileContext = createContext();
 
 export const useProfileContext = () => {
@@ -38,6 +38,15 @@ export const ProfileProvider = ({ children, profileOwner }) => {
     } catch (error) {
       console.error('Error fetching profiles:', error);
       throw error;
+    }
+  };
+
+  const reloadCredits = async () => {
+    try {
+      const creditsData = await fetchCredits(profileOwner);
+      setCredits(creditsData);
+    } catch (error) {
+      console.error('Error reloading credits:', error);
     }
   };
 
@@ -150,6 +159,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
           credits,
           selectedProfile, 
           setCredits,
+          reloadCredits,
           setSelectedProfile, 
           createProfile, 
           updateProfile, 
