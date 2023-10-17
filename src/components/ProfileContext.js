@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useServerURL } from './ServerURLContext';
 
-const serverURL = useServerURL();
 const ProfileContext = createContext();
 
 export const useProfileContext = () => {
@@ -12,6 +11,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [credits, setCredits] = useState(null);
+  const serverURL = useServerURL();
 
   const fetchProfiles = async (profileOwner) => {
     try {

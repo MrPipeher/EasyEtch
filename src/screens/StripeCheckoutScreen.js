@@ -18,7 +18,7 @@ const StripeCheckoutScreen = ({ route }) => {
       }
     };
     openBrowserAsync();
-    navigation.navigate('Generate');
+    navigation.navigate('Purchase');
   }, [checkoutUrl]); 
 
   return (

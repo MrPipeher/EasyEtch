@@ -15,12 +15,12 @@ import PurchaseScreen from './MainScreens/PurchaseScreen';
 import CreateProfileScreen from './MainScreens/CreateProfileScreen';
 import ViewProfileScreen from './MainScreens/ViewProfileScreen';
 
-const serverURL = 'http://10.0.0.70:5000';
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
+  
+  const serverURL = 'http://10.0.0.70:5000';
   const [profileOwner, setProfileOwner] = useState(null);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ const Navigator = () => {
   };
 
   return (
-    <NavigationContainer>
-      <ServerURLProvider serverURL={serverURL}> 
+    <ServerURLProvider serverURL={serverURL}> 
+      <NavigationContainer>
         {profileOwner ? (
           <ProfileProvider profileOwner={profileOwner}>
             <Tab.Navigator screenOptions={{ headerShown: false }} >
@@ -72,8 +72,8 @@ const Navigator = () => {
             <Stack.Screen name="SignIn" component={SignInScreen} />
           </Stack.Navigator>
         )}
-      </ServerURLProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </ServerURLProvider>
   );
 };
 

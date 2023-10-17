@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import React from 'react';
+import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useProfileContext } from '../../components/ProfileContext';
 import { useServerURL } from '../../components/ServerURLContext';
@@ -9,7 +9,7 @@ const PurchaseScreen = () => {
   const navigation = useNavigation();
   const serverURL = useServerURL();
 
-  const handlePurchase = async () => {
+  const handlePurchase = async (productTitle) => {
     try {
       const response = await fetch(`${serverURL}/checkout`, {
         method: 'POST',
@@ -17,8 +17,7 @@ const PurchaseScreen = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          productId: 'price_1Nyke1ErsDMwjHJbsrjYiQC9',
-          productTitle: 'Credits1',
+          productTitle: productTitle,
           profileOwner: profileOwner,
         }),
       });
@@ -45,7 +44,10 @@ const PurchaseScreen = () => {
 
   return (
     <View>
-      <Button title="1 Credit" onPress={handlePurchase}></Button>
+      <Button title="1 Credit" onPress={() => handlePurchase('Credits1')} />
+      <Button title="5 Credits" onPress={() => handlePurchase('Credits5')} />
+      <Button title="15 Credits" onPress={() => handlePurchase('Credits15')} />
+      <Button title="30 Credits" onPress={() => handlePurchase('Credits30')} />
       <Button title="Go Back" onPress={navigateToGenerate} />
     </View>
   );
