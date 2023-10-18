@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/EasyEtch/static/js/main.760768fb.js",
+    "main.js": "/EasyEtch/static/js/main.c6cd7332.js",
     "static/js/859.a3f058bd.js": "/EasyEtch/static/js/859.a3f058bd.js",
     "favicon.ico": "/EasyEtch/favicon.ico",
     "index.html": "/EasyEtch/index.html",
@@ -8,11 +8,11 @@
     "favicon-16.png": "/EasyEtch/favicon-16.png",
     "serve.json": "/EasyEtch/serve.json",
     "manifest.json": "/EasyEtch/manifest.json",
-    "main.760768fb.js.map": "/EasyEtch/static/js/main.760768fb.js.map",
+    "main.c6cd7332.js.map": "/EasyEtch/static/js/main.c6cd7332.js.map",
     "859.a3f058bd.js.map": "/EasyEtch/static/js/859.a3f058bd.js.map"
   },
   "entrypoints": [
     "static/js/859.a3f058bd.js",
-    "static/js/main.760768fb.js"
+    "static/js/main.c6cd7332.js"
   ]
 }
