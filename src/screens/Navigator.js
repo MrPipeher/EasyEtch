@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
   
-  const serverURL = 'http://10.0.0.70:5000';
+  const serverURL = 'https://10.0.0.70:5000';
   const [profileOwner, setProfileOwner] = useState(null);
 
   useEffect(() => {
