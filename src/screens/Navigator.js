@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
   
-  const serverURL = 'https://10.0.0.70:5000';
+  const serverURL = 'https://easyetch.onrender.com';
   const [profileOwner, setProfileOwner] = useState(null);
 
   useEffect(() => {
