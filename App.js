@@ -1,5 +1,5 @@
 import { NativeWindStyleSheet } from "nativewind";
-import Navigator from './src/screens/Navigator';
+import RootNavigator from "./src/screens/RootNavigator";
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -7,6 +7,6 @@ NativeWindStyleSheet.setOutput({
 
 export default function App() {
   return (
-    <Navigator />
+    <RootNavigator />
   );
 }

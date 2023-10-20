@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
 
@@ -7,16 +8,17 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('Host Home'); // Default value is 'Host Home'
   const serverURL = useServerURL();
 
   const handleSignup = async () => {
     try {
-      const response = await fetch(`${serverURL}/signup`, {
+      const response = await fetch(`${serverURL}/common/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, userType }),
       });
 
       if (response) {
@@ -36,6 +38,14 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Sign Up</Text>
+      <Picker
+        style={styles.picker}
+        selectedValue={userType}
+        onValueChange={(itemValue) => setUserType(itemValue)}
+      >
+        <Picker.Item label="Host Home" value="Host Home" />
+        <Picker.Item label="Therapist" value="Therapist" />
+      </Picker>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -61,6 +71,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  picker: {
+    width: '80%',
+    marginVertical: 10,
   },
   input: {
     width: '80%',

@@ -1,21 +1,21 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useServerURL } from './ServerURLContext';
 
-const ProfileContext = createContext();
+const HostHomeProfileContext = createContext();
 
-export const useProfileContext = () => {
-  return useContext(ProfileContext);
+export const useHostHomeProfileContext = () => {
+  return useContext(HostHomeProfileContext);
 };
 
-export const ProfileProvider = ({ children, profileOwner }) => {
+export const HostHomeProfileProvider = ({ children, profileOwner }) => {
+  const serverURL = useServerURL();
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [credits, setCredits] = useState(null);
-  const serverURL = useServerURL();
+  const [note, setNote] = useState(null);
 
   const fetchProfiles = async (profileOwner) => {
     try {
-      const response = await fetch(`${serverURL}/profiles?profileOwner=${profileOwner}`);
+      const response = await fetch(`${serverURL}/hostHome/profiles?profileOwner=${profileOwner}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -24,35 +24,12 @@ export const ProfileProvider = ({ children, profileOwner }) => {
     } catch (error) {
       console.error('Error fetching profiles:', error);
       throw error;
-    }
-  };
-
-  const fetchCredits = async (profileOwner) => {
-    try {
-      const response = await fetch(`${serverURL}/credits?profileOwner=${profileOwner}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching profiles:', error);
-      throw error;
-    }
-  };
-
-  const reloadCredits = async () => {
-    try {
-      const creditsData = await fetchCredits(profileOwner);
-      setCredits(creditsData);
-    } catch (error) {
-      console.error('Error reloading credits:', error);
     }
   };
 
   const createProfile = async (newProfileData) => {
     try {
-      const response = await fetch(`${serverURL}/createprofile`, {
+      const response = await fetch(`${serverURL}/hostHome/createprofile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +55,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
 
   const updateProfile = async (updatedProfile) => {
     try {
-      const response = await fetch(`${serverURL}/updateprofile`, {
+      const response = await fetch(`${serverURL}/hostHome/updateprofile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -107,7 +84,7 @@ export const ProfileProvider = ({ children, profileOwner }) => {
 
   const deleteProfile = async (profileId) => {
     try {
-      const response = await fetch(`${serverURL}/deleteprofile`, {
+      const response = await fetch(`${serverURL}/hostHome/deleteprofile`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -141,8 +118,6 @@ export const ProfileProvider = ({ children, profileOwner }) => {
         if (profilesData.length > 0) {
           setSelectedProfile(profilesData[0]);
         }
-        const creditsData = await fetchCredits(profileOwner);
-        setCredits(creditsData);
       } catch (error) {
         console.error('Error fetching profiles:', error);
       }
@@ -152,20 +127,19 @@ export const ProfileProvider = ({ children, profileOwner }) => {
   }, [profileOwner]);
 
   return (
-    <ProfileContext.Provider 
+    <HostHomeProfileContext.Provider 
       value={{ 
           profileOwner,
-          profiles, 
-          credits,
-          selectedProfile, 
-          setCredits,
-          reloadCredits,
-          setSelectedProfile, 
-          createProfile, 
-          updateProfile, 
+          profiles,
+          createProfile,
+          updateProfile,
           deleteProfile,
+          selectedProfile,
+          setSelectedProfile,
+          note,
+          setNote,
         }}>
       {children}
-    </ProfileContext.Provider>
+    </HostHomeProfileContext.Provider>
   );
 };

@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useProfileContext } from '../../components/ProfileContext';
+import { useServerContext } from '../../components/ServerContext';
 import { useServerURL } from '../../components/ServerURLContext';
 
 const PurchaseScreen = () => {
-  const { profileOwner, reloadCredits } = useProfileContext();
+  const { profileOwner, reloadCredits } = useServerContext();
   const navigation = useNavigation();
   const serverURL = useServerURL();
 
   const handlePurchase = async (productTitle) => {
     try {
-      const response = await fetch(`${serverURL}/checkout`, {
+      const response = await fetch(`${serverURL}/common/checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const PurchaseScreen = () => {
   const navigateToGenerate = async () => {
     try {
       await reloadCredits();
-      navigation.navigate('Generate');
+      navigation.goBack();
     } catch (error) {
       console.log('Error reloading credits');
     }
