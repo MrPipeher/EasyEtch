@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
 
 const ViewTherapistProfileScreen = () => {
@@ -27,6 +27,13 @@ const ViewTherapistProfileScreen = () => {
     }
   };
 
+  const handleGenderToggle = () => {
+    setSelectedProfile(prevProfile => ({
+      ...prevProfile,
+      profileGender: prevProfile.profileGender === 'Male' ? 'Female' : 'Male',
+    }));
+  };  
+
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <Text>Select a Profile:</Text>
@@ -44,24 +51,10 @@ const ViewTherapistProfileScreen = () => {
       {selectedProfile && (
         <View>
           <Button title="Delete Profile" onPress={handleDeleteProfile} />
-          
-          <Text>Profile Gender:</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Button
-              title="Male"
-              onPress={() => {
-                setSelectedProfile({ ...selectedProfile, profileGender: 'Male' });
-              }}
-              disabled={selectedProfile?.profileGender === 'Male'}
-            />
-            <Button
-              title="Female"
-              onPress={() => {
-                setSelectedProfile({ ...selectedProfile, profileGender: 'Female' });
-              }}
-              disabled={selectedProfile?.profileGender === 'Female'}
-            />
-          </View>
+
+          <TouchableOpacity onPress={handleGenderToggle}>
+            <Text>Profile Gender: {selectedProfile.profileGender}</Text>
+          </TouchableOpacity>
 
           <Text>Profile Goals:</Text>
           <TextInput
