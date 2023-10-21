@@ -36,7 +36,7 @@ const SignUpScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} className = "bg-red-500">
       <Text>Sign Up</Text>
       <Picker
         style={styles.picker}
