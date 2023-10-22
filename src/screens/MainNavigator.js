@@ -14,6 +14,7 @@ import ViewTherapistProfileScreen from './TherapistScreens/ViewTherapistProfileS
 import SettingsScreen from './CommonScreens/SettingsScreen';
 import PurchaseScreen from './CommonScreens/PurchaseScreen'
 import StripeCheckoutScreen from './CommonScreens/StripeCheckoutScreen'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const MainNavigator = () => {
   const { accountType, profileOwner } = useServerContext();
@@ -78,7 +79,22 @@ const MainNavigator = () => {
 
     return (
       <HostHomeProfileProvider profileOwner={profileOwner}>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Navigator 
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: 'white',
+              borderColor: 'black',
+              width: wp(100),
+              maxWidth: 1080, // Set the specific width for the tab bar
+              alignSelf: 'center',
+          },
+          tabBarIconStyle: {
+            alignItems: 'center', // Center content vertically
+            justifyContent: 'center', // Center content horizontally
+          },
+            
+          }}>
           <Tab.Screen 
             name="Generate" 
             component={HostHomeStack} 
@@ -121,44 +137,58 @@ const MainNavigator = () => {
 
     return (
       <TherapistProfileProvider profileOwner={profileOwner}>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen 
-            name="Generate" 
-            component={TherapistStack} 
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require('../../assets/navicons/edit.png')}
-                  style={{ width: size, height: size, tintColor: color }}
-                />
-              ),
-            }}/>
-          <Tab.Screen 
-            name="Profiles" 
-            component={TherapistProfileStack} 
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require('../../assets/navicons/user.png')}
-                  style={{ width: size, height: size, tintColor: color }}
-                />
-              ),
-            }}/>
-          <Tab.Screen 
-            name="Settings" 
-            component={SettingsScreen} 
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Image
-                  source={require('../../assets/navicons/settings.png')}
-                  style={{ width: size, height: size, tintColor: color }}
-                />
-              ),
-            }}/>
+        <Tab.Navigator 
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: 'white',
+              borderColor: 'black',
+              width: wp(100),
+              maxWidth: 1080, // Set the specific width for the tab bar
+              alignSelf: 'center',
+          },
+          tabBarIconStyle: {
+            alignItems: 'center', // Center content vertically
+            justifyContent: 'center', // Center content horizontally
+          },
+            
+          }}>
+            <Tab.Screen 
+              name="Generate" 
+              component={TherapistStack} 
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Image
+                    source={require('../../assets/navicons/edit.png')}
+                    style={{ width: size, height: size, tintColor: color }}
+                  />
+                ),
+              }}/>
+            <Tab.Screen 
+              name="Profiles" 
+              component={TherapistProfileStack} 
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Image
+                    source={require('../../assets/navicons/user.png')}
+                    style={{ width: size, height: size, tintColor: color }}
+                  />
+                ),
+              }}/>
+            <Tab.Screen 
+              name="Settings" 
+              component={SettingsScreen} 
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Image
+                    source={require('../../assets/navicons/settings.png')}
+                    style={{ width: size, height: size, tintColor: color }}
+                  />
+                ),
+              }}/>
         </Tab.Navigator>
       </TherapistProfileProvider>
     );
-
   }
   return null;
 };

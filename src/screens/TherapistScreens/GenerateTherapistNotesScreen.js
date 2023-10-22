@@ -1,4 +1,4 @@
-import { View, Text, Button, FlatList, ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, FlatList, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
-import { CustomActionButton, CustomButton, CustomInputField } from '../../components/UIComponents/UIComponents';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 

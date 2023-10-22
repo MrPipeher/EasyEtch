@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
@@ -242,9 +242,9 @@ const ViewHostHomeProfileScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <View className = "w-[30%] h-[75%] bg-white border-2 border-white rounded-full justify-center items-center">
+                <View className = "w-[30%] h-[75%] bg-red-500 border-2 border-red-500 rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleDeleteProfile}>
-                    <Text className = "text-black text-xl text-center">Delete</Text>
+                    <Text className = "text-white text-xl text-center">Delete</Text>
                   </TouchableOpacity>
                 </View>
                 

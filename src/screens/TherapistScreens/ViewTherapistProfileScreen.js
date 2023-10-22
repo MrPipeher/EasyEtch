@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
@@ -75,7 +75,7 @@ const ViewTherapistProfileScreen = () => {
 
               <View className = "w-[20%] h-[100%] bg-white border-2 border-green-500 rounded-full justify-center">
                 <TouchableOpacity onPress={navigateToCreate}> 
-                  <Text className = "text-black text-base text-center">+</Text>
+                  <Text className = "text-black text-base text-center">Add New</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -86,7 +86,9 @@ const ViewTherapistProfileScreen = () => {
           <View className = "h-[70%]">
 
             {/* Profile Info */}
-            <View className = "h-[50%] justify-center items-center space-y-2">
+            <View className = "h-[60%] justify-center items-center">
+
+              <Text className = "text-white text-xl">Profile Name</Text>
 
               <View className = "w-[75%] h-[15%] bg-white rounded-full justify-center">
                 <TextInput
@@ -99,11 +101,15 @@ const ViewTherapistProfileScreen = () => {
                 />
               </View>
 
+              <Text className = "text-white text-xl">Profile Gender</Text>
+
               <View className = "w-[75%] h-[15%] bg-white rounded-full justify-center">
                   <TouchableOpacity onPress={handleGenderToggle}> 
                     <Text className = "text-black text-base text-center">Gender: {selectedProfile.profileGender}</Text>
                   </TouchableOpacity>
               </View>
+
+              <Text className = "text-white text-xl">Profile Goals</Text>
 
               <View className = "w-[75%] h-[15%] bg-white rounded-full justify-center">
                 <TextInput
@@ -115,6 +121,8 @@ const ViewTherapistProfileScreen = () => {
                 />
               </View>
 
+              <Text className = "text-white text-xl">Profile Objective</Text>
+
               <View className = "w-[75%] h-[15%] bg-white rounded-full justify-center">
                 <TextInput
                   className="h-full w-full text-black text-base text-center"
@@ -124,6 +132,8 @@ const ViewTherapistProfileScreen = () => {
                   onChangeText={(text) => setSelectedProfile({ ...selectedProfile, profileObjective: text })}
                 />
               </View>
+
+              <Text className = "text-white text-xl">Profile Intervention</Text>
 
               <View className = "w-[75%] h-[15%] bg-white rounded-full justify-center">
                 <TextInput
@@ -139,7 +149,7 @@ const ViewTherapistProfileScreen = () => {
 
             {/* Footer */}
 
-            <View className = "flex-row h-[50%] justify-evenly items-center">
+            <View className = "flex-row h-[40%] justify-center items-center space-x-4">
 
               <View className = "w-[40%] h-[30%] bg-white/20 border-2 border-white rounded-full justify-center items-center">
                 <TouchableOpacity className = "w-full h-full justify-center" onPress={handleUpdateProfile}>

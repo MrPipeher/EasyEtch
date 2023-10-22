@@ -195,7 +195,9 @@ const GenerateHostHomeNotesScreen = () => {
 
             <View className = "h-[15%] space-y-1">
               <Text className = "text-white text-xl font-bold text-center">Profile Goals:</Text>
-              <Text className = "text-white text-center text-base">{selectedProfile.profileGoals}</Text>
+              <View className = "h-[50%] w-[75%] bg-white justify-center self-center rounded-full">
+                <Text className = "text-black text-center text-base">{selectedProfile.profileGoals}</Text>
+              </View>
             </View>
 
             {/* Basic Info*/}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList, ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useServerContext } from '../../components/ServerContext';
 import { useServerURL } from '../../components/ServerURLContext';

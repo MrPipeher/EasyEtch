@@ -3,7 +3,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
-import { CustomInputField, CustomActionButton, CustomButton } from '../../components/UIComponents/UIComponents';
+import { CustomInputField, CustomActionButton } from '../../components/UIComponents/UIComponents';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SignUpScreen = () => {

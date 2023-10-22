@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, FlatList, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -68,10 +68,12 @@ const CreateTherapistProfileScreen = () => {
           colors={['#88daf7', '#66c4ff', '#008bff']}>
             
             {/* Title */}
-            <View className = "h-[30%]"/>
+            <View className = "h-[20%]"/>
 
             {/* Profile Info */}
-            <View className = "h-[40%] justify-center items-center my-2">
+            <View className = "h-[50%] justify-center items-center my-2">
+
+              <Text className = "text-white text-xl">Profile Name</Text>
         
               <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center my-2">
                 <TextInput
@@ -84,11 +86,15 @@ const CreateTherapistProfileScreen = () => {
                 />
               </View>
 
+              <Text className = "text-white text-xl">Profile Gender</Text>
+
               <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center my-2">
                   <TouchableOpacity onPress={handleGenderToggle}>
                     <Text className = "text-black text-base text-center">Gender: {profileGender}</Text>
                   </TouchableOpacity>
               </View>
+
+              <Text className = "text-white text-xl">Profile Goals</Text>
 
               <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center my-2">
                 <TextInput
@@ -101,6 +107,8 @@ const CreateTherapistProfileScreen = () => {
                 />
               </View>
 
+              <Text className = "text-white text-xl">Profile Objective</Text>
+
               <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center my-2">
                 <TextInput
                   className="h-full w-full text-black text-base text-center self-center"
@@ -111,6 +119,8 @@ const CreateTherapistProfileScreen = () => {
                   secureTextEntry={false}
                 />
               </View>
+
+              <Text className = "text-white text-xl">Profile Intervention</Text>
 
               <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center my-2">
                 <TextInput
