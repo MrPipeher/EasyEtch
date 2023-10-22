@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Button, FlatList, ScrollView } from 'react-native';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
+import { CustomActionButton, CustomButton, CustomInputField } from '../../components/UIComponents/UIComponents';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CreateHostHomeProfileScreen = () => {
   const { createProfile } = useHostHomeProfileContext();
   const [profileName, setProfileName] = useState('');
-  const [profileGender, setProfileGender] = useState('male');
+  const [profileGender, setProfileGender] = useState('Male');
   const [profileGoals, setProfileGoals] = useState('');
   const [morningMedication, setMorningMedication] = useState(false);
   const [afternoonMedication, setAfternoonMedication] = useState(false);
@@ -34,7 +36,7 @@ const CreateHostHomeProfileScreen = () => {
 
       // Reset Fields
       setProfileName('');
-      setProfileGender('male');
+      setProfileGender('Male');
       setProfileGoals('');
       setMorningMedication(false);
       setAfternoonMedication(false);
@@ -58,57 +60,160 @@ const CreateHostHomeProfileScreen = () => {
   };
 
   const handleGenderToggle = () => {
-    setProfileGender(prevGender => (prevGender === 'male' ? 'female' : 'male'));
+    setProfileGender(prevGender => (prevGender === 'Male' ? 'Female' : 'Male'));
   };
 
   return (
-    <View>
-      <TextInput
-        placeholder="Profile Name"
-        value={profileName}
-        onChangeText={text => setProfileName(text)}
-      />
-      <TouchableOpacity onPress={handleGenderToggle}>
-        <Text>Gender: {profileGender}</Text>
-      </TouchableOpacity>
-      <TextInput
-        placeholder="Profile Goals"
-        value={profileGoals}
-        onChangeText={text => setProfileGoals(text)}
-      />
-      <View>
-        <Text>Medications:</Text>
-        <TouchableOpacity onPress={() => setMorningMedication(!morningMedication)}>
-          <Text>Morning: {morningMedication ? 'Yes' : 'No'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setAfternoonMedication(!afternoonMedication)}>
-          <Text>Afternoon: {afternoonMedication ? 'Yes' : 'No'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setNightMedication(!nightMedication)}>
-          <Text>Night: {nightMedication ? 'Yes' : 'No'}</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TextInput
-          placeholder="Add Activity"
-          value={activity}
-          onChangeText={text => setActivity(text)}
-        />
-        <Button title="Add Activity" onPress={handleAddActivity} />
-        <FlatList
-          data={activities}
-          renderItem={({ item, index }) => (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text>{item}</Text>
-              <TouchableOpacity onPress={() => handleDeleteActivity(index)}>
-                <Text>Delete</Text>
-              </TouchableOpacity>
+    <View className = "bg-white flex-1">
+
+      {/* Main Container */}
+      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+
+        {/* Background Gradient */}
+        <LinearGradient 
+          className = "h-full w-full absolute" 
+          colors={['#88daf7', '#66c4ff', '#008bff']}>
+            
+            {/* Title */}
+            <View className = "h-[10%]"/>
+
+            {/* Profile Info */}
+            <View className = "h-[20%] justify-center items-center">
+        
+              <View className = "w-[75%] h-[25%] bg-white rounded-full justify-center my-2">
+                <TextInput
+                  className="h-full w-full text-black text-base text-center self-center"
+                  placeholder="Profile Name"
+                  placeholderTextColor={'gray'}
+                  onChangeText={(text) => setProfileName(text)}
+                  value={profileName}
+                  secureTextEntry={false}
+                />
+              </View>
+
+              <View className = "w-[75%] h-[25%] bg-white rounded-full justify-center my-2">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenderToggle}>
+                  <Text className = "text-black text-base text-center">Gender: {profileGender}</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View className = "w-[75%] h-[25%] bg-white rounded-full justify-center my-2">
+                <TextInput
+                  className="h-full w-full text-black text-base text-center self-center"
+                  placeholder="Profile Goals"
+                  placeholderTextColor={'gray'}
+                  onChangeText={(text) => setProfileGoals(text)}
+                  value={profileGoals}
+                  secureTextEntry={false}
+                />
+              </View>
+
             </View>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
+
+            {/* Medication */}
+            <View className = "h-[15%] justify-center">
+
+              <Text className = "text-white text-xl text-center">Medications:</Text>
+
+              <View className = "flex-row h-[70%] justify-evenly items-center">
+                {morningMedication ? (
+                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setMorningMedication(!morningMedication)}>
+                      <Text className = "text-white text-xl text-center">Morning</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setMorningMedication(!morningMedication)}>
+                      <Text className = "text-white text-xl text-center">Morning</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                {afternoonMedication ? (
+                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setAfternoonMedication(!afternoonMedication)}>
+                      <Text className = "text-white text-xl text-center">Afternoon</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setAfternoonMedication(!afternoonMedication)}>
+                      <Text className = "text-white text-xl text-center">Afternoon</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                {nightMedication  ? (
+                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setNightMedication(!nightMedication)}>
+                      <Text className = "text-white text-xl text-center">Night</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
+                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setNightMedication(!nightMedication)}>
+                      <Text className = "text-white text-xl text-center">Night</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            {/* Activities */}
+            <View className = "h-[40%]">
+              <View className = "flex-row h-[20%] justify-evenly items-center my-2">
+
+                <View className = "w-[60%] h-[100%] bg-white rounded-full">
+                  <TextInput
+                    className="h-full w-full text-black text-base text-center"
+                    placeholder="Add Activity"
+                    placeholderTextColor={'gray'}
+                    onChangeText={(text) => setActivity(text)}
+                    value={activity}
+                    secureTextEntry={false}
+                  />
+                </View>
+                <View className = "w-[30%] h-[100%] border-2 border-white rounded-full justify-center items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleAddActivity}>
+                    <Text className = "text-white text-xl text-center">Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View className = "h-[70%] bg-white border-2 border-white rounded-2xl py-2 m-4">
+                <FlatList
+                  data={activities}
+                  renderItem={({ item, index }) => (
+                    <ScrollView>
+                      <View className = "flex-row">
+
+                        <Text className = "w-[75%] text-center text-black">{item}</Text>
+
+                        <View className = "w-[25%]">
+                          <TouchableOpacity className = "w-full h-full justify-center" onPress={() => handleDeleteActivity(index)}>
+                            <Text className = "text-red-500 text-base text-center">X</Text>
+                          </TouchableOpacity>
+                        </View>
+
+                      </View>
+                    </ScrollView>
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </View>
+            </View>
+
+            {/* Footer */}
+            <View className = "h-[15%] items-center justify-center">
+              <View className = " h-[50%] w-[50%] bg-white rounded-full justify-center my-2">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleProfileCreation}>
+                  <Text className = "text-black text-base text-center">Create</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+        </LinearGradient>
       </View>
-      <Button title="Create" onPress={handleProfileCreation}></Button>
     </View>
   );
 }

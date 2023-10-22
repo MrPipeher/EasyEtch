@@ -8,6 +8,9 @@ module.exports = {
     "./src/screens/CommonScreens/*.{js,jsx,ts,tsx}",
     "./src/screens/HostHomeScreens/*.{js,jsx,ts,tsx}",
     "./src/screens/TherapistScreens/*.{js,jsx,ts,tsx}",
+    "./src/components/*.{js,jsx,ts,tsx}",
+    "./src/components/**/*.{js,jsx,ts,tsx}", 
+    "./src/components/UIComponents/*.{js,jsx,ts,tsx}", 
   ],
   theme: {
     extend: {},

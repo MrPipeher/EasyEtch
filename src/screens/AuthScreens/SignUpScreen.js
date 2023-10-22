@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
+import { CustomInputField, CustomActionButton, CustomButton } from '../../components/UIComponents/UIComponents';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -31,59 +33,90 @@ const SignUpScreen = () => {
     }
   };
 
-  const navigateToWelcome = () => {
-    navigation.navigate('Welcome');
+  const navigateToSignIn = () => {
+    navigation.navigate('SignIn');
   };
 
   return (
-    <View style={styles.container} className = "bg-red-500">
-      <Text>Sign Up</Text>
-      <Picker
-        style={styles.picker}
-        selectedValue={userType}
-        onValueChange={(itemValue) => setUserType(itemValue)}
-      >
-        <Picker.Item label="Host Home" value="Host Home" />
-        <Picker.Item label="Therapist" value="Therapist" />
-      </Picker>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        secureTextEntry
-      />
-      <Button title="Sign Up" onPress={handleSignup} />
-      <Button title="Go Back" onPress={navigateToWelcome} />
+    <View className = "bg-white flex-1">
+
+      {/* Main Container */}
+      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+
+        {/* Background Gradient */}
+        <LinearGradient 
+          className = "h-full w-full absolute" 
+          colors={['#88daf7', '#66c4ff', '#008bff']}>
+
+          {/* Title */}
+          <View className = "h-[5%]"/>
+
+          {/* Header */}
+          <View className = "h-[25%] justify-center items-center">
+
+            {/* Logo */}
+            <Image 
+              className = "w-[40%] h-[80%] absolute"
+              source={require('../../../assets/images/Logo.png')} 
+            />
+
+          </View>
+
+          {/* Picker */}
+          <View className = "h-[20%] justify-center items-center">
+
+            <View className = "w-full items-center justify-center">
+
+              <Text className = "text-white text-base text-center">Account Type:</Text>
+
+              <View className = "w-[50%] border-2 border-sky-500 bg-white">
+                <Picker
+                  selectedValue={userType}
+                  onValueChange={(itemValue) => setUserType(itemValue)}
+                >
+                  <Picker.Item label="Host Home" value="Host Home" />
+                  <Picker.Item label="Therapist" value="Therapist" />
+                </Picker>
+              </View>
+              
+            </View>
+
+          </View>
+
+          {/* Container */}
+          <View className = "h-[30%] justify-center items-center">
+
+            <CustomInputField
+              placeholder="Email"
+              onChangeText={setEmail}
+              value={email}
+              secureTextEntry={false}
+            />
+
+            <CustomInputField
+              placeholder="Password"
+              onChangeText={setPassword}
+              value={password}
+              secureTextEntry={true}
+            />
+
+            <CustomActionButton onPress={handleSignup} buttonText="Sign Up"/>
+
+          </View>
+
+          {/* Footer */}
+          <View className = "h-[20%] justify-center items-center">
+
+            <TouchableOpacity onPress={navigateToSignIn}>
+              <Text className = "text-white text-base">Go Back</Text>
+            </TouchableOpacity>
+
+          </View>
+
+        </LinearGradient>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  picker: {
-    width: '80%',
-    marginVertical: 10,
-  },
-  input: {
-    width: '80%',
-    marginVertical: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-});
 
 export default SignUpScreen;

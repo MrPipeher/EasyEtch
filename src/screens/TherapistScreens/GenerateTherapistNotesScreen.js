@@ -1,9 +1,11 @@
-import { View, Text, Button, FlatList, ScrollView} from 'react-native';
+import { View, Text, Button, FlatList, ScrollView, TouchableOpacity} from 'react-native';
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
 import { useServerContext } from '../../components/ServerContext';
 import DispositionContainer from '../../components/DispositionContainer';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Picker } from '@react-native-picker/picker';
 
 const dispositions = [
   'Bright', 'Flat', 'Subdued', 'Aggressive', 'Happy', 'Playful',
@@ -72,45 +74,90 @@ const GenerateTherapistNotesScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text>Select a Profile:</Text>
-      <FlatList
-        data={profiles}
-        keyExtractor={(item) => item.profileId.toString()}
-        renderItem={({ item }) => (
-          <Button title={item.profileName} onPress={() => handleProfileSelect(item)} disabled={item === selectedProfile} />
-        )}
-      />
-      <DispositionContainer
-        dispositions={dispositions}
-        selectedDispositions={selectedDispositions}
-        toggleDisposition={toggleDisposition}
-      />
-      <ScrollView>
-        {note ? (
-          <Text>{note}</Text>
-        ) : (
-          <Text>No output generated yet.</Text>
-        )}
-      </ScrollView>
-      {selectedProfile && (
-        <View>
-          <Text>Credits: {credits}</Text>
+    <View className = "bg-white flex-1">
 
-          <Text>Profile Name: {selectedProfile.profileName}</Text>
+      {/* Main Container */}
+      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
 
-          <Text>Profile Gender: {selectedProfile.profileGender}</Text>
+        {/* Background Gradient */}
+        <LinearGradient 
+          className = "h-full w-full absolute" 
+          colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <Text>Profile Goals: {selectedProfile.profileGoals}</Text>
+          <View className = "h-[20%] justify-center pt-14">
 
-          <Text>Profile Objectives: {selectedProfile.profileObjective}</Text>
+            <Text className = "text-center text-white">Select a Profile:</Text>
 
-          <Text>Profile Intervention: {selectedProfile.profileIntervention}</Text>
+            <View className = "w-[50%] border-2 border-sky-500 bg-white self-center">
+              <Picker
+                selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
+                onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
+              >
+                {profiles.map((item) => (
+                  <Picker.Item
+                    key={item.profileId.toString()}
+                    label={item.profileName}
+                    value={item.profileId.toString()}
+                  />
+                ))}
+              </Picker>
+            </View>
 
-          <Button title="Generate!" onPress={handleGenerate} />
-          <Button title="Purchase!" onPress={navigateToPurchase} />
-        </View>
-      )}
+          </View>
+
+          {selectedProfile && (
+          <View className = "h-[80%]">
+
+            <View className = "h-[10%] space-y-1"/>
+
+            <View className = "h-[30%] w-[85%] space-y-1 bg-white p-4 self-center">
+
+              <ScrollView>
+                <Text className = "text-black text-xl font-bold text-center">Profile Goals:</Text>
+                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileGoals}</Text>
+
+                <Text className = "text-black text-xl font-bold text-center">Profile Objective:</Text>
+                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileObjective}</Text>
+
+                <Text className = "text-black text-xl font-bold text-center">Profile Intervention:</Text>
+                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileIntervention}</Text>
+              </ScrollView>
+
+            </View>
+
+            <View className = "h-[30%] w-[85%] space-y-1 self-center">
+
+              <DispositionContainer
+                dispositions={dispositions}
+                selectedDispositions={selectedDispositions}
+                toggleDisposition={toggleDisposition}
+              />
+
+            </View>
+            
+            {/* Footer */}
+            <View className = "h-[30%]">
+                
+              <View className = "h-full w-full justify-center items-center space-y-3">
+
+                <Text className = "text-white font-bold text-xl">Credits: {credits}</Text>
+
+                <View className = "w-[50%] h-[40%] bg-white border-2 border-white rounded-full justify-center items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
+                    <Text className = "text-black text-xl text-center">Generate!</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity onPress={navigateToPurchase}>
+                  <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+
+          </View>)}
+        </LinearGradient>
+      </View>
     </View>
   );
 }

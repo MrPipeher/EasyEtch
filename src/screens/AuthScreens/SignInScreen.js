@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { CustomActionButton, CustomButton, CustomInputField } from '../../components/UIComponents/UIComponents';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -18,47 +20,71 @@ const SignInScreen = () => {
     }
   };
 
-  const navigateToWelcome = () => {
-    navigation.navigate('Welcome');
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp');
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Sign In</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-        secureTextEntry
-      />
-      <Button title="Sign In" onPress={handleSignIn} />
-      <Button title="Go Back" onPress={navigateToWelcome} />
+    <View className = "bg-white flex-1">
+
+      {/* Main Container */}
+      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+
+        {/* Background Gradient */}
+        <LinearGradient 
+          className = "h-full w-full absolute" 
+          colors={['#88daf7', '#66c4ff', '#008bff']}>
+
+          {/* Title */}
+          <View className = "h-[10%]"/>
+
+          {/* Header */}
+          <View className = "h-[40%] justify-center items-center">
+
+            {/* Logo */}
+            <Image 
+              className = "w-[60%] h-[100%] absolute"
+              source={require('../../../assets/images/Logo.png')} 
+            />
+
+          </View>
+
+          {/* Container */}
+          <View className = "h-[30%] justify-center items-center">
+
+            <CustomInputField
+              placeholder="Email"
+              onChangeText={setEmail}
+              value={email}
+              secureTextEntry={false}
+            />
+
+            <CustomInputField
+              placeholder="Password"
+              onChangeText={setPassword}
+              value={password}
+              secureTextEntry={true}
+            />
+
+            <CustomActionButton onPress={handleSignIn} buttonText="Sign In"/>
+
+          </View>
+
+          {/* Footer */}
+          <View className = "h-[20%] flex-row justify-center items-center">
+
+            <Text className = "text-gray-200 text-base">Don't have an account? </Text>
+
+            <TouchableOpacity onPress={navigateToSignUp}>
+              <Text className = "text-white text-base">Sign up</Text>
+            </TouchableOpacity>
+
+          </View>
+
+        </LinearGradient>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    width: '80%',
-    marginVertical: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-});
 
 export default SignInScreen;

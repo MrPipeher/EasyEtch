@@ -11,8 +11,9 @@ const DispositionContainer = ({ dispositions, selectedDispositions, toggleDispos
   return (
     <View style={{ flex: 1 }}>
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10, padding: 10 }}
+        className = "bg-white h-[30%] w-full self-center m-2"
         placeholder="Search Dispositions..."
+        placeholderTextColor={'gray'}
         onChangeText={setSearchTerm}
         value={searchTerm}
       />
@@ -27,7 +28,7 @@ const DispositionContainer = ({ dispositions, selectedDispositions, toggleDispos
             ]}
             onPress={() => toggleDisposition(item)}
           >
-            <Text>{item}</Text>
+            <Text className = "text-black">{item}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -39,11 +40,9 @@ export default DispositionContainer;
 
 const styles = {
   dispositionButton: {
+    backgroundColor: 'white',
     padding: 10,
     margin: 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
   },
   selectedDispositionButton: {
     backgroundColor: 'lightblue',
