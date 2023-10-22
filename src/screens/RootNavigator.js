@@ -13,7 +13,11 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   
-  const serverURL = 'http://10.0.0.70:5000' // Production: 'https://easyetch.onrender.com';
+  const serverURL = 'https://easyetch.onrender.com';
+
+  // Production: 'https://easyetch.onrender.com';
+  // Testing: 'http://10.0.0.70:5000'
+
   const [profileOwner, setProfileOwner] = useState(null);
 
   useEffect(() => {
