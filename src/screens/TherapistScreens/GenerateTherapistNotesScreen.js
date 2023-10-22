@@ -110,17 +110,17 @@ const GenerateTherapistNotesScreen = () => {
 
             <View className = "h-[10%] space-y-1"/>
 
-            <View className = "h-[30%] w-[85%] space-y-1 bg-white p-4 self-center">
+            <View className = "h-[30%] w-[85%] space-y-1p-4 self-center">
 
               <ScrollView>
-                <Text className = "text-black text-xl font-bold text-center">Profile Goals:</Text>
-                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileGoals}</Text>
+                <Text className = "text-white text-xl font-bold text-center">Profile Goals:</Text>
+                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileGoals}</Text>
 
-                <Text className = "text-black text-xl font-bold text-center">Profile Objective:</Text>
-                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileObjective}</Text>
+                <Text className = "text-white text-xl font-bold text-center">Profile Objective:</Text>
+                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileObjective}</Text>
 
-                <Text className = "text-black text-xl font-bold text-center">Profile Intervention:</Text>
-                <Text className = "text-black text-center text-base text-transform: capitalize">{selectedProfile.profileIntervention}</Text>
+                <Text className = "text-white text-xl font-bold text-center">Profile Intervention:</Text>
+                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileIntervention}</Text>
               </ScrollView>
 
             </View>

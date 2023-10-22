@@ -3,10 +3,12 @@ import { View, Text, TextInput, Button, FlatList, TouchableOpacity, ScrollView }
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 const ViewHostHomeProfileScreen = () => {
   const { profiles, selectedProfile, setSelectedProfile, updateProfile, deleteProfile } = useHostHomeProfileContext();
   const [newActivity, setNewActivity] = useState('');
+  const navigation = useNavigation();
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
@@ -48,6 +50,10 @@ const ViewHostHomeProfileScreen = () => {
     }));
   };  
 
+  const navigateToCreate = () => {
+    navigation.navigate('CreateProfile');
+  };
+
   return (
     <View className = "bg-white flex-1">
 
@@ -64,19 +70,27 @@ const ViewHostHomeProfileScreen = () => {
             <View className = "absolute inset-x-0 bottom-0">
               <Text className = "text-center text-white">Select a Profile:</Text>
 
-              <View className = "w-[50%] border-2 border-sky-500 bg-white self-center ">
-                <Picker
-                  selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
-                  onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
-                >
-                  {profiles.map((item) => (
-                    <Picker.Item
-                      key={item.profileId.toString()}
-                      label={item.profileName}
-                      value={item.profileId.toString()}
-                    />
-                  ))}
-                </Picker>
+              <View className = "flex-row justify-center space-x-2">
+                <View className = "w-[60%] h-full border-2 border-sky-500 bg-white self-center ">
+                  <Picker
+                    selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
+                    onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
+                  >
+                    {profiles.map((item) => (
+                      <Picker.Item
+                        key={item.profileId.toString()}
+                        label={item.profileName}
+                        value={item.profileId.toString()}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+
+                <View className = "w-[20%] h-[100%] bg-white border-2 border-green-500 rounded-full justify-center">
+                  <TouchableOpacity onPress={navigateToCreate}> 
+                    <Text className = "text-black text-base text-center">+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
 

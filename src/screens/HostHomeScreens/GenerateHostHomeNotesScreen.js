@@ -1,17 +1,18 @@
-import { View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
 import { useServerContext } from '../../components/ServerContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+import * as Clipboard from 'expo-clipboard';
 
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote } = useHostHomeProfileContext();
   const { serverURL, profileOwner, credits, setCredits } = useServerContext();
   const [dayProgram, setDayProgram] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
@@ -25,12 +26,25 @@ const GenerateHostHomeNotesScreen = () => {
     navigation.navigate('Purchase');
   };
 
+  const copyToClipboard = async (text) => {
+    await Clipboard.setStringAsync(text);
+    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
+  };
+
+  const handleSave = async () => {
+    await copyToClipboard(note);
+    setNote('');
+  };
+
   const handleGenerate = async () => {
 
     if (credits === 0) {
       console.error('Error: Please purchase more credits to continue.');
       return;
     }
+
+    //Start Loading
+    setLoading(true);
     
     try {
       const response = await fetch(`${serverURL}/hostHome/generate?profileOwner=${profileOwner}`, {
@@ -55,7 +69,90 @@ const GenerateHostHomeNotesScreen = () => {
     } catch (error) {
       console.error('Error sending selected profile to server:', error);
     }
+
+    setLoading(false);
   };
+
+  if (loading) {
+    return (
+      <View className = "bg-white flex-1">
+  
+        {/* Main Container */}
+        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+  
+          {/* Background Gradient */}
+          <LinearGradient 
+            className = "h-full w-full absolute" 
+            colors={['#88daf7', '#66c4ff', '#008bff']}>
+  
+            <View className = "h-[20%]"/>
+
+            <View className = "h-[60%] justify-center">
+
+              <Text className = "text-white text-3xl text-center">Generating Note..</Text>
+
+            </View>
+
+            <View className = "h-[20%] justify-center items-center">
+
+            </View>
+          
+          </LinearGradient>
+        </View>
+      </View>
+    );
+  }
+
+  if (note) {
+    return (
+      <View className = "bg-white flex-1">
+  
+        {/* Main Container */}
+        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+  
+          {/* Background Gradient */}
+          <LinearGradient 
+            className = "h-full w-full absolute" 
+            colors={['#88daf7', '#66c4ff', '#008bff']}>
+  
+            <View className = "h-[20%]"/>
+
+            <View className = "h-[60%]">
+
+              <View className = "h-[80%] w-[80%] bg-white justify-center self-center p-4">
+
+                <ScrollView>
+                  <Text className = "text-black text-base text-center">{note}</Text>
+                </ScrollView>
+
+              </View>
+
+            </View>
+
+            <View className = "h-[20%] justify-center items-center">
+                
+              <View className = "flex-row w-full h-full justify-evenly">
+
+                <View className = "w-[40%] h-[30%] bg-green-500 rounded-full items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
+                    <Text className = "text-white text-xl text-center">Save</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View className = "w-[40%] h-[30%] bg-white border-2 border-white rounded-full items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
+                    <Text className = "text-black text-xl text-center">Retry</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+            </View>
+          
+          </LinearGradient>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View className = "bg-white flex-1">

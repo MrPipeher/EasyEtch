@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Button, FlatList, ScrollView } from 'react-native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateTherapistProfileScreen = () => {
   const { createProfile } = useTherapistProfileContext();
@@ -10,6 +11,7 @@ const CreateTherapistProfileScreen = () => {
   const [profileObjective, setProfileObjective] = useState('');
   const [profileIntervention, setProfileIntervention] = useState('');
   const [profileGoals, setProfileGoals] = useState('');
+  const navigation = useNavigation();
 
   const handleProfileCreation = async () => {
     if (
@@ -48,6 +50,10 @@ const CreateTherapistProfileScreen = () => {
 
   const handleGenderToggle = () => {
     setProfileGender(prevGender => (prevGender === 'Male' ? 'Female' : 'Male'));
+  };
+
+  const navigateToView = () => {
+    navigation.navigate('ViewProfile');
   };
 
   return (
@@ -120,10 +126,16 @@ const CreateTherapistProfileScreen = () => {
             </View>
 
             {/* Footer */}
-            <View className = "h-[30%] items-center justify-center">
-              <View className = " h-[25%] w-[50%] bg-white rounded-full justify-center my-2">
-                <TouchableOpacity onPress={handleProfileCreation}>
-                  <Text className = "text-black text-base text-center">Create</Text>
+            <View className = "h-[20%] flex-row items-center justify-evenly">
+              <View className = " h-[50%] w-[40%] bg-white/20 border-2 border-white rounded-full justify-center my-2">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleProfileCreation}>
+                  <Text className = "text-white text-xl text-center">Create</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View className = " h-[50%] w-[40%] bg-white rounded-full justify-center my-2">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={navigateToView}>
+                  <Text className = "text-black text-xl text-center">Go back</Text>
                 </TouchableOpacity>
               </View>
             </View>

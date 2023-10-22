@@ -46,6 +46,24 @@ const MainNavigator = () => {
      );
   };
 
+  const HostHomeProfileStack = () => {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ViewProfile" component={ViewHostHomeProfileScreen}/>
+        <Stack.Screen name="CreateProfile" component={CreateHostHomeProfileScreen}/>
+      </Stack.Navigator>
+     );
+  };
+
+  const TherapistProfileStack = () => {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ViewProfile" component={ViewTherapistProfileScreen}/>
+        <Stack.Screen name="CreateProfile" component={CreateTherapistProfileScreen}/>
+      </Stack.Navigator>
+     );
+  };
+
   const TherapistStack = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -62,8 +80,7 @@ const MainNavigator = () => {
       <HostHomeProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen name="Generate" component={HostHomeStack} />
-          <Tab.Screen name="CreateProfile" component={CreateHostHomeProfileScreen} />
-          <Tab.Screen name="ViewProfile" component={ViewHostHomeProfileScreen} />
+          <Tab.Screen name="Profiles" component={HostHomeProfileStack} />
           <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
       </HostHomeProfileProvider>
@@ -75,8 +92,7 @@ const MainNavigator = () => {
       <TherapistProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen name="Generate" component={TherapistStack} />
-          <Tab.Screen name="CreateProfile" component={CreateTherapistProfileScreen} />
-          <Tab.Screen name="ViewProfile" component={ViewTherapistProfileScreen} />
+          <Tab.Screen name="Profiles" component={TherapistProfileStack} />
           <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
       </TherapistProfileProvider>
