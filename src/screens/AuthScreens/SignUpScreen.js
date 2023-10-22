@@ -56,7 +56,7 @@ const SignUpScreen = () => {
 
             {/* Logo */}
             <Image 
-              className = "w-[40%] h-[80%] absolute"
+              className = "object-contain h-48 w-96"
               source={require('../../../assets/images/Logo.png')} 
             />
 

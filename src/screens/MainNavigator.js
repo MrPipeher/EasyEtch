@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { useServerContext } from '../components/ServerContext';
 import { HostHomeProfileProvider } from '../components/HostHomeProfileContext'
 import { TherapistProfileProvider } from '../components/TherapistProfileContext'
@@ -79,9 +79,40 @@ const MainNavigator = () => {
     return (
       <HostHomeProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen name="Generate" component={HostHomeStack} />
-          <Tab.Screen name="Profiles" component={HostHomeProfileStack} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen 
+            name="Generate" 
+            component={HostHomeStack} 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/edit.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}/>
+          <Tab.Screen 
+            name="Profiles" 
+            component={HostHomeProfileStack} 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/user.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen 
+            name="Settings" 
+            component={SettingsScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/settings.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}/>
         </Tab.Navigator>
       </HostHomeProfileProvider>
     );
@@ -91,9 +122,39 @@ const MainNavigator = () => {
     return (
       <TherapistProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen name="Generate" component={TherapistStack} />
-          <Tab.Screen name="Profiles" component={TherapistProfileStack} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen 
+            name="Generate" 
+            component={TherapistStack} 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/edit.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}/>
+          <Tab.Screen 
+            name="Profiles" 
+            component={TherapistProfileStack} 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/user.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}/>
+          <Tab.Screen 
+            name="Settings" 
+            component={SettingsScreen} 
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Image
+                  source={require('../../assets/navicons/settings.png')}
+                  style={{ width: size, height: size, tintColor: color }}
+                />
+              ),
+            }}/>
         </Tab.Navigator>
       </TherapistProfileProvider>
     );

@@ -43,6 +43,10 @@ const GenerateHostHomeNotesScreen = () => {
       return;
     }
 
+    if (note) {
+      setNote('');
+    }
+
     //Start Loading
     setLoading(true);
     
@@ -227,19 +231,10 @@ const GenerateHostHomeNotesScreen = () => {
                   <Text className = "text-black text-xl text-center">Day Program: {dayProgram ? 'Yes' : 'No'}</Text>
                 </TouchableOpacity>
               </View>
-                
-              {/* <Text className = "text-center">Credits: {credits}</Text>
-              <ScrollView>
-                {note ? (
-                  <Text>{note}</Text>
-                ) : (
-                  <Text>No output generated yet.</Text>
-                )}
-              </ScrollView> */}
             </View>
             
             {/* Footer */}
-            <View className = "h-[30%] justify-center items-center">
+            <View className = "h-[30%]">
                 
               <View className = "h-full w-full items-center space-y-3">
 

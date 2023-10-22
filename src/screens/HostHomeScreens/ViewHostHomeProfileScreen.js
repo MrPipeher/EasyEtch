@@ -88,7 +88,7 @@ const ViewHostHomeProfileScreen = () => {
 
                 <View className = "w-[20%] h-[100%] bg-white border-2 border-green-500 rounded-full justify-center">
                   <TouchableOpacity onPress={navigateToCreate}> 
-                    <Text className = "text-black text-base text-center">+</Text>
+                    <Text className = "text-black text-base text-center">Add New</Text>
                   </TouchableOpacity>
                 </View>
               </View>
