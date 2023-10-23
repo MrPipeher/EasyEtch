@@ -15,6 +15,7 @@ import SettingsScreen from './CommonScreens/SettingsScreen';
 import PurchaseScreen from './CommonScreens/PurchaseScreen'
 import StripeCheckoutScreen from './CommonScreens/StripeCheckoutScreen'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const MainNavigator = () => {
   const { accountType, profileOwner } = useServerContext();
@@ -28,9 +29,22 @@ const MainNavigator = () => {
 
   if (loading) {
     return (
-      <View>
-        <Text>Loading</Text>
+      <View className = "bg-white flex-1">
+
+      {/* Main Container */}
+      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+
+        {/* Background Gradient */}
+        <LinearGradient 
+          className = "h-full w-full absolute" 
+          colors={['#88daf7', '#66c4ff', '#008bff']}>
+
+            <View className = "h-full w-full justify-center">
+            <Text className = "text-white text-3xl text-center">Loading.. Please wait</Text>
+            </View>
+        </LinearGradient>
       </View>
+    </View>
     );
   }
 

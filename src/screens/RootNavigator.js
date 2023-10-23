@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './AuthScreens/SignInScreen';
 import SignUpScreen from './AuthScreens/SignUpScreen';
+import ForgotPasswordScreen from './AuthScreens/ForgotPasswordScreen';
 import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,7 @@ const RootNavigator = () => {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           </Stack.Navigator>
         )}
       </NavigationContainer>
