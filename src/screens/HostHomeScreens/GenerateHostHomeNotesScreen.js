@@ -33,6 +33,9 @@ const GenerateHostHomeNotesScreen = () => {
 
   const handleSave = async () => {
     await copyToClipboard(note);
+  };
+
+  const handleFinished = () => {
     setNote('');
   };
 
@@ -119,7 +122,7 @@ const GenerateHostHomeNotesScreen = () => {
             className = "h-full w-full absolute" 
             colors={['#88daf7', '#66c4ff', '#008bff']}>
   
-            <View className = "h-[20%]"/>
+            <View className = "h-[10%]"/>
 
             <View className = "h-[60%]">
 
@@ -133,19 +136,26 @@ const GenerateHostHomeNotesScreen = () => {
 
             </View>
 
-            <View className = "h-[20%] justify-center items-center">
+            <View className = "h-[30%] items-center">
                 
-              <View className = "flex-row w-full h-full justify-evenly">
-
-                <View className = "w-[40%] h-[30%] bg-green-500 rounded-full items-center">
+              <View className = "flex-row w-full h-[50%] justify-evenly">
+                <View className = "w-[40%] h-[50%] bg-green-500 rounded-full items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
                     <Text className = "text-white text-xl text-center">Save</Text>
                   </TouchableOpacity>
                 </View>
 
-                <View className = "w-[40%] h-[30%] bg-white border-2 border-white rounded-full items-center">
+                <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
                     <Text className = "text-black text-xl text-center">Retry</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View className = "h-[50%] w-full justify-center items-center">
+                <View className = "w-[40%] h-[50%] bg-white border-2 border-white rounded-full">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleFinished}>
+                    <Text className = "text-black text-xl text-center">Go Back</Text>
                   </TouchableOpacity>
                 </View>
               </View>

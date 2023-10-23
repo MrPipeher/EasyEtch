@@ -81,13 +81,9 @@ const SignInScreen = () => {
               <Text className = "text-white text-base">Forgot password?</Text>
             </TouchableOpacity>
 
-            <View className = "flex-row">
-              <Text className = "text-gray-200 text-base">Don't have an account? </Text>
-
-              <TouchableOpacity onPress={navigateToSignUp}>
-                <Text className = "text-white text-base">Sign up</Text>
+              <TouchableOpacity  onPress={navigateToSignUp}>
+                <Text className = "text-white text-base">Don't have an account? Sign up</Text>
               </TouchableOpacity>
-            </View>
 
           </View>
 

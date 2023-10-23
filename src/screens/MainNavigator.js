@@ -61,6 +61,16 @@ const MainNavigator = () => {
      );
   };
 
+  const TherapistStack = () => {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="CreateTherapist" component={GenerateTherapistNotesScreen}/>
+        <Stack.Screen name="Purchase" component={PurchaseScreen}/>
+        <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen}/>
+      </Stack.Navigator>
+     );
+  };
+
   const HostHomeProfileStack = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -79,21 +89,12 @@ const MainNavigator = () => {
      );
   };
 
-  const TherapistStack = () => {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="CreateTherapist" component={GenerateTherapistNotesScreen}/>
-        <Stack.Screen name="Purchase" component={PurchaseScreen}/>
-        <Stack.Screen name="StripeCheckout" component={StripeCheckoutScreen}/>
-      </Stack.Navigator>
-     );
-  };
-
   if (accountType === 'Host Home') {
 
     return (
       <HostHomeProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator 
+          initialRouteName="Profiles"
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
@@ -152,6 +153,7 @@ const MainNavigator = () => {
     return (
       <TherapistProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator 
+          initialRouteName="Profiles"
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
