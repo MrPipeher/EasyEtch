@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "/EasyEtch/static/js/main.ce6db62b.js",
-    "static/js/6.ae474f9b.js": "/EasyEtch/static/js/6.ae474f9b.js",
-    "static/media/Logo.png": "/EasyEtch/static/media/Logo.180d881248a1ca6f7bcc.png",
-    "favicon.ico": "/EasyEtch/favicon.ico",
-    "static/media/edit.png": "/EasyEtch/static/media/edit.9fd71c55ed5fcd516d44.png",
-    "static/media/settings.png": "/EasyEtch/static/media/settings.2ca8af129ed1d363d281.png",
-    "static/media/user.png": "/EasyEtch/static/media/user.eec4d2e96a9a1745351a.png",
-    "index.html": "/EasyEtch/index.html",
-    "favicon-32.png": "/EasyEtch/favicon-32.png",
-    "favicon-16.png": "/EasyEtch/favicon-16.png",
-    "serve.json": "/EasyEtch/serve.json",
-    "manifest.json": "/EasyEtch/manifest.json",
-    "main.ce6db62b.js.map": "/EasyEtch/static/js/main.ce6db62b.js.map",
-    "6.ae474f9b.js.map": "/EasyEtch/static/js/6.ae474f9b.js.map"
+    "main.js": "/static/js/main.a1e51ac7.js",
+    "static/js/6.757791b0.js": "/static/js/6.757791b0.js",
+    "static/media/Logo.png": "/static/media/Logo.180d881248a1ca6f7bcc.png",
+    "favicon.ico": "/favicon.ico",
+    "static/media/edit.png": "/static/media/edit.9fd71c55ed5fcd516d44.png",
+    "static/media/settings.png": "/static/media/settings.2ca8af129ed1d363d281.png",
+    "static/media/user.png": "/static/media/user.eec4d2e96a9a1745351a.png",
+    "index.html": "/index.html",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon-16.png": "/favicon-16.png",
+    "serve.json": "/serve.json",
+    "manifest.json": "/manifest.json",
+    "main.a1e51ac7.js.map": "/static/js/main.a1e51ac7.js.map",
+    "6.757791b0.js.map": "/static/js/6.757791b0.js.map"
   },
   "entrypoints": [
-    "static/js/6.ae474f9b.js",
-    "static/js/main.ce6db62b.js"
+    "static/js/6.757791b0.js",
+    "static/js/main.a1e51ac7.js"
   ]
 }
