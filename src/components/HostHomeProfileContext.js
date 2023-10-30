@@ -12,6 +12,7 @@ export const HostHomeProfileProvider = ({ children, profileOwner }) => {
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [note, setNote] = useState(null);
+  const [dayProgram, setDayProgram] = useState(false);
 
   const fetchProfiles = async (profileOwner) => {
     try {
@@ -138,6 +139,8 @@ export const HostHomeProfileProvider = ({ children, profileOwner }) => {
           setSelectedProfile,
           note,
           setNote,
+          dayProgram,
+          setDayProgram,
         }}>
       {children}
     </HostHomeProfileContext.Provider>

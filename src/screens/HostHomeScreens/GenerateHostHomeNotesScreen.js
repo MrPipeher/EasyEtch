@@ -9,9 +9,8 @@ import * as Clipboard from 'expo-clipboard';
 
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
-  const { profiles, selectedProfile, setSelectedProfile, note, setNote } = useHostHomeProfileContext();
+  const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
   const { serverURL, profileOwner, credits, setCredits } = useServerContext();
-  const [dayProgram, setDayProgram] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
