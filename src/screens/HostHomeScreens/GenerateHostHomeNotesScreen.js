@@ -101,6 +101,8 @@ const GenerateHostHomeNotesScreen = () => {
 
             <View className = "h-[20%] justify-center items-center">
 
+              <Text className = "text-white text-base text-center">We accept 07</Text>
+
             </View>
           
           </LinearGradient>
