@@ -10,6 +10,7 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSignIn = async () => {
     try {
@@ -17,6 +18,7 @@ const SignInScreen = () => {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error('Error signing in:', error);
+      setError('Invalid email or password.');
     }
   };
 
@@ -55,6 +57,10 @@ const SignInScreen = () => {
 
           {/* Container */}
           <View className = "h-[30%] justify-center items-center">
+
+            {error && (
+              <Text className = "text-red-500 text-base m-2">{error}</Text>
+            )}
 
             <CustomInputField
               placeholder="Email"
