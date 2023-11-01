@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { LinearGradient } from 'expo-linear-gradient';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { CustomInputField } from '../../components/UIComponents/UIComponents';
 import { useNavigation } from '@react-navigation/native';
 
 const ForgotPasswordScreen = () => {

@@ -3,7 +3,7 @@ import { View, Image, Text, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { CustomActionButton, CustomButton, CustomInputField } from '../../components/UIComponents/UIComponents';
+import { CustomActionButton, CustomInputField } from '../../components/UIComponents/UIComponents';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SignInScreen = () => {
