@@ -19,6 +19,7 @@ const GenerateTherapistNotesScreen = () => {
   const { profiles, selectedProfile, setSelectedProfile, note, setNote } = useTherapistProfileContext();
   const { serverURL, profileOwner, credits, setCredits } = useServerContext();
   const [selectedDispositions, setSelectedDispositions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
@@ -47,6 +48,9 @@ const GenerateTherapistNotesScreen = () => {
       return;
     }
 
+    //Start Loading
+    setLoading(true);
+
     try {
       const response = await fetch(`${serverURL}/therapist/generate?profileOwner=${profileOwner}`, {
         method: 'POST',
@@ -71,7 +75,112 @@ const GenerateTherapistNotesScreen = () => {
     } catch (error) {
       console.error('Error sending selected profile to server:', error);
     }
+
+    setLoading(false);
   };
+
+  const copyToClipboard = async (text) => {
+    await Clipboard.setStringAsync(text);
+    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
+  };
+
+  const handleSave = async () => {
+    await copyToClipboard(note);
+  };
+
+  const handleFinished = () => {
+    setNote('');
+  };
+
+  if (loading) {
+    return (
+      <View className = "bg-white flex-1">
+  
+        {/* Main Container */}
+        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+  
+          {/* Background Gradient */}
+          <LinearGradient 
+            className = "h-full w-full absolute" 
+            colors={['#88daf7', '#66c4ff', '#008bff']}>
+  
+            <View className = "h-[20%]"/>
+
+            <View className = "h-[60%] justify-center">
+
+              <Text className = "text-white text-3xl text-center">Generating Note..</Text>
+
+            </View>
+
+            <View className = "h-[20%] justify-center items-center">
+
+              <Text className = "text-white text-base text-center">We accept 07</Text>
+
+            </View>
+          
+          </LinearGradient>
+        </View>
+      </View>
+    );
+  }
+
+  if (note) {
+    return (
+      <View className = "bg-white flex-1">
+  
+        {/* Main Container */}
+        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
+  
+          {/* Background Gradient */}
+          <LinearGradient 
+            className = "h-full w-full absolute" 
+            colors={['#88daf7', '#66c4ff', '#008bff']}>
+  
+            <View className = "h-[10%]"/>
+
+            <View className = "h-[60%]">
+
+              <View className = "h-[80%] w-[80%] bg-white justify-center self-center p-4">
+
+                <ScrollView>
+                  <Text className = "text-black text-base text-center">{note}</Text>
+                </ScrollView>
+
+              </View>
+
+            </View>
+
+            <View className = "h-[30%] items-center">
+                
+              <View className = "flex-row w-full h-[50%] justify-evenly">
+                <View className = "w-[40%] h-[50%] bg-green-500 rounded-full items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
+                    <Text className = "text-white text-xl text-center">Save</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
+                    <Text className = "text-black text-xl text-center">Retry</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View className = "h-[50%] w-full justify-center items-center">
+                <View className = "w-[40%] h-[50%] bg-white border-2 border-white rounded-full">
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleFinished}>
+                    <Text className = "text-black text-xl text-center">Go Back</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+            </View>
+          
+          </LinearGradient>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View className = "bg-white flex-1">
