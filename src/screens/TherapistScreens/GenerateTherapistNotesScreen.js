@@ -7,18 +7,26 @@ import DispositionContainer from '../../components/DispositionContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 
-const dispositions = [
-  'Bright', 'Flat', 'Subdued', 'Aggressive', 'Happy', 'Playful',
-  'Exhausted', 'Confused', 'Defiant', 'Ecstatic', 'Suspicious', 'Disgusted',
-  'Angry', 'Sad', 'Frightened', 'Depressed', 'Bored', 'Talkative',
-  'Shy', 'Overwhelmed', 'Lonely', 'Enraged', 'Frustrated', 'Calm'
+const behaviorDispositions = [
+  'Aggressive', 'Angry', 'Bored', 'Bright', 'Calm', 'Confused',
+  'Defiant', 'Depressed', 'Disgusted', 'Ecstatic', 'Enraged', 'Exhausted',
+  'Flat', 'Frightened', 'Frustrated', 'Happy', 'Lonely', 'Overwhelmed',
+  'Playful', 'Sad', 'Shy', 'Subdued', 'Suspicious', 'Talkative'
+];
+
+const interventionDispositions = [
+  'ADHD', 'Anger', 'Conduct disorder', 'Depression', 'Drug use', 'Emotional Spirals',
+  'Externalizing Behaviors', 'Family Conflicts', 'Grief/Loss Unresolved', 'Identifying Activating Events', 'Impulsivity', 'Internalizing Behaviors ',
+  'Low Self-Esteem ', 'Oppositional Defiant Disorder', 'Parenting', 'Positive Qualities Record', 'PTSD', 'Self-Defeating Behavior',
+  'Self-Mutilation', 'Stress', 'Truancy', 'Emotional Spirals', 'Self-Mutilation', 'Stress',
 ];
 
 const GenerateTherapistNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote } = useTherapistProfileContext();
   const { serverURL, profileOwner, credits, setCredits } = useServerContext();
-  const [selectedDispositions, setSelectedDispositions] = useState([]);
+  const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
+  const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
@@ -29,16 +37,16 @@ const GenerateTherapistNotesScreen = () => {
     navigation.navigate('Purchase');
   };
 
-  const toggleDisposition = (disposition) => {
-    const updatedDispositions = selectedDispositions.includes(disposition)
-      ? selectedDispositions.filter((item) => item !== disposition)
-      : [...selectedDispositions, disposition];
-
-    setSelectedDispositions(updatedDispositions);
+  const toggleBehaviorDisposition = (disposition) => {
+    setSelectedBehaviorDispositions(disposition);
   };
-
+  
+  const toggleInterventionDisposition = (disposition) => {
+    setSelectedInterventionDispositions(disposition);
+  };
+  
   const handleGenerate = async () => {
-    if (selectedDispositions.length === 0) {
+    if (selectedBehaviorDispositions.length === 0 || selectedInterventionDispositions.length === 0) {
       console.error('Error: Please select at least one disposition.');
       return;
     }
@@ -58,8 +66,8 @@ const GenerateTherapistNotesScreen = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          selectedProfile,
-          selectedDispositions,
+          selectedBehaviorDispositions,
+          selectedInterventionDispositions
         }),
       });
 
@@ -68,7 +76,6 @@ const GenerateTherapistNotesScreen = () => {
       if (data) {
         setNote(data.generatedText);
         setCredits(data.remainingCredits);
-        setSelectedDispositions([]);
       } else {
         console.error('Error:', data.error);
       }
@@ -89,6 +96,8 @@ const GenerateTherapistNotesScreen = () => {
   };
 
   const handleFinished = () => {
+    setSelectedBehaviorDispositions('');
+    setSelectedInterventionDispositions('');
     setNote('');
   };
 
@@ -161,7 +170,7 @@ const GenerateTherapistNotesScreen = () => {
 
                 <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
-                    <Text className = "text-black text-xl text-center">Retry</Text>
+                    <Text className = "text-black text-xl text-center">New</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -193,56 +202,37 @@ const GenerateTherapistNotesScreen = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <View className = "h-[20%] justify-center pt-14">
+          <View className = "h-[100%]">
 
-            <Text className = "text-center text-white">Select a Profile:</Text>
+            <View className = "h-[10%]"/>
 
-            <View className = "w-[50%] border-2 border-sky-500 bg-white self-center">
-              <Picker
-                selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
-                onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
-              >
-                {profiles.map((item) => (
-                  <Picker.Item
-                    key={item.profileId.toString()}
-                    label={item.profileName}
-                    value={item.profileId.toString()}
-                  />
-                ))}
-              </Picker>
-            </View>
+            <View className = "h-[25%] w-[85%] space-y-1 self-center">
 
-          </View>
-
-          {selectedProfile && (
-          <View className = "h-[80%]">
-
-            <View className = "h-[10%] space-y-1"/>
-
-            <View className = "h-[30%] w-[85%] space-y-1p-4 self-center">
-
-              <ScrollView>
-                <Text className = "text-white text-xl font-bold text-center">Profile Goals:</Text>
-                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileGoals}</Text>
-
-                <Text className = "text-white text-xl font-bold text-center">Profile Objective:</Text>
-                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileObjective}</Text>
-
-                <Text className = "text-white text-xl font-bold text-center">Profile Intervention:</Text>
-                <Text className = "text-white text-center text-base text-transform: capitalize">{selectedProfile.profileIntervention}</Text>
-              </ScrollView>
-
-            </View>
-
-            <View className = "h-[30%] w-[85%] space-y-1 self-center">
+              <Text className = "text-white text-xl text-center">Behavior</Text>
 
               <DispositionContainer
-                dispositions={dispositions}
-                selectedDispositions={selectedDispositions}
-                toggleDisposition={toggleDisposition}
+                dispositions={behaviorDispositions}
+                selectedDisposition={selectedBehaviorDispositions}
+                toggleDisposition={toggleBehaviorDisposition}
               />
 
             </View>
+
+            <View className = "h-[5%]"/>
+
+            <View className = "h-[25%] w-[85%] space-y-1 self-center">
+
+              <Text className = "text-white text-xl text-center">Intervention</Text>
+
+              <DispositionContainer
+                dispositions={interventionDispositions}
+                selectedDisposition={selectedInterventionDispositions}
+                toggleDisposition={toggleInterventionDisposition}
+              />
+
+            </View>
+
+            <View className = "h-[5%]"/>
             
             {/* Footer */}
             <View className = "h-[30%]">
@@ -264,7 +254,7 @@ const GenerateTherapistNotesScreen = () => {
 
             </View>
 
-          </View>)}
+          </View>
         </LinearGradient>
       </View>
     </View>

@@ -148,7 +148,7 @@ const GenerateHostHomeNotesScreen = () => {
 
                 <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
-                    <Text className = "text-black text-xl text-center">Retry</Text>
+                    <Text className = "text-black text-xl text-center">New</Text>
                   </TouchableOpacity>
                 </View>
               </View>

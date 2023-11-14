@@ -153,7 +153,7 @@ const MainNavigator = () => {
     return (
       <TherapistProfileProvider profileOwner={profileOwner}>
         <Tab.Navigator 
-          initialRouteName="Profiles"
+          initialRouteName="Generate"
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
@@ -180,7 +180,7 @@ const MainNavigator = () => {
                   />
                 ),
               }}/>
-            <Tab.Screen 
+            {/* <Tab.Screen 
               name="Profiles" 
               component={TherapistProfileStack} 
               options={{
@@ -190,7 +190,7 @@ const MainNavigator = () => {
                     style={{ width: size, height: size, tintColor: color }}
                   />
                 ),
-              }}/>
+              }}/> */}
             <Tab.Screen 
               name="Settings" 
               component={SettingsScreen} 

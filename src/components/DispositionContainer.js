@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 
-const DispositionContainer = ({ dispositions, selectedDispositions, toggleDisposition }) => {
+const DispositionContainer = ({ dispositions, selectedDisposition, toggleDisposition }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredDispositions = dispositions.filter(disposition =>
@@ -11,7 +11,7 @@ const DispositionContainer = ({ dispositions, selectedDispositions, toggleDispos
   return (
     <View style={{ flex: 1 }}>
       <TextInput
-        className = "bg-white h-[30%] w-[85%] self-center m-2"
+        className="bg-white h-[30%] w-[85%] self-center m-2"
         placeholder="Search Dispositions..."
         placeholderTextColor={'gray'}
         onChangeText={setSearchTerm}
@@ -19,18 +19,18 @@ const DispositionContainer = ({ dispositions, selectedDispositions, toggleDispos
       />
 
       <ScrollView>
-        {filteredDispositions.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.dispositionButton,
-              selectedDispositions.includes(item) && styles.selectedDispositionButton
-            ]}
-            onPress={() => toggleDisposition(item)}
-          >
-            <Text className = "text-black">{item}</Text>
-          </TouchableOpacity>
-        ))}
+      {filteredDispositions.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[
+            styles.dispositionButton,
+            selectedDisposition === item && styles.selectedDispositionButton
+          ]}
+          onPress={() => toggleDisposition(item)}
+        >
+          <Text className="text-black">{item}</Text>
+        </TouchableOpacity>
+      ))}
       </ScrollView>
     </View>
   );
