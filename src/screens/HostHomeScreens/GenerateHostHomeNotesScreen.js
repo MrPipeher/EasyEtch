@@ -25,13 +25,9 @@ const GenerateHostHomeNotesScreen = () => {
     navigation.navigate('Purchase');
   };
 
-  const copyToClipboard = async (text) => {
-    await Clipboard.setStringAsync(text);
-    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
-  };
-
   const handleSave = async () => {
-    await copyToClipboard(note);
+    await Clipboard.setStringAsync(note);
+    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
   };
 
   const handleFinished = () => {

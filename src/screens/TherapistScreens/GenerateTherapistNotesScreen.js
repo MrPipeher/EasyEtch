@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
@@ -6,6 +6,7 @@ import { useServerContext } from '../../components/ServerContext';
 import DispositionContainer from '../../components/DispositionContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+import * as Clipboard from 'expo-clipboard';
 
 const behaviorDispositions = [
   'Aggressive', 'Angry', 'Bored', 'Bright', 'Calm', 'Confused',
@@ -18,7 +19,7 @@ const interventionDispositions = [
   'ADHD', 'Anger', 'Conduct disorder', 'Depression', 'Drug use', 'Emotional Spirals',
   'Externalizing Behaviors', 'Family Conflicts', 'Grief/Loss Unresolved', 'Identifying Activating Events', 'Impulsivity', 'Internalizing Behaviors ',
   'Low Self-Esteem ', 'Oppositional Defiant Disorder', 'Parenting', 'Positive Qualities Record', 'PTSD', 'Self-Defeating Behavior',
-  'Self-Mutilation', 'Stress', 'Truancy', 'Emotional Spirals', 'Self-Mutilation', 'Stress',
+  'Self-Mutilation', 'Stress', 'Truancy',
 ];
 
 const GenerateTherapistNotesScreen = () => {
@@ -86,13 +87,10 @@ const GenerateTherapistNotesScreen = () => {
     setLoading(false);
   };
 
-  const copyToClipboard = async (text) => {
-    await Clipboard.setStringAsync(text);
-    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
-  };
-
   const handleSave = async () => {
-    await copyToClipboard(note);
+    await Clipboard.setStringAsync(note);
+    console.log('Note saved');
+    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
   };
 
   const handleFinished = () => {
