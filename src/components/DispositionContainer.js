@@ -11,8 +11,8 @@ const DispositionContainer = ({ dispositions, selectedDisposition, toggleDisposi
   return (
     <View style={{ flex: 1 }}>
       <TextInput
-        className="bg-white h-[30%] w-[85%] self-center m-2"
-        placeholder="Search Dispositions..."
+        className="bg-white border-gray-400 border-2 h-[30%] w-[85%] self-center m-2"
+        placeholder="Search"
         placeholderTextColor={'gray'}
         onChangeText={setSearchTerm}
         value={searchTerm}

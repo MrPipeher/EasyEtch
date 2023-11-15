@@ -202,11 +202,11 @@ const GenerateTherapistNotesScreen = () => {
 
           <View className = "h-[100%]">
 
-            <View className = "h-[10%]"/>
+            <View className = "h-[5%]"/>
 
-            <View className = "h-[25%] w-[85%] space-y-1 self-center">
+            <Text className = "text-white text-xl text-center">Behavior</Text>
 
-              <Text className = "text-white text-xl text-center">Behavior</Text>
+            <View className = "h-[25%] w-[50%] space-y-1 self-center">
 
               <DispositionContainer
                 dispositions={behaviorDispositions}
@@ -218,9 +218,9 @@ const GenerateTherapistNotesScreen = () => {
 
             <View className = "h-[5%]"/>
 
-            <View className = "h-[25%] w-[85%] space-y-1 self-center">
+            <Text className = "text-white text-xl text-center">Intervention</Text>
 
-              <Text className = "text-white text-xl text-center">Intervention</Text>
+            <View className = "h-[25%] w-[50%] space-y-1 self-center">
 
               <DispositionContainer
                 dispositions={interventionDispositions}
@@ -229,8 +229,6 @@ const GenerateTherapistNotesScreen = () => {
               />
 
             </View>
-
-            <View className = "h-[5%]"/>
             
             {/* Footer */}
             <View className = "h-[30%]">
