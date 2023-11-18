@@ -25,7 +25,7 @@ const GenerateHostHomeNotesScreen = () => {
     navigation.navigate('Purchase');
   };
 
-  const handleSave = async () => {
+  const handleCopy = async () => {
     await Clipboard.setStringAsync(note);
     Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
   };
@@ -73,6 +73,34 @@ const GenerateHostHomeNotesScreen = () => {
     }
 
     setLoading(false);
+  };
+
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+    const month = currentDate.getMonth() + 1; // Months are zero-based
+    const day = currentDate.getDate();
+    const year = currentDate.getFullYear();
+
+    return `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}/${year}`;
+  };
+
+  const handleSave = async () => {
+    try {
+      const formattedDate = getCurrentDate();
+      const filename = `${selectedProfile.profileName}_${formattedDate}.txt`;
+
+      // Create a Blob containing the text
+      const blob = new Blob([note], { type: 'text/plain' });
+
+      // Create a download link and trigger a click event to download the file
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    } catch (error) {
+      console.error('Error saving file:', error);
+      // Handle error as needed
+    }
   };
 
   if (loading) {
@@ -137,14 +165,14 @@ const GenerateHostHomeNotesScreen = () => {
                 
               <View className = "flex-row w-full h-[50%] justify-evenly">
                 <View className = "w-[40%] h-[50%] bg-green-500 rounded-full items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
-                    <Text className = "text-white text-xl text-center">Save</Text>
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleCopy}>
+                    <Text className = "text-white text-xl text-center">Copy</Text>
                   </TouchableOpacity>
                 </View>
 
                 <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
-                    <Text className = "text-black text-xl text-center">New</Text>
+                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
+                    <Text className = "text-black text-xl text-center">Save</Text>
                   </TouchableOpacity>
                 </View>
               </View>
