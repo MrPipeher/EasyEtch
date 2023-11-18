@@ -24,7 +24,18 @@ const interventionDispositions = [
 
 const GenerateTherapistNotesScreen = () => {
   const navigation = useNavigation();
-  const { profiles, selectedProfile, setSelectedProfile, note, setNote } = useTherapistProfileContext();
+  const { profiles, selectedProfile, setSelectedProfile, 
+    note, 
+    setNote, 
+    behavior,
+    setBehavior,
+    intervention,
+    setIntervention,
+    response,
+    setResponse,
+    plan,
+    setPlan 
+  } = useTherapistProfileContext();
   const { serverURL, profileOwner, credits, setCredits } = useServerContext();
   const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
   const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
@@ -75,7 +86,11 @@ const GenerateTherapistNotesScreen = () => {
       const data = await response.json();
 
       if (data) {
-        setNote(data.generatedText);
+        setNote(true);
+        setBehavior(data.behavior);
+        setIntervention(data.intervention);
+        setResponse(data.response)
+        setPlan(data.plan)
         setCredits(data.remainingCredits);
       } else {
         console.error('Error:', data.error);
@@ -87,16 +102,48 @@ const GenerateTherapistNotesScreen = () => {
     setLoading(false);
   };
 
+  const handleCopy = async (text) => {
+    await Clipboard.setStringAsync(text);
+    Alert.alert('Saved!', 'item has been saved');
+  }
+
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+    const month = currentDate.getMonth() + 1; // Months are zero-based
+    const day = currentDate.getDate();
+    const year = currentDate.getFullYear();
+
+    return `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}/${year}`;
+  };
+
   const handleSave = async () => {
-    await Clipboard.setStringAsync(note);
-    console.log('Note saved');
-    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
+    try {
+      const formattedDate = getCurrentDate();
+      const filename = `${formattedDate}.txt`;
+      const combinedText = `Behavior\n\n${behavior}\n\nIntervention\n\n${intervention}\n\nResponse\n\n${response}\n\nPlan\n\n${plan}`;
+
+      // Create a Blob containing the text
+      const blob = new Blob([combinedText], { type: 'text/plain' });
+
+      // Create a download link and trigger a click event to download the file
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    } catch (error) {
+      console.error('Error saving file:', error);
+      // Handle error as needed
+    }
   };
 
   const handleFinished = () => {
     setSelectedBehaviorDispositions('');
     setSelectedInterventionDispositions('');
-    setNote('');
+    setNote(false);
+    setBehavior('');
+    setIntervention('');
+    setResponse('');
+    setPlan('');
   };
 
   if (loading) {
@@ -150,7 +197,65 @@ const GenerateTherapistNotesScreen = () => {
               <View className = "h-[80%] w-[80%] bg-white justify-center self-center p-4">
 
                 <ScrollView>
-                  <Text className = "text-black text-base text-center">{note}</Text>
+                  <View className = "w-full h-full justify-center items-center my-2 space-y-4">
+
+                    <View className = "flex-row space-x-8 justify-center">
+
+                      <Text className = "text-black text-xl text-center font-bold underline">Behavior</Text>
+
+                      <View className = "w-[50%] h-[100%] bg-white border-2 border-black rounded-full">
+                        <TouchableOpacity className="w-full h-full justify-center" onPress={() => handleCopy(behavior)}>
+                          <Text className = "text-black text-base text-center">Copy</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+
+                    <Text className = "text-black text-xl text-center">{behavior}</Text>
+
+                    <View className = "flex-row space-x-8 justify-center">
+
+                      <Text className = "text-black text-xl text-center font-bold underline">Intervention</Text>
+
+                      <View className = "w-[50%] h-[100%] bg-white border-2 border-black rounded-full">
+                        <TouchableOpacity className = "w-full h-full justify-center" onPress={() => handleCopy(intervention)}>
+                          <Text className = "text-black text-base text-center">Copy</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+
+                    <Text className = "text-black text-xl text-center">{intervention}</Text>
+
+                    <View className = "flex-row space-x-8 justify-center">
+
+                      <Text className = "text-black text-xl text-center font-bold underline">Response</Text>
+
+                      <View className = "w-[50%] h-[100%] bg-white border-2 border-black rounded-full">
+                        <TouchableOpacity className = "w-full h-full justify-center" onPress={() => handleCopy(response)}>
+                          <Text className = "text-black text-base text-center">Copy</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+
+                    <Text className = "text-black text-xl text-center">{response}</Text>
+
+                    <View className = "flex-row space-x-8 justify-center">
+
+                      <Text className = "text-black text-xl text-center font-bold underline">Plan</Text>
+
+                      <View className = "w-[50%] h-[100%] bg-white border-2 border-black rounded-full">
+                        <TouchableOpacity className = "w-full h-full justify-center" onPress={() => handleCopy(plan)}>
+                          <Text className = "text-black text-base text-center">Copy</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+
+                    <Text className = "text-black text-xl text-center">{plan}</Text>
+
+                  </View>
                 </ScrollView>
 
               </View>

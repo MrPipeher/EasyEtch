@@ -12,6 +12,10 @@ export const TherapistProfileProvider = ({ children, profileOwner }) => {
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [note, setNote] = useState(null);
+  const [behavior, setBehavior] = useState('');
+  const [intervention, setIntervention] = useState('');
+  const [response, setResponse] = useState('');
+  const [plan, setPlan] = useState('');
 
   const fetchProfiles = async (profileOwner) => {
     try {
@@ -137,6 +141,14 @@ export const TherapistProfileProvider = ({ children, profileOwner }) => {
           setSelectedProfile,
           note,
           setNote,
+          behavior,
+          setBehavior,
+          intervention,
+          setIntervention,
+          response,
+          setResponse,
+          plan,
+          setPlan,
         }}>
       {children}
     </TherapistProfileContext.Provider>
