@@ -16,9 +16,9 @@ const behaviorDispositions = [
 ];
 
 const interventionDispositions = [
-  'ADHD', 'Anger', 'Conduct disorder', 'Depression', 'Drug use', 'Emotional Spirals',
+  'ADHD', 'Anger', 'Anxiety', 'Communication Skills', 'Conduct disorder', 'Depression', 'Drug use', 'Emotional Spirals',
   'Externalizing Behaviors', 'Family Conflicts', 'Grief/Loss Unresolved', 'Identifying Activating Events', 'Impulsivity', 'Internalizing Behaviors ',
-  'Low Self-Esteem ', 'Oppositional Defiant Disorder', 'Parenting', 'Positive Qualities Record', 'PTSD', 'Self-Defeating Behavior',
+  'Low Self-Esteem ', 'Oppositional Defiant Disorder', 'Parenting', 'Positive Qualities Record', 'PTSD', 'Relationship Issues', 'Self Compassion', 'Self-Defeating Behavior',
   'Self-Mutilation', 'Stress', 'Truancy',
 ];
 
