@@ -37,15 +37,15 @@ const CustomInputField = ({ placeholder, onChangeText, value, secureTextEntry })
   };
 
 const styles = {
-    button: "w-[75%] h-[30%] bg-white rounded-xl justify-center my-2",
+    button: "w-[50%] h-[30%] bg-white rounded-xl justify-center my-2",
 
     buttonText: "text-black text-xl text-center",
 
-    actionButton: "w-[75%] h-[30%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2",
+    actionButton: "w-[50%] h-[30%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2",
 
     actionButtonText: "text-white text-xl text-center",
 
-    inputField: "w-[75%] h-[30%] bg-white/75 rounded-full justify-center my-2",
+    inputField: "w-[50%] h-[30%] bg-white/75 rounded-full justify-center my-2",
     
     inputFieldText: "h-full w-full text-black text-xl text-center self-center",
 };

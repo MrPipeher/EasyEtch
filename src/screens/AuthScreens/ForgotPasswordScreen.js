@@ -54,7 +54,7 @@ const ForgotPasswordScreen = () => {
 
               <View className = "w-[50%] h-[10%] bg-sky-400/50 border-2 border-white rounded-full justify-center">
                 <TouchableOpacity className = "h-full w-full justify-center" onPress={handlePasswordReset}> 
-                  <Text className = "text-white text-xl text-center">Send Email</Text>
+                  <Text className = "text-white text-xl text-center">Send Instructions</Text>
                 </TouchableOpacity>
               </View>
 

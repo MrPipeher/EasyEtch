@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity} from 'react-native';
+import { View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { CustomActionButton, CustomInputField } from '../../components/UIComponents/UIComponents';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SignInScreen = () => {
@@ -41,9 +40,6 @@ const SignInScreen = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          {/* Title */}
-          <View className = "h-[10%]"/>
-
           {/* Header */}
           <View className = "h-[40%] justify-center items-center">
 
@@ -56,40 +52,54 @@ const SignInScreen = () => {
           </View>
 
           {/* Container */}
-          <View className = "h-[30%] justify-center items-center">
+          <View className = "h-[50%] w-full justify-center items-center">
 
             {error && (
               <Text className = "text-red-500 text-base m-2">{error}</Text>
             )}
 
-            <CustomInputField
-              placeholder="Email"
-              onChangeText={setEmail}
-              value={email}
-              secureTextEntry={false}
-            />
+            <View className = "w-[50%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+              <TextInput
+                  className="h-full w-full text-black text-xl text-center self-center"
+                  placeholder="Email"
+                  placeholderTextColor={'gray'}
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
+                  secureTextEntry={false}
+              />
+            </View>
 
-            <CustomInputField
-              placeholder="Password"
-              onChangeText={setPassword}
-              value={password}
-              secureTextEntry={true}
-            />
+            <View className = "w-[50%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+                <TextInput
+                    className="h-full w-full text-black text-xl text-center self-center"
+                    placeholder="Password"
+                    placeholderTextColor={'gray'}
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
+                    secureTextEntry={true}
+                />
+            </View>
 
-            <CustomActionButton onPress={handleSignIn} buttonText="Sign In"/>
+            <View className="w-[25%] h-[15%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2">
+              <TouchableOpacity onPress={handleSignIn}>
+                  <Text className="text-white text-xl text-center">Sign In</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View className="w-[25%] h-[15%] border-sky-500 border-2 bg-white rounded-xl justify-center my-2">
+                <TouchableOpacity onPress={navigateToSignUp}>
+                    <Text className="text-sky-500 text-xl text-center">Sign Up</Text>
+                </TouchableOpacity>
+            </View>
 
           </View>
 
           {/* Footer */}
-          <View className = "h-[20%] justify-center items-center space-y-5">
+          <View className = "h-[5%] justify-center items-center">
 
             <TouchableOpacity onPress={navigateToForgotPassword}>
-              <Text className = "text-white text-base">Forgot password?</Text>
+              <Text className = "text-white text-2xl">Forgot password?</Text>
             </TouchableOpacity>
-
-              <TouchableOpacity  onPress={navigateToSignUp}>
-                <Text className = "text-white text-base">Don't have an account? Sign up</Text>
-              </TouchableOpacity>
 
           </View>
 
