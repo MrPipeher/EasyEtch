@@ -68,6 +68,7 @@ const ViewHostHomeProfileScreen = () => {
           <View className = "h-[15%]">
 
             <View className = "absolute inset-x-0 bottom-0">
+
               <Text className = "text-center text-white">Select a Profile:</Text>
 
               <View className = "flex-row justify-center space-x-2">
@@ -95,6 +96,15 @@ const ViewHostHomeProfileScreen = () => {
             </View>
 
           </View>
+
+          {!selectedProfile && (
+            <View className = "h-[85%] justify-center">
+
+              <View className = "items-center">
+                <Text className = "text-white text-2xl m-2">Click 'Add New' to create your first profile! </Text>
+              </View>
+            </View>
+          )}
 
           {selectedProfile && (
           <View className = "h-[85%]">
