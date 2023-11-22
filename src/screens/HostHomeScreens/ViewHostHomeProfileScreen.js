@@ -102,7 +102,7 @@ const ViewHostHomeProfileScreen = () => {
             {/* Basic Info*/}
             <View className = "h-[30%] justify-center items-center space-y-1">
 
-              <Text className = "text-white">Profile Name</Text>
+              <Text className = "text-white text-base">Name</Text>
 
               <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
                 <TextInput
@@ -115,15 +115,15 @@ const ViewHostHomeProfileScreen = () => {
                 />
               </View>
 
-              <Text className = "text-white">Profile Gender</Text>
+              <Text className = "text-white text-base">Gender</Text>
 
               <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
                 <TouchableOpacity onPress={handleGenderToggle}> 
-                  <Text className = "text-black text-base text-center">Gender: {selectedProfile.profileGender}</Text>
+                  <Text className = "text-black text-base text-center">{selectedProfile.profileGender}</Text>
                 </TouchableOpacity>
               </View>
 
-              <Text className = "text-white">Profile Goals</Text>
+              <Text className = "text-white text-base">Goals</Text>
 
               <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
                 <TextInput
@@ -141,7 +141,7 @@ const ViewHostHomeProfileScreen = () => {
             {/* Medications */}
             
             <View className = "h-[20%]">
-              <Text className = "text-white text-xl text-center">Medications:</Text>
+              <Text className = "text-white text-xl text-center">Medication Time:</Text>
 
               <View className = "flex-row h-[70%] justify-evenly items-center">
                 {selectedProfile.morningMedication ? (

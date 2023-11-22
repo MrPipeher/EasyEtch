@@ -88,7 +88,7 @@ const CreateHostHomeProfileScreen = () => {
               <View className = "w-[75%] h-[25%] bg-white rounded-full justify-center my-2">
                 <TextInput
                   className="h-full w-full text-black text-base text-center self-center"
-                  placeholder="Profile Name"
+                  placeholder="Name"
                   placeholderTextColor={'gray'}
                   onChangeText={(text) => setProfileName(text)}
                   value={profileName}
@@ -105,7 +105,7 @@ const CreateHostHomeProfileScreen = () => {
               <View className = "w-[75%] h-[25%] bg-white rounded-full justify-center my-2">
                 <TextInput
                   className="h-full w-full text-black text-base text-center self-center"
-                  placeholder="Profile Goals"
+                  placeholder="Goals"
                   placeholderTextColor={'gray'}
                   onChangeText={(text) => setProfileGoals(text)}
                   value={profileGoals}
@@ -118,7 +118,7 @@ const CreateHostHomeProfileScreen = () => {
             {/* Medication */}
             <View className = "h-[15%] justify-center">
 
-              <Text className = "text-white text-xl text-center">Medications:</Text>
+              <Text className = "text-white text-xl text-center">Medication Time:</Text>
 
               <View className = "flex-row h-[70%] justify-evenly items-center">
                 {morningMedication ? (

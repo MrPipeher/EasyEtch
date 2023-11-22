@@ -101,12 +101,12 @@ const MainNavigator = () => {
               backgroundColor: 'white',
               borderColor: 'black',
               width: wp(100),
-              maxWidth: 1080, // Set the specific width for the tab bar
+              maxWidth: 1080,
               alignSelf: 'center',
           },
           tabBarIconStyle: {
-            alignItems: 'center', // Center content vertically
-            justifyContent: 'center', // Center content horizontally
+            alignItems: 'center',
+            justifyContent: 'center',
           },
             
           }}>
@@ -160,12 +160,12 @@ const MainNavigator = () => {
               backgroundColor: 'white',
               borderColor: 'black',
               width: wp(100),
-              maxWidth: 1080, // Set the specific width for the tab bar
+              maxWidth: 1080,
               alignSelf: 'center',
           },
           tabBarIconStyle: {
-            alignItems: 'center', // Center content vertically
-            justifyContent: 'center', // Center content horizontally
+            alignItems: 'center',
+            justifyContent: 'center',
           },
             
           }}>

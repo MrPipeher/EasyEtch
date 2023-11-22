@@ -5,7 +5,6 @@ import { useTherapistProfileContext } from '../../components/TherapistProfileCon
 import { useServerContext } from '../../components/ServerContext';
 import DispositionContainer from '../../components/DispositionContainer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Picker } from '@react-native-picker/picker';
 import * as Clipboard from 'expo-clipboard';
 
 const behaviorDispositions = [
@@ -24,7 +23,10 @@ const interventionDispositions = [
 
 const GenerateTherapistNotesScreen = () => {
   const navigation = useNavigation();
-  const { profiles, selectedProfile, setSelectedProfile, 
+  const { 
+    profiles, 
+    selectedProfile, 
+    setSelectedProfile, 
     note, 
     setNote, 
     behavior,

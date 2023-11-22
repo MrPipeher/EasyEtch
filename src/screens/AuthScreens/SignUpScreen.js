@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
-import { CustomInputField, CustomActionButton } from '../../components/UIComponents/UIComponents';
+import { CustomActionButton } from '../../components/UIComponents/UIComponents';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
