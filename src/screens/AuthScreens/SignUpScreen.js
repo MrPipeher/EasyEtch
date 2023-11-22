@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity, Button } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
 import { CustomInputField, CustomActionButton } from '../../components/UIComponents/UIComponents';
@@ -12,7 +11,8 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('Host Home'); // Default value is 'Host Home'
+  const [userType, setUserType] = useState('Host Home');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const serverURL = useServerURL();
   const [error, setError] = useState(null);
 
@@ -52,6 +52,10 @@ const SignUpScreen = () => {
 
   const navigateToSignIn = () => {
     navigation.navigate('SignIn');
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -128,19 +132,37 @@ const SignUpScreen = () => {
               <Text className = "text-red-500 text-xl text-center m-2">{error}</Text>
             )}
 
-            <CustomInputField
-              placeholder="Email"
-              onChangeText={setEmail}
-              value={email}
-              secureTextEntry={false}
-            />
+            <View className = "w-[75%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+              <TextInput
+                  className="h-full w-full text-black text-xl text-center self-center"
+                  placeholder="Email"
+                  placeholderTextColor={'gray'}
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
+                  secureTextEntry={false}
+              />
+            </View>
 
-            <CustomInputField
-              placeholder="Password"
-              onChangeText={setPassword}
-              value={password}
-              secureTextEntry={true}
-            />
+            <View className = "w-[75%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+              <TextInput
+                  className="h-full w-full text-black text-xl text-center self-center"
+                  placeholder="Password"
+                  placeholderTextColor={'gray'}
+                  onChangeText={(text) => setPassword(text)}
+                  value={password}
+                  secureTextEntry={!isPasswordVisible}
+              />
+
+              <TouchableOpacity
+                style={{ position: 'absolute', right: 20, top: '50%', transform: [{ translateY: -12.5 }] }}
+                onPress={togglePasswordVisibility}
+              >
+                <Image
+                  source={require('../../../assets/password.png')}
+                  style={{ width: 25, height: 25 }}
+                />
+              </TouchableOpacity>
+            </View>
 
             <CustomActionButton onPress={handleSignup} buttonText="Sign Up"/>
 

@@ -9,6 +9,7 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSignIn = async () => {
@@ -19,6 +20,10 @@ const SignInScreen = () => {
       console.error('Error signing in:', error);
       setError('Invalid email or password.');
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   const navigateToSignUp = () => {
@@ -76,9 +81,21 @@ const SignInScreen = () => {
                     placeholderTextColor={'gray'}
                     onChangeText={(text) => setPassword(text)}
                     value={password}
-                    secureTextEntry={true}
+                    secureTextEntry={!isPasswordVisible}
                 />
+
+                <TouchableOpacity
+                  style={{ position: 'absolute', right: 20, top: '50%', transform: [{ translateY: -12.5 }] }}
+                  onPress={togglePasswordVisibility}
+                >
+                  <Image
+                    source={require('../../../assets/password.png')}
+                    style={{ width: 25, height: 25 }}
+                  />
+                </TouchableOpacity>
+
             </View>
+            
 
             <View className="w-[50%] h-[15%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2">
               <TouchableOpacity onPress={handleSignIn}>
