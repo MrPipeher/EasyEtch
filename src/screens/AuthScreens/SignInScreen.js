@@ -58,7 +58,7 @@ const SignInScreen = () => {
               <Text className = "text-red-500 text-base m-2">{error}</Text>
             )}
 
-            <View className = "w-[50%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+            <View className = "w-[75%] h-[20%] bg-white/75 rounded-full justify-center my-2">
               <TextInput
                   className="h-full w-full text-black text-xl text-center self-center"
                   placeholder="Email"
@@ -69,7 +69,7 @@ const SignInScreen = () => {
               />
             </View>
 
-            <View className = "w-[50%] h-[20%] bg-white/75 rounded-full justify-center my-2">
+            <View className = "w-[75%] h-[20%] bg-white/75 rounded-full justify-center my-2">
                 <TextInput
                     className="h-full w-full text-black text-xl text-center self-center"
                     placeholder="Password"
@@ -80,13 +80,13 @@ const SignInScreen = () => {
                 />
             </View>
 
-            <View className="w-[25%] h-[15%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2">
+            <View className="w-[50%] h-[15%] border-white border-2 bg-sky-400/50 rounded-xl justify-center my-2">
               <TouchableOpacity onPress={handleSignIn}>
                   <Text className="text-white text-xl text-center">Sign In</Text>
               </TouchableOpacity>
             </View>
 
-            <View className="w-[25%] h-[15%] border-sky-500 border-2 bg-white rounded-xl justify-center my-2">
+            <View className="w-[50%] h-[15%] border-sky-500 border-2 bg-white rounded-xl justify-center my-2">
                 <TouchableOpacity onPress={navigateToSignUp}>
                     <Text className="text-sky-500 text-xl text-center">Sign Up</Text>
                 </TouchableOpacity>

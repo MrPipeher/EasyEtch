@@ -73,7 +73,7 @@ const SignUpScreen = () => {
 
             {/* Logo */}
             <Image 
-              className = "object-contain h-48 w-96"
+              className = "w-[60%] h-[100%] absolute"
               source={require('../../../assets/images/Logo.png')} 
             />
 
@@ -149,7 +149,7 @@ const SignUpScreen = () => {
           {/* Footer */}
           <View className = "h-[20%] justify-center items-center">
 
-            <View className = "w-[20%] h-[30%] bg-white border-2 border-sky-500 rounded-full justify-center items-center">
+            <View className = "w-[40%] h-[30%] bg-white border-2 border-sky-500 rounded-full justify-center items-center">
               <TouchableOpacity className = "w-full h-full justify-center" onPress={navigateToSignIn}>
                 <Text className = "text-black text-xl text-center">Go Back</Text>
               </TouchableOpacity>
