@@ -30,7 +30,7 @@ const SignUpScreen = () => {
         handleSignIn();
       } else {
         if (response.status == 500) {
-          setError('This Email is already Registed, try using forgot password!');
+          setError('This Email is already Registered!');
         } else {
           setError('Error connecting to server.');
         }
@@ -69,11 +69,11 @@ const SignUpScreen = () => {
           <View className = "h-[5%]"/>
 
           {/* Header */}
-          <View className = "h-[25%] justify-center items-center">
+          <View className = "h-[25%] w-full justify-center items-center">
 
             {/* Logo */}
             <Image 
-              className = "w-[60%] h-[100%] absolute"
+              className = "w-[30%] h-[70%] absolute"
               source={require('../../../assets/images/Logo.png')} 
             />
 
