@@ -4,11 +4,37 @@ import { useHostHomeProfileContext } from '../../components/HostHomeProfileConte
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import Modal from 'react-native-modal';
+
+const DeleteProfileModal = ({ isVisible, onCancel, onDelete }) => {
+  return (
+    <Modal isVisible={isVisible} transparent={false}>
+      <View className = "h-[75%] w-[75%] bg-white justify-center items-center self-center space-y-8">
+
+        <Text className = "text-black text-center text-base">Are you sure you want to delete your profile? This action cannot be undone.</Text>
+
+        <View className = "h-[20%] w-[40%] border-2 border-black rounded-2xl justify-center">
+          <TouchableOpacity className = "h-full w-full justify-center" onPress={onCancel}>
+            <Text className = "text-black text-center text-base">Cancel</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className = "h-[20%] w-[40%] border-2 bg-red-500 border-black rounded-2xl justify-center">
+          <TouchableOpacity className = "h-full w-full justify-center" onPress={onDelete}>
+            <Text className = "text-white text-center text-base">Delete</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    </Modal>
+  );
+};
 
 const ViewHostHomeProfileScreen = () => {
   const { profiles, selectedProfile, setSelectedProfile, updateProfile, deleteProfile } = useHostHomeProfileContext();
   const [newActivity, setNewActivity] = useState('');
   const navigation = useNavigation();
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleProfileSelect = (profile) => {
     setSelectedProfile(profile);
@@ -36,11 +62,26 @@ const ViewHostHomeProfileScreen = () => {
   };
 
   const handleDeleteProfile = async () => {
+    // Open the modal
+    setModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    // Close the modal
+    setModalVisible(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    // Perform deletion logic
     try {
       await deleteProfile(selectedProfile.profileId);
+      // Add any additional logic after successful deletion
     } catch (error) {
       console.error('Error deleting profile:', error);
     }
+
+    // Close the modal
+    setModalVisible(false);
   };
 
   const handleGenderToggle = () => {
@@ -108,6 +149,12 @@ const ViewHostHomeProfileScreen = () => {
 
           {selectedProfile && (
           <View className = "h-[85%]">
+
+            <DeleteProfileModal
+              isVisible={isModalVisible}
+              onCancel={handleCancel}
+              onDelete={handleConfirmDelete}
+            />
 
             {/* Basic Info*/}
             <View className = "h-[30%] justify-center items-center space-y-1">
