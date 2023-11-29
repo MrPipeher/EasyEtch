@@ -6,7 +6,12 @@ import { useServerContext } from '../../components/ServerContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SettingsScreen = () => {
-  const { accountType, changeAccountType, profileOwner } = useServerContext();
+  const { accountType, changeAccountType, profileOwner, formattedBillingCycleEnd,
+    status,
+    usage,
+    limit,
+    tier,
+    subscriptionType, } = useServerContext();
 
   const handleSignOut = async () => {
     try {
@@ -34,9 +39,20 @@ const SettingsScreen = () => {
 
           <View className = "h-full w-full justify-center items-center space-y-4">
 
-            <View className = "h-[20%]"/>
+            <View className = "h-[3%]">
 
-            <View className = "h-[60%] w-full justify-center items-center space-y-2">
+              {tier != 0 && (
+                <>
+                  <Text className = "text-white font-bold text-xl">Subscription: {subscriptionType}({tier})</Text>
+                  <Text className = "text-white font-bold text-xl">Status: {status}</Text>
+                  <Text className = "text-white font-bold text-xl">Usage: {usage} / Limit: {limit}</Text>
+                  <Text className = "text-white font-bold text-xl">End Date: {formattedBillingCycleEnd} </Text>
+                </>
+              )}
+
+            </View>
+
+            <View className = "h-[50%] w-full justify-center items-center space-y-2">
 
               <Text className = "text-white text-xl text-center">Account Type:</Text>
 

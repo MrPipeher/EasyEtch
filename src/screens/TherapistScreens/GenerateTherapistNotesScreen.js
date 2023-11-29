@@ -23,10 +23,7 @@ const interventionDispositions = [
 
 const GenerateTherapistNotesScreen = () => {
   const navigation = useNavigation();
-  const { 
-    profiles, 
-    selectedProfile, 
-    setSelectedProfile, 
+  const { profiles, selectedProfile, setSelectedProfile, 
     note, 
     setNote, 
     behavior,
@@ -38,7 +35,7 @@ const GenerateTherapistNotesScreen = () => {
     plan,
     setPlan 
   } = useTherapistProfileContext();
-  const { serverURL, profileOwner, credits, setCredits } = useServerContext();
+  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, tier} = useServerContext();
   const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
   const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
   const [loading, setLoading] = useState(false);
@@ -94,6 +91,8 @@ const GenerateTherapistNotesScreen = () => {
         setResponse(data.response)
         setPlan(data.plan)
         setCredits(data.remainingCredits);
+        setUsage(data.newUsage);
+        setLimit(data.limit);
       } else {
         console.error('Error:', data.error);
       }
@@ -340,9 +339,20 @@ const GenerateTherapistNotesScreen = () => {
             {/* Footer */}
             <View className = "h-[30%]">
                 
-              <View className = "h-full w-full justify-center items-center space-y-3">
+              <View className = "h-full w-full justify-center items-center space-y-1">
 
-                <Text className = "text-white font-bold text-xl">Credits: {credits}</Text>
+                {tier !== 0 ? (
+                  <>
+                    <View className="flex-row w-full justify-evenly">
+                      <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
+                      <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
+                  </>
+                )}
 
                 <View className = "w-[50%] h-[40%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>

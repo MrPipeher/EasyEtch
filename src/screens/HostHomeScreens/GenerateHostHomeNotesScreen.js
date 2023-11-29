@@ -10,7 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
-  const { serverURL, profileOwner, credits, setCredits } = useServerContext();
+  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, tier } = useServerContext();
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
@@ -65,6 +65,8 @@ const GenerateHostHomeNotesScreen = () => {
       if (data) {
         setNote(data.generatedText);
         setCredits(data.remainingCredits);
+        setUsage(data.newUsage);
+        setLimit(data.limit);
       } else {
         console.error('Error:', data.error);
       }
@@ -274,8 +276,19 @@ const GenerateHostHomeNotesScreen = () => {
             <View className = "h-[30%]">
                 
               <View className = "h-full w-full items-center space-y-3">
-
-                <Text className = "text-white font-bold text-xl">Credits: {credits}</Text>
+              
+                {tier !== 0 ? (
+                  <>
+                    <View className="flex-row w-full justify-evenly">
+                      <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
+                      <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
+                  </>
+                )}
 
                 <View className = "w-[50%] h-[40%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>

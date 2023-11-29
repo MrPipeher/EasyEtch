@@ -118,6 +118,7 @@ export const TherapistProfileProvider = ({ children, profileOwner }) => {
       try {
         const profilesData = await fetchProfiles(profileOwner);
         setProfiles(profilesData);
+
         if (profilesData.length > 0) {
           setSelectedProfile(profilesData[0]);
         }
