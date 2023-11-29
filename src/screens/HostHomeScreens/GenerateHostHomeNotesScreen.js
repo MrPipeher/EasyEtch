@@ -275,7 +275,7 @@ const GenerateHostHomeNotesScreen = () => {
             {/* Footer */}
             <View className = "h-[30%]">
                 
-              <View className = "h-full w-full items-center space-y-2">
+              <View className = "h-full w-full items-center space-y-4">
               
                 {status === 'active' ? (
                   <>
