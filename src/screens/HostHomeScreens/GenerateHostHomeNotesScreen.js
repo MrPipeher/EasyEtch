@@ -10,7 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
-  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, tier } = useServerContext();
+  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, status } = useServerContext();
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
@@ -228,7 +228,7 @@ const GenerateHostHomeNotesScreen = () => {
           </View>
 
           {selectedProfile && (
-          <View className = "h-[80%]">
+          <View className = "h-[80%] w-[75%] justify-center self-center">
 
             <View className = "h-[15%] space-y-1">
               <Text className = "text-white text-xl font-bold text-center">Goals:</Text>
@@ -240,7 +240,7 @@ const GenerateHostHomeNotesScreen = () => {
             {/* Basic Info*/}
             <View className = "h-[15%] space-y-1">
 
-            <Text className = "text-white text-xl font-bold text-center">Medication Time:</Text>
+              <Text className = "text-white text-xl font-bold text-center">Medication Time:</Text>
 
               <View className = " bg-white m-4 p-2 justify-center rounded-2xl">
                 <Text className = "text-black">-Morning: {selectedProfile.morningMedication ? 'Yes' : 'No'} </Text>
@@ -275,9 +275,9 @@ const GenerateHostHomeNotesScreen = () => {
             {/* Footer */}
             <View className = "h-[30%]">
                 
-              <View className = "h-full w-full items-center space-y-3">
+              <View className = "h-full w-full items-center space-y-6">
               
-                {tier !== 0 ? (
+                {status === 'active' ? (
                   <>
                     <View className="flex-row w-full justify-evenly">
                       <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
@@ -290,7 +290,7 @@ const GenerateHostHomeNotesScreen = () => {
                   </>
                 )}
 
-                <View className = "w-[50%] h-[40%] bg-white border-2 border-white rounded-full justify-center items-center">
+                <View className = "w-[50%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
                     <Text className = "text-black text-xl text-center">Generate!</Text>
                   </TouchableOpacity>

@@ -35,7 +35,7 @@ const GenerateTherapistNotesScreen = () => {
     plan,
     setPlan 
   } = useTherapistProfileContext();
-  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, tier} = useServerContext();
+  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, status} = useServerContext();
   const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
   const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
   const [loading, setLoading] = useState(false);
@@ -339,9 +339,9 @@ const GenerateTherapistNotesScreen = () => {
             {/* Footer */}
             <View className = "h-[30%]">
                 
-              <View className = "h-full w-full justify-center items-center space-y-1">
+              <View className = "h-full w-full justify-center items-center space-y-4">
 
-                {tier !== 0 ? (
+                {status === 'active' ? (
                   <>
                     <View className="flex-row w-full justify-evenly">
                       <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
@@ -354,13 +354,13 @@ const GenerateTherapistNotesScreen = () => {
                   </>
                 )}
 
-                <View className = "w-[50%] h-[40%] bg-white border-2 border-white rounded-full justify-center items-center">
+                <View className = "w-[50%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
                     <Text className = "text-black text-xl text-center">Generate!</Text>
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={navigateToPurchase}>
+                <TouchableOpacity onPress={navigateToPurchase} className = "pt-4">
                   <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
                 </TouchableOpacity>
               </View>

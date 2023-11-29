@@ -6,7 +6,7 @@ import { useServerURL } from '../../components/ServerURLContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const PurchaseScreen = () => {
-  const { profileOwner, accountType } = useServerContext();
+  const { accountType, status, tier } = useServerContext();
   const navigation = useNavigation();
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
@@ -27,7 +27,6 @@ const PurchaseScreen = () => {
         body: JSON.stringify({ 
           quantity: quantity,
           productTitle: productTitle,
-          profileOwner: profileOwner,
         }),
       });
 
@@ -90,38 +89,65 @@ const PurchaseScreen = () => {
 
                   <View className = "w-full h-full justify-evenly">
 
-                    <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
+                    {status === 'active' && tier === 1 ? (
+                      <>
+                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 50</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
+                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 50</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$150</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
 
-                      <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                    {status === 'active' && tier === 2 ? (
+                      <>
+                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 100</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
+                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 100</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$200</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
 
-                        <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                        <Text className = "w-[60%] text-black text-base text-center">Limit: 50</Text>
-                        <Text className = "w-[20%] text-black text-base text-center">$150</Text>
-
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-2')}>
-
-                      <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-
-                        <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                        <Text className = "w-[60%] text-black text-base text-center">Limit: 100</Text>
-                        <Text className = "w-[20%] text-black text-base text-center">$200</Text>
-
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-3')}>
-
-                      <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-
-                        <Text className = "w-[20%] text-black text-base text-center">Tier 3</Text>
-                        <Text className = "w-[60%] text-black text-base text-center">Limit: 150</Text>
-                        <Text className = "w-[20%] text-black text-base text-center">$300</Text>
-
-                      </View>
-                    </TouchableOpacity>
+                    {status === 'active' && tier === 3 ? (
+                      <>
+                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 3</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 150</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
+                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 3</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 150</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$300</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
 
                   </View>
                 )}
@@ -131,27 +157,45 @@ const PurchaseScreen = () => {
 
                   <View className = "w-full h-full justify-evenly">
 
-                    <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
+                    {status === 'active' && tier === 1 ? (
+                      <>
+                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                          <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
+                          <Text className = "w-[60%] text-black text-base text-center">Note Limit: 30</Text>
+                          <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
+                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 30</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$100</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
 
-                      <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-
-                        <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                        <Text className = "w-[60%] text-black text-base text-center">Limit: 30</Text>
-                        <Text className = "w-[20%] text-black text-base text-center">$100</Text>
-
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
-
-                      <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-
-                        <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                        <Text className = "w-[60%] text-black text-base text-center">Limit: 60</Text>
-                        <Text className = "w-[20%] text-black text-base text-center">$200</Text>
-
-                      </View>
-                    </TouchableOpacity>
+                    {status === 'active' && tier === 2 ? (
+                      <>
+                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                          <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
+                          <Text className = "w-[60%] text-black text-base text-center">Note Limit: 60</Text>
+                          <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
+                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                            <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 60</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$200</Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
 
                   </View>
                   )}
@@ -161,7 +205,7 @@ const PurchaseScreen = () => {
 
             <View className = "h-[10%]"/>
 
-            <Text className = "text-white text-2xl font-bold text-center">Credits</Text>
+            <Text className = "text-white text-2xl font-bold text-center">1 Credit = 1 Note</Text>
 
             {/* Credits */}
             <View className = "h-[40%] w-full items-center">
@@ -170,7 +214,7 @@ const PurchaseScreen = () => {
 
                 <View className = "flex-row w-full h-[50%] justify-center items-center bg-white border-black border-2">
 
-                  <Text className = "w-[30%] text-black text-base text-center">Buy Credit?</Text>
+                  <Text className = "w-[30%] text-black text-base text-center">Buy Credits?</Text>
 
                   <TextInput className = "w-[40%] h-full border-2 border-black/10 text-center"
                     keyboardType="numeric"

@@ -10,8 +10,7 @@ const SettingsScreen = () => {
     status,
     usage,
     limit,
-    tier,
-    subscriptionType, } = useServerContext();
+    tier, } = useServerContext();
 
   const handleSignOut = async () => {
     try {
@@ -41,9 +40,9 @@ const SettingsScreen = () => {
 
             <View className = "h-[3%]">
 
-              {tier != 0 && (
+              {status === 'active' && (
                 <>
-                  <Text className = "text-white font-bold text-xl">Subscription: {subscriptionType}({tier})</Text>
+                  <Text className = "text-white font-bold text-xl">Subscription Tier: ({tier})</Text>
                   <Text className = "text-white font-bold text-xl">Status: {status}</Text>
                   <Text className = "text-white font-bold text-xl">Usage: {usage} / Limit: {limit}</Text>
                   <Text className = "text-white font-bold text-xl">End Date: {formattedBillingCycleEnd} </Text>
