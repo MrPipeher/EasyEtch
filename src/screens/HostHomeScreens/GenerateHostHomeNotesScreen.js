@@ -240,7 +240,7 @@ const GenerateHostHomeNotesScreen = () => {
             {/* Basic Info*/}
             <View className = "h-[15%] space-y-1">
 
-              <Text className = "text-white text-xl font-bold text-center">Medication Time:</Text>
+              <Text className = "text-white text-xl font-bold text-center pt-2">Medication Time:</Text>
 
               <View className = " bg-white m-4 p-2 justify-center rounded-2xl">
                 <Text className = "text-black">-Morning: {selectedProfile.morningMedication ? 'Yes' : 'No'} </Text>
