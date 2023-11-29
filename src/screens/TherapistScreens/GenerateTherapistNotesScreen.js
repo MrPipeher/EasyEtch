@@ -360,7 +360,7 @@ const GenerateTherapistNotesScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={navigateToPurchase} className = "pt-4">
+                <TouchableOpacity onPress={navigateToPurchase}>
                   <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
                 </TouchableOpacity>
               </View>

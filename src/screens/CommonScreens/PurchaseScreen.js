@@ -78,7 +78,7 @@ const PurchaseScreen = () => {
             <View className = "h-[10%]"/>
 
             {/*Sub Info*/}
-            <View className = "h-[40%] w-[50%]">
+            <View className = "h-[40%] w-[80%]">
 
               <View className="w-full h-full">
 

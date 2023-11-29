@@ -206,7 +206,7 @@ const GenerateHostHomeNotesScreen = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <View className = "h-[20%] justify-center pt-14">
+          <View className = "h-[10%] justify-center pt-14">
 
             <Text className = "text-center text-white">Select a Profile:</Text>
 
@@ -265,7 +265,7 @@ const GenerateHostHomeNotesScreen = () => {
                 </ScrollView>
               </View>
 
-              <View className = "w-[50%] h-[15%] bg-white border-2 border-white rounded-full self-center items-center">
+              <View className = "w-[50%] h-[20%] bg-white border-2 border-white rounded-full self-center items-center">
                 <TouchableOpacity className = "w-full h-full justify-center" onPress={handleToggleDayProgram}>
                   <Text className = "text-black text-xl text-center">Day Program: {dayProgram ? 'Yes' : 'No'}</Text>
                 </TouchableOpacity>
@@ -275,7 +275,7 @@ const GenerateHostHomeNotesScreen = () => {
             {/* Footer */}
             <View className = "h-[30%]">
                 
-              <View className = "h-full w-full items-center space-y-6">
+              <View className = "h-full w-full items-center space-y-2">
               
                 {status === 'active' ? (
                   <>
