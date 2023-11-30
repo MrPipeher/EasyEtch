@@ -157,7 +157,7 @@ const ViewHostHomeProfileScreen = () => {
             />
 
             {/* Basic Info*/}
-            <View className = "h-[30%] justify-center items-center space-y-1">
+            <View className = "h-[30%] justify-center items-center space-y-1 pb-3">
 
               <Text className = "text-white text-base">Name</Text>
 
@@ -276,8 +276,8 @@ const ViewHostHomeProfileScreen = () => {
                         <Text className = "w-[75%] text-center text-black">{item}</Text>
 
                         <View className = "w-[25%]">
-                          <TouchableOpacity className = "w-full h-full justify-center" onPress={() => handleDeleteActivity(index)}>
-                            <Text className = "text-red-500 text-base text-center">X</Text>
+                          <TouchableOpacity className="w-full h-full justify-center" onPress={() => handleDeleteActivity(item)}>
+                            <Text className="text-red-500 text-base text-center">X</Text>
                           </TouchableOpacity>
                         </View>
 
