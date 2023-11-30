@@ -36,8 +36,8 @@ const GenerateHostHomeNotesScreen = () => {
 
   const handleGenerate = async () => {
 
-    if (credits === 0) {
-      console.error('Error: Please purchase more credits to continue.');
+    if (credits === 0 && usage === limit) {
+      console.error('Error: Please purchase more credits or subscribe to continue.');
       return;
     }
 
