@@ -44,6 +44,8 @@ const CreateHostHomeProfileScreen = () => {
       setNightMedication(false);
       setActivities([]);
 
+      navigateToView();
+
     } catch (error) {
       console.log('Error creating profile:', error.message);
     }
