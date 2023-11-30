@@ -106,7 +106,7 @@ const ViewHostHomeProfileScreen = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <View className = "h-[15%]">
+          <View className = "h-[10%] space-y-2">
 
             <View className = "absolute inset-x-0 bottom-0">
 
@@ -157,7 +157,7 @@ const ViewHostHomeProfileScreen = () => {
             />
 
             {/* Basic Info*/}
-            <View className = "h-[30%] justify-center items-center space-y-1 pb-3">
+            <View className = "h-[30%] justify-center items-center">
 
               <Text className = "text-white text-base">Name</Text>
 

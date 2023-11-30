@@ -206,7 +206,7 @@ const GenerateHostHomeNotesScreen = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <View className = "h-[20%] justify-center pt-14">
+          <View className = "h-[10%] justify-center">
 
             <Text className = "text-center text-white">Select a Profile:</Text>
 
@@ -228,7 +228,7 @@ const GenerateHostHomeNotesScreen = () => {
           </View>
 
           {selectedProfile && (
-          <View className = "h-[80%] w-[75%] justify-center self-center">
+          <View className = "h-[90%] w-[75%] justify-center self-center">
 
             <View className = "h-[15%] space-y-1">
               <Text className = "text-white text-xl font-bold text-center">Goals:</Text>
@@ -251,7 +251,7 @@ const GenerateHostHomeNotesScreen = () => {
             </View>
 
             {/* Activities */}
-            <View className = "h-[40%] space-y-1 pt-6">
+            <View className = "h-[40%] space-y-1 pt-8">
 
               <Text className = "text-white text-xl font-bold text-center">Activities:</Text>
 

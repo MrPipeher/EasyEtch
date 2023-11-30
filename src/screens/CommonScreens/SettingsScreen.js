@@ -38,20 +38,22 @@ const SettingsScreen = () => {
 
           <View className = "h-full w-full justify-center items-center space-y-4">
 
-            <View className = "h-[3%]">
+            <View className = "h-[20%] w-[80%]">
 
               {status === 'active' && (
                 <>
-                  <Text className = "text-white font-bold text-xl">Subscription Tier: ({tier})</Text>
-                  <Text className = "text-white font-bold text-xl">Status: {status}</Text>
-                  <Text className = "text-white font-bold text-xl">Usage: {usage} / Limit: {limit}</Text>
-                  <Text className = "text-white font-bold text-xl">End Date: {formattedBillingCycleEnd} </Text>
+                  <View className = "bg-white h-full w-full justify-evenly items-center rounded-2xl">
+                  <Text className = "text-black text-xl">Subscription Tier: ({tier})</Text>
+                  <Text className = "text-black text-xl">Status: {status}</Text>
+                  <Text className = "text-black text-xl">Usage: {usage} / Limit: {limit}</Text>
+                  <Text className = "text-black text-xl">End Date: {formattedBillingCycleEnd} </Text>
+                  </View>
                 </>
               )}
 
             </View>
 
-            <View className = "h-[50%] w-full justify-center items-center space-y-2">
+            <View className = "h-[40%] w-full justify-center items-center space-y-2">
 
               <Text className = "text-white text-xl text-center">Account Type:</Text>
 
@@ -83,9 +85,14 @@ const SettingsScreen = () => {
                 </View>
               )}
 
+              
+
             </View>
 
             <View className = "h-[20%] w-full items-center">
+            <Text className = "text-white text-xl text-center">Contact Us:</Text>
+              <Text className = "text-white text-xl text-center">Email: easyetchsupport@gmail.com</Text>
+              <Text className = "text-white text-xl text-center pb-4">Phone: (404) 518-9797</Text>
               <View className = "w-[75%] h-[50%] bg-white rounded-full justify-center">
                 <TouchableOpacity onPress={handleSignOut}> 
                   <Text className = "text-black text-base text-center">Sign Out</Text>
