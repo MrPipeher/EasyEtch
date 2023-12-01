@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -14,8 +14,11 @@ const SignUpScreen = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const serverURL = useServerURL();
   const [error, setError] = useState(null);
+  const [canSignIn, setCanSignIn] = useState(false);
 
   const handleSignup = async () => {
+    setCanSignIn(false);
+
     try {
       const response = await fetch(`${serverURL}/common/signup`, {
         method: 'POST',
@@ -26,10 +29,16 @@ const SignUpScreen = () => {
       });
 
       if (response.ok) {
-        handleSignIn();
+
+        await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+        setError('An email verification has been sent to your email address.');
+        await sendEmailVerification(FIREBASE_AUTH.currentUser);
+
+        setCanSignIn(true);
+
       } else {
         if (response.status == 500) {
-          setError('This Email is already Registered!');
+          setError('This Email already exists. If you just verified the address, click "go back" and sign in.');
         } else {
           setError('Error connecting to server.');
         }
@@ -39,18 +48,12 @@ const SignUpScreen = () => {
     }
   };
 
-  const handleSignIn = async () => {
-    try {
-      const auth = FIREBASE_AUTH;
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.error('Error signing in:', error);
-      setError('Error connecting to server.');
+  const navigateToSignIn = async () => {
+    if (canSignIn) {
+      await signOut(FIREBASE_AUTH);
+      setCanSignIn(false);      
+      navigation.navigate('SignIn');
     }
-  };
-
-  const navigateToSignIn = () => {
-    navigation.navigate('SignIn');
   };
 
   const togglePasswordVisibility = () => {

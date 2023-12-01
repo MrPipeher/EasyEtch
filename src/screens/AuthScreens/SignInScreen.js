@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SignInScreen = () => {
@@ -15,7 +15,13 @@ const SignInScreen = () => {
   const handleSignIn = async () => {
     try {
       const auth = FIREBASE_AUTH;
-      await signInWithEmailAndPassword(auth, email, password);
+      const credentials = await signInWithEmailAndPassword(auth, email, password);
+
+      if (!credentials.user.emailVerified) {
+        setError('Please verify your email before logging in.');
+        await signOut(FIREBASE_AUTH);
+      }
+
     } catch (error) {
       console.error('Error signing in:', error);
       setError('Invalid email or password.');

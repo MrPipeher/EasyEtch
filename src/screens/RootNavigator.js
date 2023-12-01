@@ -23,7 +23,7 @@ const RootNavigator = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, async (user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         setProfileOwner(user.email);
       } else {
         setProfileOwner(null);
