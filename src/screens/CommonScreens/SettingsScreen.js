@@ -2,15 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
-import { useServerContext } from '../../components/ServerContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useUserContext } from '../../components/UserContext';
 
 const SettingsScreen = () => {
-  const { accountType, changeAccountType, profileOwner, formattedBillingCycleEnd,
+  const { formattedBillingCycleEnd,
     status,
-    usage,
-    limit,
-    tier, } = useServerContext();
+    maxCredits,
+    tier, 
+    businessName,
+    profession,
+  } = useUserContext();
 
   const handleSignOut = async () => {
     try {
@@ -19,10 +21,6 @@ const SettingsScreen = () => {
     } catch (error) {
       console.error('Error signing out:', error);
     }
-  };
-
-  const handleAccountTypeChange = (newAccountType) => {
-    changeAccountType(profileOwner, newAccountType);
   };
 
   return (
@@ -45,7 +43,7 @@ const SettingsScreen = () => {
                   <View className = "bg-white h-full w-full justify-evenly items-center rounded-2xl">
                   <Text className = "text-black text-xl">Subscription Tier: ({tier})</Text>
                   <Text className = "text-black text-xl">Status: {status}</Text>
-                  <Text className = "text-black text-xl">Usage: {usage} / Limit: {limit}</Text>
+                  <Text className = "text-black text-xl">Credits: {maxCredits}</Text>
                   <Text className = "text-black text-xl">End Date: {formattedBillingCycleEnd} </Text>
                   </View>
                 </>
@@ -55,37 +53,11 @@ const SettingsScreen = () => {
 
             <View className = "h-[40%] w-full justify-center items-center space-y-2">
 
-              <Text className = "text-white text-xl text-center">Account Type:</Text>
+              <Text className = "text-white text-xl text-center">Profession: {profession}</Text>
 
-              {accountType == 'Host Home' ? (
-                <View className = "w-[75%] h-[10%] bg-white border-2 border-green-500 rounded-full justify-center">
-                  <TouchableOpacity onPress={() => handleAccountTypeChange('Host Home')}> 
-                    <Text className = "text-black text-base text-center">Host Home</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center">
-                  <TouchableOpacity onPress={() => handleAccountTypeChange('Host Home')}> 
-                    <Text className = "text-black text-base text-center">Host Home</Text>
-                  </TouchableOpacity>
-                </View>
+              {businessName && (
+                <Text className="text-white text-xl text-center">Business: {businessName}</Text>
               )}
-
-              {accountType == 'Therapist' ? (
-                <View className = "w-[75%] h-[10%] bg-white border-2 border-green-500 rounded-full justify-center">
-                  <TouchableOpacity onPress={() => handleAccountTypeChange('Therapist')}> 
-                    <Text className = "text-black text-base text-center">Therapist</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View className = "w-[75%] h-[10%] bg-white rounded-full justify-center">
-                  <TouchableOpacity onPress={() => handleAccountTypeChange('Therapist')}> 
-                    <Text className = "text-black text-base text-center">Therapist</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-
-              
 
             </View>
 

@@ -1,8 +1,8 @@
-import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, { useState } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../../components/UserContext';
 import { useTherapistProfileContext } from '../../components/TherapistProfileContext';
-import { useServerContext } from '../../components/ServerContext';
 import DispositionContainer from '../../components/DispositionContainer';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Clipboard from 'expo-clipboard';
@@ -23,7 +23,7 @@ const interventionDispositions = [
 
 const GenerateTherapistNotesScreen = () => {
   const navigation = useNavigation();
-  const { profiles, selectedProfile, setSelectedProfile, 
+  const {
     note, 
     setNote, 
     behavior,
@@ -35,14 +35,10 @@ const GenerateTherapistNotesScreen = () => {
     plan,
     setPlan 
   } = useTherapistProfileContext();
-  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, status} = useServerContext();
+  const { userCredits, setUserCredits, profileOwner, serverURL} = useUserContext();
   const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
   const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const handleProfileSelect = (profile) => {
-    setSelectedProfile(profile);
-  };
   
   const navigateToPurchase = () => {
     navigation.navigate('Purchase');
@@ -62,7 +58,7 @@ const GenerateTherapistNotesScreen = () => {
       return;
     }
 
-    if (credits === 0) {
+    if (userCredits === 0) {
       console.error('Error: Please purchase more credits to continue.');
       return;
     }
@@ -90,9 +86,7 @@ const GenerateTherapistNotesScreen = () => {
         setIntervention(data.intervention);
         setResponse(data.response)
         setPlan(data.plan)
-        setCredits(data.remainingCredits);
-        setUsage(data.newUsage);
-        setLimit(data.limit);
+        setUserCredits(data.remainingCredits);
       } else {
         console.error('Error:', data.error);
       }
@@ -341,18 +335,7 @@ const GenerateTherapistNotesScreen = () => {
                 
               <View className = "h-full w-full justify-center items-center space-y-4">
 
-                {status === 'active' ? (
-                  <>
-                    <View className="flex-row w-full justify-evenly">
-                      <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
-                      <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
-                    </View>
-                  </>
-                ) : (
-                  <>
-                    <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
-                  </>
-                )}
+                <Text className="text-white font-bold text-xl">Credits: {userCredits}</Text>
 
                 <View className = "w-[50%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>

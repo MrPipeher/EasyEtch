@@ -1,16 +1,16 @@
-import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, { useState } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useUserContext } from '../../components/UserContext';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
-import { useServerContext } from '../../components/ServerContext';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Clipboard from 'expo-clipboard';
 
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
-  const { serverURL, profileOwner, credits, setCredits, setUsage, usage, setLimit, limit, status } = useServerContext();
+  const {userCredits, setUserCredits, profileOwner, serverURL} = useUserContext();
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
@@ -36,7 +36,7 @@ const GenerateHostHomeNotesScreen = () => {
 
   const handleGenerate = async () => {
 
-    if (credits === 0 && usage === limit) {
+    if (userCredits === 0) {
       console.error('Error: Please purchase more credits or subscribe to continue.');
       return;
     }
@@ -64,9 +64,7 @@ const GenerateHostHomeNotesScreen = () => {
 
       if (data) {
         setNote(data.generatedText);
-        setCredits(data.remainingCredits);
-        setUsage(data.newUsage);
-        setLimit(data.limit);
+        setUserCredits(data.remainingCredits);
       } else {
         console.error('Error:', data.error);
       }
@@ -277,18 +275,7 @@ const GenerateHostHomeNotesScreen = () => {
                 
               <View className = "h-full w-full items-center space-y-4">
               
-                {status === 'active' ? (
-                  <>
-                    <View className="flex-row w-full justify-evenly">
-                      <Text className="text-white font-bold text-xl">Usage: {usage}/{limit}</Text>
-                      <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
-                    </View>
-                  </>
-                ) : (
-                  <>
-                    <Text className="text-white font-bold text-xl">Credits: {credits}</Text>
-                  </>
-                )}
+                <Text className="text-white font-bold text-xl">Credits: {userCredits}</Text>
 
                 <View className = "w-[50%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>

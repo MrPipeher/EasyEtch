@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useServerContext } from '../../components/ServerContext';
 import { useServerURL } from '../../components/ServerURLContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useUserContext } from '../../components/UserContext';
 
 const PurchaseScreen = () => {
-  const { accountType, status, tier } = useServerContext();
+  const { profession, status, tier } = useUserContext();
   const navigation = useNavigation();
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState(0);
+  const [creditPrice, setCreditPrice] = useState(5.99);
 
   const handlePurchase = async (productTitle) => {
     try {
@@ -57,7 +58,7 @@ const PurchaseScreen = () => {
 
   const calculatePrice = (text) => {
     const parsedQuantity = parseInt(text, 10);
-    const calculatedPrice = parsedQuantity * 2.99;
+    const calculatedPrice = parsedQuantity * creditPrice;
     setPrice(calculatedPrice);
   };
 
@@ -85,7 +86,7 @@ const PurchaseScreen = () => {
                 <Text className = "text-white text-2xl font-bold text-center">Subscriptions (30 days)</Text>
 
                 {/* Therapist */}
-                {accountType === "Therapist" && (
+                {profession === "Therapist" && (
 
                   <View className = "w-full h-full justify-evenly">
 
@@ -93,7 +94,7 @@ const PurchaseScreen = () => {
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 120</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 120</Text>
                             <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -102,8 +103,8 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 120</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$100</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 120</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$200</Text>
                           </View>
                         </TouchableOpacity>
                       </>
@@ -113,7 +114,7 @@ const PurchaseScreen = () => {
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 100</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 100</Text>
                             <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -122,7 +123,7 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 100</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 100</Text>
                             <Text className = "w-[20%] text-black text-base text-center">$200</Text>
                           </View>
                         </TouchableOpacity>
@@ -133,7 +134,7 @@ const PurchaseScreen = () => {
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 3</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 150</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 150</Text>
                             <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -142,7 +143,7 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 3</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 150</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 150</Text>
                             <Text className = "w-[20%] text-black text-base text-center">$300</Text>
                           </View>
                         </TouchableOpacity>
@@ -153,7 +154,7 @@ const PurchaseScreen = () => {
                 )}
 
                 {/* Host Homes */}
-                {accountType === "Host Home" && (
+                {profession === "Host Home" && (
 
                   <View className = "w-full h-full justify-evenly">
 
@@ -161,7 +162,7 @@ const PurchaseScreen = () => {
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
                           <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                          <Text className = "w-[60%] text-black text-base text-center">Note Limit: 31</Text>
+                          <Text className = "w-[60%] text-black text-base text-center">Notes per month: 31</Text>
                           <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -170,8 +171,8 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 1</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 31</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$25</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 31</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
                           </View>
                         </TouchableOpacity>
                       </>
@@ -181,7 +182,7 @@ const PurchaseScreen = () => {
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
                           <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                          <Text className = "w-[60%] text-black text-base text-center">Note Limit: 62</Text>
+                          <Text className = "w-[60%] text-black text-base text-center">Notes per month: 62</Text>
                           <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -190,8 +191,8 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[20%] text-black text-base text-center">Tier 2</Text>
-                            <Text className = "w-[60%] text-black text-base text-center">Note Limit: 62</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 62</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$100</Text>
                           </View>
                         </TouchableOpacity>
                       </>
@@ -206,7 +207,7 @@ const PurchaseScreen = () => {
             <View className = "h-[10%]"/>
 
             <Text className = "text-white text-2xl font-bold text-center">1 Credit = 1 Note</Text>
-            <Text className = "text-white text-2xl font-bold text-center">$2.99</Text>
+            <Text className = "text-white text-2xl font-bold text-center">{creditPrice}</Text>
 
             {/* Credits */}
             <View className = "h-[40%] w-full items-center">

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 
 const DeleteProfileModal = ({ isVisible, onCancel, onDelete }) => {
