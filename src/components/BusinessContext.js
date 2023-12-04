@@ -188,13 +188,100 @@ export const BusinessProvider = ({ children, profileOwner }) => {
     }
   };
 
+  const handleGiveAllCredits = async () => {
+
+    console.log('not yet');
+
+    // if (credits < amount) {
+    //   console.log('Not enough credits to perform the operation.');
+    //   return;
+    // }
+
+    // try {
+    //   const response = await fetch(`${serverURL}/business/giveProfileCredits`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       profileOwner: profileOwner,
+    //     })
+    //   });
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+
+    //     setCredits(data.businessCredits);
+    //     setProfiles(prevProfiles => {
+    //       return prevProfiles.map(profile =>
+    //         profile.email === selectedProfile.email
+    //           ? { ...profile, credits: data.userCredits }
+    //           : profile
+    //       );
+    //     });
+    //     setSelectedProfile(prevProfile => ({
+    //       ...prevProfile,
+    //       credits: data.userCredits,
+    //     }));
+        
+    //   } else {
+    //     console.error('Failed to give profile credits.');
+    //   }
+    // } catch (error) {
+    //   console.error('Error adding credits to profile:', error);
+    // }
+  };
+
+  const handleRemoveAllCredits = async () => {
+
+    console.log('not yet');
+
+    // if (credits < amount) {
+    //   console.log('Not enough credits to perform the operation.');
+    //   return;
+    // }
+
+    // try {
+    //   const response = await fetch(`${serverURL}/business/giveProfileCredits`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       profileOwner: profileOwner,
+    //     })
+    //   });
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+
+    //     setCredits(data.businessCredits);
+    //     setProfiles(prevProfiles => {
+    //       return prevProfiles.map(profile =>
+    //         profile.email === selectedProfile.email
+    //           ? { ...profile, credits: data.userCredits }
+    //           : profile
+    //       );
+    //     });
+    //     setSelectedProfile(prevProfile => ({
+    //       ...prevProfile,
+    //       credits: data.userCredits,
+    //     }));
+        
+    //   } else {
+    //     console.error('Failed to give profile credits.');
+    //   }
+    // } catch (error) {
+    //   console.error('Error adding credits to profile:', error);
+    // }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         await fetchBusinessInfo(profileOwner);
         const profilesData = await fetchProfiles(profileOwner);
         setProfiles(profilesData.profiles);
-        console.log(profiles)
       } catch (error) {
         console.error('Error fetching account data:', error);
       }
@@ -220,6 +307,8 @@ export const BusinessProvider = ({ children, profileOwner }) => {
           deleteProfile,
           giveProfileCredits,
           removeProfileCredits,
+          handleGiveAllCredits,
+          handleRemoveAllCredits
         }}>
       {children}
     </BusinessContext.Provider>

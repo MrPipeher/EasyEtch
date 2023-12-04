@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, } from 'react-native';
 import { signOut } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { useBusinessContext } from '../../components/BusinessContext';
 import Modal from 'react-native-modal';
 import { LinearGradient } from 'expo-linear-gradient';
-import DispositionContainer from '../../components/DispositionContainer';
 
 const DeleteProfileModal = ({ isVisible, onCancel, onDelete }) => {
   return (
@@ -43,12 +42,15 @@ const ViewBusiness = () => {
     credits, 
     giveProfileCredits,
     removeProfileCredits,
+    handleGiveAllCredits,
+    handleRemoveAllCredits,
   } = useBusinessContext();
   const [isModalVisible, setModalVisible] = useState(false);
   const [creditAmount, setCreditAmount] = useState(0);
   const [search, setSearch] = useState('');
   const [filteredProfiles, setFilteredProfiles] = useState(profiles);
   const dataToRender = search ? filteredProfiles : profiles;
+  const [showCredits, setShowCredits] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -63,6 +65,10 @@ const ViewBusiness = () => {
     setSelectedProfile(profile);
   };
 
+  const handleDeleteProfile = async () => {
+    setModalVisible(true);
+  };
+
   const handleUpdateProfile = async () => {
     try {
       await updateProfile(selectedProfile);
@@ -70,10 +76,6 @@ const ViewBusiness = () => {
     } catch (error) {
       console.error('Error updating profile:', error);
     }
-  };
-
-  const handleDeleteProfile = async () => {
-    setModalVisible(true);
   };
 
   const handleCancel = () => {
@@ -101,7 +103,7 @@ const ViewBusiness = () => {
     setFilteredProfiles(filtered);
   };
 
-  const handleProfessionToggle = () => {
+  const handleProfessionToggle = async () => {
     setSelectedProfile(prevProfile => ({
       ...prevProfile,
       profession: prevProfile.profession === 'Host Home' ? 'Therapist' : 'Host Home',
@@ -132,6 +134,10 @@ const ViewBusiness = () => {
     }
   };
 
+  const handleCreditsToggle = () => {
+    setShowCredits(prevShowCredits => !prevShowCredits);
+  };
+
   return (
     <View className = "bg-white flex-1">
 
@@ -143,55 +149,73 @@ const ViewBusiness = () => {
           className = "h-full w-full absolute" 
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
-          <View className = "h-[20%] space-y-2">
+          <View className = "h-[5%]"/>
 
-            <View className = "absolute inset-x-0 bottom-0">
-              
-              <View className = "w-[75%] h-[50%] bg-white rounded-full justify-center self-center">
-                <TouchableOpacity onPress={handleSignOut}> 
-                  <Text className = "text-black text-base text-center">Sign Out</Text>
+          {/* Header */}
+          <View className = "h-[10%] flex-row mx-4 justify-center items-center">
+            <View className = "bg-white border border-black w-[40%]">
+              <Text className = "text-center text-black font-bold text-xl">{businessName}</Text>
+              <Text className = "text-center text-black font-bold text-xl">Users: {currentUsers} / {userAmount}</Text>
+            </View>
+
+            <View className = "absolute right-0 w-[25%] max-w-[100] bg-white border border-black rounded-full">
+              <TouchableOpacity onPress={handleSignOut}> 
+                <Text className = "text-black text-base text-center">Sign Out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Business Info */}
+          <View className = "h-[10%] bg-white w-[75%] self-center border border-black">
+            <Text className = "text-center text-black text-xl">Credits: {credits}</Text>
+
+            <View className = "flex-row h-[50%] w-full justify-evenly items-center">
+
+              <View className = "w-[30%] h-[75%] bg-green-500 border-2 border-black rounded-full">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGiveAllCredits}>
+                  <Text className = "text-white text-xl text-center">Split</Text>
                 </TouchableOpacity>
               </View>
 
-              <Text className = "text-center text-white">Select a Profile:</Text>
-
-                <View className = "w-[60%] h-full border-2 border-sky-500 bg-white self-center ">
-                <TextInput
-                  style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10, padding: 5 }}
-                  placeholder="Search profiles"
-                  onChangeText={handleSearch}
-                  value={search}
-                />
-                <FlatList
-                  data={dataToRender}
-                  keyExtractor={(item) => item.email.toString()}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => handleProfileSelect(item)}
-                      style={{
-                        padding: 10,
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#ccc',
-                      }}
-                    >
-                      <Text style={{ fontSize: 16 }}>{item.firstName}, {item.lastName} - ({item.email})</Text>
-                      <Text style={{ fontSize: 16 }}>Credits: ({item.credits})</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-                </View>
+              <View className = "w-[30%] h-[75%] bg-red-500 border-2 border-black rounded-full">
+                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleRemoveAllCredits}>
+                  <Text className = "text-white text-xl text-center">Remove</Text>
+                </TouchableOpacity>
+              </View>
 
             </View>
-
+          
           </View>
 
-          <Text className = "text-center text-white">Company Name: {businessName}</Text>
-          <Text className = "text-center text-white">Current Users: {currentUsers}</Text>
-          <Text className = "text-center text-white">Maximum Users: {userAmount}</Text>
-          <Text className = "text-center text-white">Total Credits: {credits}</Text>
+          {/* Select Profile Container */}
+          <View className = "h-[20%] space-y-2">
+            <Text className = "text-center text-white font-bold text-xl">Select a Profile:</Text>
+
+            <TextInput
+              className = "text-center text-black bg-white w-[75%] self-center border border-black"
+              placeholder="Search profiles"
+              onChangeText={handleSearch}
+              value={search}
+            />
+
+            <View className = "h-[50%] w-[75%] self-center border border-black">
+              <ScrollView>
+                {dataToRender.map((item, index) => (
+                  <View key={index} className = "h-[35] w-full bg-white border border-black justify-center self-center px-2">
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => handleProfileSelect(item)}
+                    >
+                      <Text key={index} className = "text-base text-black">{item.firstName}, {item.lastName} ({item.credits})</Text>
+                    </TouchableOpacity> 
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          </View>
 
           {selectedProfile && (
-          <View className = "h-[80%]">
+          <View className = "h-[55%]">
 
             <DeleteProfileModal
               isVisible={isModalVisible}
@@ -200,22 +224,26 @@ const ViewBusiness = () => {
             />
 
             {/* Basic Info*/}
-            <View className = "h-[30%] justify-center items-center">
+            <View className = "h-[30%] w-[75%] self-center justify-center bg-white border border-black">
 
-              <Text className = "text-white text-base">Name: {selectedProfile.firstName} {selectedProfile.lastName}</Text>
-              <Text className = "text-white text-base">Email: {selectedProfile.email}</Text>
-              <Text className = "text-white text-base">Profession: {selectedProfile.profession}</Text>
-              <Text className = "text-white text-base">Credits: {selectedProfile.credits}</Text>
-              <Text className = "text-white text-base">Total Notes: {selectedProfile.totalNotes}</Text>
+              <Text className = "text-black text-base mx-2">Name: {selectedProfile.firstName} {selectedProfile.lastName}</Text>
+              <Text className = "text-black text-base mx-2">Email: {selectedProfile.email}</Text>
+              <TouchableOpacity onPress={handleProfessionToggle}> 
+                <Text className = "text-black text-base mx-2">Profession: {selectedProfile.profession}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCreditsToggle}> 
+                <Text className = "text-black text-base mx-2">Credits: {selectedProfile.credits}</Text>
+              </TouchableOpacity>
+              <Text className = "text-black text-base mx-2">Total Notes: {selectedProfile.totalNotes}</Text>
 
             </View>
 
-            {/* Medications */}
-            
-            <View className = "h-[40%] items-center">
-              <Text className = "text-white text-xl text-center">Give Credits:</Text>
+            {/* Credits */}
+            {showCredits && (
+            <View className = "h-[30%] w-[75%] self-center bg-white justify-center items-center border border-black">
+              <Text className = "text-black text-xl text-center">Credits:</Text>
 
-              <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
+              <View className = "w-[75%] h-[20%] bg-white rounded-full justify-center border border-black">
                 <TextInput
                   className="h-full w-full text-black text-base text-center self-center"
                   placeholder="Amount"
@@ -226,41 +254,33 @@ const ViewBusiness = () => {
                 />
               </View>
 
-              <View className = "flex-row justify-evenly w-full h-[20%]">
-                <View className="w-[30%] h-[50%] bg-white border-2 border-white rounded-full justify-center items-center self-center">
+              <View className = "flex-row justify-evenly w-full h-[60%]">
+                <View className="w-[30%] h-[40%] bg-green-500 border-2 border-black rounded-full justify-center items-center self-center">
                   <TouchableOpacity className="w-full h-full justify-center" onPress={handleGiveCredits}>
-                    <Text className="text-black text-xl text-center">Give Credits</Text>
+                    <Text className="text-white text-xl text-center">Add</Text>
                   </TouchableOpacity>
                 </View>
 
-                <View className="w-[30%] h-[50%] bg-white border-2 border-white rounded-full justify-center items-center self-center">
+                <View className="w-[30%] h-[40%] bg-red-500 border-2 border-black rounded-full justify-center items-center self-center">
                   <TouchableOpacity className="w-full h-full justify-center" onPress={handleRemoveCredits}>
-                    <Text className="text-black text-xl text-center">Remove Credits</Text>
+                    <Text className="text-white text-xl text-center">Remove</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-
-              <Text className = "text-white text-base">Profession</Text>
-
-              <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
-                <TouchableOpacity onPress={handleProfessionToggle}> 
-                  <Text className = "text-black text-base text-center">{selectedProfile.profession}</Text>
-                </TouchableOpacity>
-              </View>
-                
             </View>
+            )}
             
             {/* Footer */}
-            <View className = "h-[10%] space-y-8">
-              <View className = "flex-row h-[70%] justify-evenly items-center">
+            <View className = "h-[30%] w-[75%] self-center justify-center space-y-4">
+              <View className = "flex-row h-[50%] justify-evenly items-center">
 
-                <View className = "w-[30%] h-[75%] bg-white/20 border-2 border-white rounded-full justify-center items-center">
+                <View className = "w-[40%] h-[75%] bg-sky-500 border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleUpdateProfile}>
                     <Text className = "text-white text-xl text-center">Update</Text>
                   </TouchableOpacity>
                 </View>
 
-                <View className = "w-[30%] h-[75%] bg-red-500 border-2 border-red-500 rounded-full justify-center items-center">
+                <View className = "w-[40%] h-[75%] bg-red-500 border-2 border-white rounded-full justify-center items-center">
                   <TouchableOpacity className = "w-full h-full justify-center" onPress={handleDeleteProfile}>
                     <Text className = "text-white text-xl text-center">Delete</Text>
                   </TouchableOpacity>
@@ -268,13 +288,13 @@ const ViewBusiness = () => {
                 
               </View>
 
-              <View className = "w-[30%] h-[50%] bg-white border-2 border-white rounded-full justify-center items-center self-center">
+              <View className = "w-[40%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center self-center">
                 <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile(null)}>
                   <Text className = "text-black text-xl text-center">Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>
-
+            
           </View>)}
         </LinearGradient>
       </View>

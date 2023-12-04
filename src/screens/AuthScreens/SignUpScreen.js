@@ -281,7 +281,7 @@ const SignUpScreen = () => {
                           secureTextEntry={false}
                         />
                       </View>
-                      <View className = "flex-row justify-evenly w-[75%] h-[20%]">
+                      <View className = "flex-row justify-evenly w-[100%] h-[20%]">
                         <View className = "w-[40%] h-[80%] bg-white/75 rounded-full justify-center my-2">
                           <TextInput
                             className="h-full w-full text-black text-xl text-center self-center"
