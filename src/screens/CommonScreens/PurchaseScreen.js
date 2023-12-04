@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useUserContext } from '../../components/UserContext';
 
 const PurchaseScreen = () => {
-  const { profession, status, tier } = useUserContext();
+  const { profession, status, tier, isBusiness } = useUserContext();
   const navigation = useNavigation();
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
@@ -16,7 +16,7 @@ const PurchaseScreen = () => {
   const handlePurchase = async (productTitle) => {
     try {
 
-      if (productTitle === 'Credits1' && quantity === 0) {
+      if ((productTitle === 'Credits1' && quantity === 0) || (isBusiness)) {
         return;
       }
 

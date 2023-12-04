@@ -19,6 +19,8 @@ const SignUpScreen = () => {
   const [businessType, setBusinessType] = useState('Individual');
   const [userType, setUserType] = useState('Host Home');
   const [workForBusiness, setWorkForBusiness] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const [businessName, setBusinessName] = useState('');
   const [userAmount, setUserAmount] = useState('');
@@ -41,7 +43,7 @@ const SignUpScreen = () => {
     setCanSignIn(false);
 
     if (email === '' || password === '') {setError('Must a username and password'); return;}
-    if (workForBusiness && businessName === '') {setError('Must include a business name!'); return;}
+    if (workForBusiness && (businessName === '' || firstName === '' || lastName === '')) {setError('All fields are required'); return;}
 
     try {
       let response;
@@ -53,7 +55,7 @@ const SignUpScreen = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password, userType, businessName }),
+          body: JSON.stringify({ email, password, userType, businessName, firstName, lastName }),
         });
 
         if (response.ok) {
@@ -226,7 +228,7 @@ const SignUpScreen = () => {
                   </View> 
                   
                   {/* Error Messages */}
-                  <View className = "h-[10%] w-full items-center">
+                  <View className = "h-[5%] w-full items-center">
                     {error && (
                       <Text className = "text-red-500 text-base text-center m-2">{error}</Text>
                     )}
@@ -268,6 +270,7 @@ const SignUpScreen = () => {
                     </View>
 
                     {workForBusiness === true && (
+                      <>
                       <View className = "w-[75%] h-[20%] bg-white/75 rounded-full justify-center my-2">
                         <TextInput
                           className="h-full w-full text-black text-xl text-center self-center"
@@ -278,6 +281,29 @@ const SignUpScreen = () => {
                           secureTextEntry={false}
                         />
                       </View>
+                      <View className = "flex-row justify-evenly w-[75%] h-[20%]">
+                        <View className = "w-[40%] h-[80%] bg-white/75 rounded-full justify-center my-2">
+                          <TextInput
+                            className="h-full w-full text-black text-xl text-center self-center"
+                            placeholder="First Name"
+                            placeholderTextColor={'gray'}
+                            onChangeText={(text) => setFirstName(text)}
+                            value={firstName}
+                            secureTextEntry={false}
+                          />
+                        </View>
+                        <View className = "w-[40%] h-[80%] bg-white/75 rounded-full justify-center my-2">
+                          <TextInput
+                            className="h-full w-full text-black text-xl text-center self-center"
+                            placeholder="Last Name"
+                            placeholderTextColor={'gray'}
+                            onChangeText={(text) => setLastName(text)}
+                            value={lastName}
+                            secureTextEntry={false}
+                          />
+                        </View>
+                      </View>
+                      </>
                     )}
                   </View>
                 </>) : (<>
