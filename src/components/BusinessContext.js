@@ -13,6 +13,8 @@ export const BusinessProvider = ({ children, profileOwner }) => {
   const [currentUsers, setCurrentUsers] = useState(null);
   const [userAmount, setUserAmount] = useState(null);
   const [credits, setCredits] = useState(null);
+  const [profiles, setProfiles] = useState([]);
+  const [selectedProfile, setSelectedProfile] = useState(null);
 
   const fetchBusinessInfo = async (profileOwner) => {
     try {
@@ -24,6 +26,20 @@ export const BusinessProvider = ({ children, profileOwner }) => {
       setCredits(data.credits);
     } catch (error) {
       console.error('Error fetching account type:', error);
+    }
+  };
+
+  const fetchProfiles = async (profileOwner) => {
+    try {
+      const response = await fetch(`${serverURL}/business/getProfiles?profileOwner=${profileOwner}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching profiles:', error);
+      throw error;
     }
   };
 

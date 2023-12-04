@@ -30,8 +30,8 @@ export const UserProvider = ({ children, profileOwner }) => {
         setUserCredits(credits);
         setProfession(profession);
         setIsBusiness(isBusiness);
+
         await fetchUserSubscription(profileOwner, profession);
-        console.log(profileOwner, profession)
       } else {
         const { credits, profession, isBusiness } = data.userInfo;
         setUserCredits(credits);

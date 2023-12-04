@@ -14,16 +14,16 @@ const ViewBusiness = () => {
     }
   };
   
-    return (
-      <View>
-        <Text>This is a blank screen</Text>
-        <View className = "w-[75%] h-[50%] bg-white rounded-full justify-center">
-          <TouchableOpacity onPress={handleSignOut}> 
-            <Text className = "text-black text-base text-center">Sign Out</Text>
-          </TouchableOpacity>
-        </View>
+  return (
+    <View>
+      <Text>This is a blank screen</Text>
+      <View className = "w-[75%] h-[50%] bg-white rounded-full justify-center">
+        <TouchableOpacity onPress={handleSignOut}> 
+          <Text className = "text-black text-base text-center">Sign Out</Text>
+        </TouchableOpacity>
       </View>
-    );
-  };
+    </View>
+  );
+};
 
 export default ViewBusiness;
