@@ -190,90 +190,69 @@ export const BusinessProvider = ({ children, profileOwner }) => {
 
   const handleGiveAllCredits = async () => {
 
-    console.log('not yet');
+    if (credits < profiles.length) {
+      console.log('Not enough credits to perform the operation.');
+      return;
+    }
 
-    // if (credits < amount) {
-    //   console.log('Not enough credits to perform the operation.');
-    //   return;
-    // }
+    try {
+      const response = await fetch(`${serverURL}/business/giveAllCredits`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          profileOwner: profileOwner,
+        }),
+      });
 
-    // try {
-    //   const response = await fetch(`${serverURL}/business/giveProfileCredits`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       profileOwner: profileOwner,
-    //     })
-    //   });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedCredits = data.updatedCredits;
+        const updatedProfiles = data.updatedProfiles;
 
-    //   if (response.ok) {
-    //     const data = await response.json();
-
-    //     setCredits(data.businessCredits);
-    //     setProfiles(prevProfiles => {
-    //       return prevProfiles.map(profile =>
-    //         profile.email === selectedProfile.email
-    //           ? { ...profile, credits: data.userCredits }
-    //           : profile
-    //       );
-    //     });
-    //     setSelectedProfile(prevProfile => ({
-    //       ...prevProfile,
-    //       credits: data.userCredits,
-    //     }));
-        
-    //   } else {
-    //     console.error('Failed to give profile credits.');
-    //   }
-    // } catch (error) {
-    //   console.error('Error adding credits to profile:', error);
-    // }
+        setCredits(updatedCredits);
+        setProfiles(updatedProfiles);
+      } else {
+        console.error('Failed to update credits:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating credits:', error);
+    }
   };
 
   const handleRemoveAllCredits = async () => {
 
-    console.log('not yet');
+    const hasProfileWithCredits = profiles.some((profile) => profile.credits > 0);
+    if (!hasProfileWithCredits) {
+      console.log('No profiles with credits greater than 0 to perform the operation.');
+      return;
+    }
 
-    // if (credits < amount) {
-    //   console.log('Not enough credits to perform the operation.');
-    //   return;
-    // }
+    try {
+      const response = await fetch(`${serverURL}/business/removeAllCredits`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          profileOwner: profileOwner,
+        }),
+      });
 
-    // try {
-    //   const response = await fetch(`${serverURL}/business/giveProfileCredits`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       profileOwner: profileOwner,
-    //     })
-    //   });
+      if (response.ok) {
+        const data = await response.json();
+        const updatedCredits = data.updatedCredits;
+        const updatedProfiles = data.updatedProfiles;
 
-    //   if (response.ok) {
-    //     const data = await response.json();
-
-    //     setCredits(data.businessCredits);
-    //     setProfiles(prevProfiles => {
-    //       return prevProfiles.map(profile =>
-    //         profile.email === selectedProfile.email
-    //           ? { ...profile, credits: data.userCredits }
-    //           : profile
-    //       );
-    //     });
-    //     setSelectedProfile(prevProfile => ({
-    //       ...prevProfile,
-    //       credits: data.userCredits,
-    //     }));
-        
-    //   } else {
-    //     console.error('Failed to give profile credits.');
-    //   }
-    // } catch (error) {
-    //   console.error('Error adding credits to profile:', error);
-    // }
+        setCredits(updatedCredits);
+        setProfiles(updatedProfiles);
+      } else {
+        console.error('Failed to update credits:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating credits:', error);
+    }
   };
 
   useEffect(() => {
