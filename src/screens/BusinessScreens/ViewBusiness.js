@@ -136,7 +136,7 @@ const ViewBusiness = () => {
 
   const handleCreditsToggle = () => {
     setShowCredits(prevShowCredits => !prevShowCredits);
-  };
+  }; 
 
   return (
     <View className = "bg-white flex-1">
@@ -167,6 +167,7 @@ const ViewBusiness = () => {
 
           {/* Business Info */}
           <View className = "h-[10%] bg-white w-[75%] self-center border border-black">
+
             <Text className = "text-center text-black text-xl">Credits: {credits}</Text>
 
             <View className = "flex-row h-[50%] w-full justify-evenly items-center">

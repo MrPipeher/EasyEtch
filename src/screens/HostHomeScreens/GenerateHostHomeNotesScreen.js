@@ -10,7 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 const GenerateHostHomeNotesScreen = () => {
   const navigation = useNavigation();
   const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
-  const {userCredits, setUserCredits, profileOwner, serverURL} = useUserContext();
+  const { userCredits, setUserCredits, profileOwner, serverURL, isBusiness } = useUserContext();
   const [loading, setLoading] = useState(false);
 
   const handleProfileSelect = (profile) => {
@@ -283,9 +283,11 @@ const GenerateHostHomeNotesScreen = () => {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity onPress={navigateToPurchase}>
-                  <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
-                </TouchableOpacity>
+                {!isBusiness && (
+                  <TouchableOpacity onPress={navigateToPurchase}>
+                    <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
+                  </TouchableOpacity>
+                )}
               </View>
 
             </View>

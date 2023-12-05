@@ -14,10 +14,9 @@ export const UserProvider = ({ children, profileOwner }) => {
   const [profession, setProfession] = useState();
   const [isBusiness, setIsBusiness] = useState(null);
   const [formattedBillingCycleEnd, setFormattedBillingCycleEndDate] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [maxCredits, setMaxCredits] = useState(null);
-  const [tier, setTier] = useState(null);
-  const [subscriptionType, setSubscriptionType] = useState(null);
+  const [subscription, setSubscription] = useState(null);
+  const [subscriptionCredits, setSubscriptionCredits] = useState(null);
+  const [subscriptionProductId, setSubscriptionProductId] = useState(null);
 
   const fetchUserInfo = async (profileOwner) => {
     try {
@@ -31,53 +30,28 @@ export const UserProvider = ({ children, profileOwner }) => {
         setProfession(profession);
         setIsBusiness(isBusiness);
 
-        await fetchUserSubscription(profileOwner, profession);
       } else {
-        const { credits, profession, isBusiness } = data.userInfo;
+        const { credits, profession, isBusiness, billingCycleEnd, subscription, subscriptionProductId, subscriptionCredits } = data.userInfo;
         setUserCredits(credits);
         setProfession(profession);
         setIsBusiness(isBusiness);
 
-        await fetchUserSubscription(profileOwner, profession);
+        const billingCycleEndTimestamp = billingCycleEnd;
+        const billingCycleEndDate = new Date(billingCycleEndTimestamp._seconds * 1000);
+        const month = (billingCycleEndDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = billingCycleEndDate.getDate().toString().padStart(2, '0');
+        const year = billingCycleEndDate.getFullYear();
+        setFormattedBillingCycleEndDate(`${month}/${day}/${year}`);
+
+        setSubscription(subscription);
+        setSubscriptionCredits(subscriptionCredits);
+        setSubscriptionProductId(subscriptionProductId);
       }
 
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-
-  const fetchUserSubscription = async (profileOwner, profession) => {
-    try {
-      const response = await fetch(`${serverURL}/user/getUserSubscription`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          profileOwner: profileOwner,
-          subscriptionType: profession,
-        }),
-      });
-
-      const data = await response.json();
-      const { billingCycleEnd, status, credits, tier, subscriptionType } = data.subData;
-
-      const billingCycleEndTimestamp = billingCycleEnd;
-      const billingCycleEndDate = new Date(billingCycleEndTimestamp._seconds * 1000);
-      const month = (billingCycleEndDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = billingCycleEndDate.getDate().toString().padStart(2, '0');
-      const year = billingCycleEndDate.getFullYear();
-      setFormattedBillingCycleEndDate(`${month}/${day}/${year}`);
-
-      setStatus(status);
-      setMaxCredits(credits);
-      setTier(tier);
-      setSubscriptionType(subscriptionType);
-
-    } catch (error) {
-      console.error('Error fetching subscription data:', error);
-    }
-  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,10 +76,9 @@ export const UserProvider = ({ children, profileOwner }) => {
           profileOwner,
           serverURL,
           formattedBillingCycleEnd,
-          status,
-          maxCredits,
-          tier,
-          subscriptionType,
+          subscription,
+          subscriptionProductId,
+          subscriptionCredits,
         }}>
       {children}
     </UserContext.Provider>

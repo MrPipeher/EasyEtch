@@ -7,11 +7,11 @@ import { useUserContext } from '../../components/UserContext';
 
 const SettingsScreen = () => {
   const { formattedBillingCycleEnd,
-    status,
-    maxCredits,
-    tier, 
+    subscription,
+    subscriptionCredits,
     businessName,
     profession,
+    isBusiness,
   } = useUserContext();
 
   const handleSignOut = async () => {
@@ -36,35 +36,39 @@ const SettingsScreen = () => {
 
           <View className = "h-full w-full justify-center items-center space-y-4">
 
-            <View className = "h-[20%] w-[80%]">
+            <View className = "h-[10%]"/>
 
-              {status === 'active' && (
+            <View className = "h-[30%] w-[80%]">
+
+              {subscription === 'active' && (
                 <>
                   <View className = "bg-white h-full w-full justify-evenly items-center rounded-2xl">
-                  <Text className = "text-black text-xl">Subscription Tier: ({tier})</Text>
-                  <Text className = "text-black text-xl">Status: {status}</Text>
-                  <Text className = "text-black text-xl">Credits: {maxCredits}</Text>
-                  <Text className = "text-black text-xl">End Date: {formattedBillingCycleEnd} </Text>
+                    <Text className = "text-black text-xl">Status: {subscription}</Text>
+                    <Text className = "text-black text-xl">Credits per month: {subscriptionCredits}</Text>
+                    <Text className = "text-black text-xl">End Date: {formattedBillingCycleEnd} </Text>
                   </View>
                 </>
               )}
 
             </View>
 
-            <View className = "h-[40%] w-full justify-center items-center space-y-2">
+            <View className = "h-[20%] w-full justify-center items-center space-y-2">
 
-              <Text className = "text-white text-xl text-center">Profession: {profession}</Text>
-
-              {businessName && (
+              {isBusiness && (
                 <Text className="text-white text-xl text-center">Business: {businessName}</Text>
               )}
+
+              <Text className = "text-white text-xl text-center">Profession: {profession}</Text>
 
             </View>
 
             <View className = "h-[20%] w-full items-center">
-            <Text className = "text-white text-xl text-center">Contact Us:</Text>
+              <Text className = "text-white text-xl text-center">Contact Us:</Text>
               <Text className = "text-white text-xl text-center">Email: easyetchsupport@gmail.com</Text>
               <Text className = "text-white text-xl text-center pb-4">Phone: (404) 518-9797</Text>
+            </View>
+
+            <View className = "h-[20%] w-full items-center">
               <View className = "w-[75%] h-[50%] bg-white rounded-full justify-center">
                 <TouchableOpacity onPress={handleSignOut}> 
                   <Text className = "text-black text-base text-center">Sign Out</Text>

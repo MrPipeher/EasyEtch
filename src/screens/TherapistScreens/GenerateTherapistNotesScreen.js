@@ -35,7 +35,7 @@ const GenerateTherapistNotesScreen = () => {
     plan,
     setPlan 
   } = useTherapistProfileContext();
-  const { userCredits, setUserCredits, profileOwner, serverURL} = useUserContext();
+  const { userCredits, setUserCredits, profileOwner, serverURL, isBusiness } = useUserContext();
   const [selectedBehaviorDispositions, setSelectedBehaviorDispositions] = useState('');
   const [selectedInterventionDispositions, setSelectedInterventionDispositions] = useState('');
   const [loading, setLoading] = useState(false);
@@ -342,10 +342,12 @@ const GenerateTherapistNotesScreen = () => {
                     <Text className = "text-black text-xl text-center">Generate!</Text>
                   </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity onPress={navigateToPurchase}>
-                  <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
-                </TouchableOpacity>
+                
+                {!isBusiness && (
+                  <TouchableOpacity onPress={navigateToPurchase}>
+                    <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
+                  </TouchableOpacity>
+                )}
               </View>
 
             </View>

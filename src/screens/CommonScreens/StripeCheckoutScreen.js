@@ -18,7 +18,7 @@ const StripeCheckoutScreen = ({ route }) => {
       }
     };
     openBrowserAsync();
-    navigation.navigate('Purchase');
+    navigation.goBack();
   }, [checkoutUrl]); 
 
   return (

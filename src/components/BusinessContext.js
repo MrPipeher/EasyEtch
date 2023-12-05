@@ -15,16 +15,31 @@ export const BusinessProvider = ({ children, profileOwner }) => {
   const [credits, setCredits] = useState(null);
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [formattedBillingCycleEnd, setFormattedBillingCycleEndDate] = useState(null);
+  const [subscription, setSubscription] = useState(null);
+  const [subscriptionCredits, setSubscriptionCredits] = useState(null);
+  const [subscriptionProductId, setSubscriptionProductId] = useState(null);
 
   const fetchBusinessInfo = async (profileOwner) => {
     try {
       const response = await fetch(`${serverURL}/business/getBusinessInfo?profileOwner=${profileOwner}`);
       const data = await response.json();
-      const { businessName, credits, userAmount, currentUsers } = data.businessInfo;
+      const { businessName, currentUsers, userAmount, credits, billingCycleEnd, subscription, subscriptionProductId, subscriptionCredits  } = data.businessInfo;
       setBusinessName(businessName);
       setCurrentUsers(currentUsers);
       setUserAmount(userAmount);
       setCredits(credits);
+
+      const billingCycleEndTimestamp = billingCycleEnd;
+      const billingCycleEndDate = new Date(billingCycleEndTimestamp._seconds * 1000);
+      const month = (billingCycleEndDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = billingCycleEndDate.getDate().toString().padStart(2, '0');
+      const year = billingCycleEndDate.getFullYear();
+      setFormattedBillingCycleEndDate(`${month}/${day}/${year}`);
+
+      setSubscription(subscription);
+      setSubscriptionCredits(subscriptionCredits);
+      setSubscriptionProductId(subscriptionProductId);
     } catch (error) {
       console.error('Error fetching account type:', error);
     }
@@ -34,7 +49,7 @@ export const BusinessProvider = ({ children, profileOwner }) => {
     try {
       const response = await fetch(`${serverURL}/business/getProfiles?profileOwner=${profileOwner}`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error!`);
       }
       const data = await response.json();
       return data;
@@ -214,7 +229,7 @@ export const BusinessProvider = ({ children, profileOwner }) => {
         setCredits(updatedCredits);
         setProfiles(updatedProfiles);
       } else {
-        console.error('Failed to update credits:', response.statusText);
+        console.error('Failed to update credits:.');
       }
     } catch (error) {
       console.error('Error updating credits:', error);
@@ -248,7 +263,7 @@ export const BusinessProvider = ({ children, profileOwner }) => {
         setCredits(updatedCredits);
         setProfiles(updatedProfiles);
       } else {
-        console.error('Failed to update credits:', response.statusText);
+        console.error('Failed to update credits');
       }
     } catch (error) {
       console.error('Error updating credits:', error);
@@ -287,7 +302,11 @@ export const BusinessProvider = ({ children, profileOwner }) => {
           giveProfileCredits,
           removeProfileCredits,
           handleGiveAllCredits,
-          handleRemoveAllCredits
+          handleRemoveAllCredits,
+          formattedBillingCycleEnd,
+          subscription,
+          subscriptionProductId,
+          subscriptionCredits,
         }}>
       {children}
     </BusinessContext.Provider>

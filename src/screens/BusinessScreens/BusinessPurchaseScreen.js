@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, TextInput} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useServerURL } from '../../components/ServerURLContext';
-import { useUserContext } from '../../components/UserContext';
 import { useServerContext } from '../../components/ServerContext';
+import { useBusinessContext } from '../../components/BusinessContext';
 
-const PurchaseScreen = () => {
-  const { profession, subscription, subscriptionCredits } = useUserContext();
+const BusinessPurchaseScreen = () => {
+  const { subscription, formattedBillingCycleEnd, subscriptionCredits, subscriptionProductId} = useBusinessContext();
   const { profileOwner } = useServerContext();
   const navigation = useNavigation();
   const serverURL = useServerURL();
@@ -18,7 +18,7 @@ const PurchaseScreen = () => {
   const handlePurchase = async (productTitle) => {
     try {
 
-      if ((productTitle === 'Credits1' && quantity === 0)) {
+      if ((productTitle === 'Credits1' && quantity === 0) || (productTitle !== 'Credits1' && subscriptionProductId === 'default')) {
         return;
       }
 
@@ -46,7 +46,7 @@ const PurchaseScreen = () => {
   };
 
   const navigateToGenerate = async () => {
-    navigation.goBack();
+    navigation.navigate('View');
   };  
 
   const handleInputChange = (text) => {
@@ -88,60 +88,27 @@ const PurchaseScreen = () => {
 
                 <Text className = "text-white text-2xl font-bold text-center">Subscriptions (30 days)</Text>
 
-                {/* Therapist */}
-                {profession === "Therapist" && (
                   <View className = "w-full h-full justify-evenly">
                     {subscription === 'active' ? (
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
+                          <Text className = "w-[60%] text-black text-base text-center">Next Payment: {formattedBillingCycleEnd}</Text>
                           <Text className = "w-[60%] text-black text-base text-center">Notes per month: {subscriptionCredits}</Text>
                           <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
                     ) : (
                       <>
-                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('T-Tier-1')}>
+                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('default')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 120</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$200</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">call for details</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">n/a</Text>
                           </View>
                         </TouchableOpacity>
                       </>
                     )}
                   </View>
-                )}
 
-                {/* Host Homes */}
-                {profession === "Host Home" && (
-
-                  <View className = "w-full h-full justify-evenly">
-
-                    {subscription === 'active' ? (
-                      <>
-                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
-                          <Text className = "w-[60%] text-black text-base text-center">Notes per month: {subscriptionCredits}</Text>
-                          <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
-                        </View>
-                      </>
-                    ) : (
-                      <>
-                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
-                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 40</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
-                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 70</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$100</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  </View>
-                )}
               </View>
             </View>
 
@@ -187,4 +154,4 @@ const PurchaseScreen = () => {
   );
 };
 
-export default PurchaseScreen;
+export default BusinessPurchaseScreen;
