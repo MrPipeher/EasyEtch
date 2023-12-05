@@ -1,9 +1,10 @@
 {
   "files": {
-    "main.js": "/static/js/main.b95cb1fa.js",
-    "static/js/40.f0dc9667.js": "/static/js/40.f0dc9667.js",
+    "main.js": "/static/js/main.e028d9d3.js",
+    "static/js/40.10cbdacb.js": "/static/js/40.10cbdacb.js",
     "static/media/Logo.png": "/static/media/Logo.180d881248a1ca6f7bcc.png",
     "favicon.ico": "/favicon.ico",
+    "static/media/money.png": "/static/media/money.ec3917a0c7597e6f28f1.png",
     "static/media/edit.png": "/static/media/edit.9fd71c55ed5fcd516d44.png",
     "static/media/settings.png": "/static/media/settings.2ca8af129ed1d363d281.png",
     "static/media/password.png": "/static/media/password.601e924c30ac49f10ee4.png",
@@ -13,11 +14,11 @@
     "favicon-16.png": "/favicon-16.png",
     "serve.json": "/serve.json",
     "manifest.json": "/manifest.json",
-    "main.b95cb1fa.js.map": "/static/js/main.b95cb1fa.js.map",
-    "40.f0dc9667.js.map": "/static/js/40.f0dc9667.js.map"
+    "main.e028d9d3.js.map": "/static/js/main.e028d9d3.js.map",
+    "40.10cbdacb.js.map": "/static/js/40.10cbdacb.js.map"
   },
   "entrypoints": [
-    "static/js/40.f0dc9667.js",
-    "static/js/main.b95cb1fa.js"
+    "static/js/40.10cbdacb.js",
+    "static/js/main.e028d9d3.js"
   ]
 }
