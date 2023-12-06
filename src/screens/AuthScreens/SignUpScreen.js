@@ -38,16 +38,19 @@ const SignUpScreen = () => {
     setCanSignIn(false);
   
     // Validation checks
-    if (!email || !password || (workForBusiness && (!businessName || !firstName || !lastName))) {
+    if (!email || !password) {
+      setError('All fields are required');
+      return;
+    }
+
+    if (workForBusiness && (!businessName || !firstName || !lastName)) {
       setError('All fields are required');
       return;
     }
   
     try {
       const endpoint = businessType === 'Individual' ? 'user/signup' : 'business/signup';
-      const requestBody = businessType === 'Individual'
-        ? { email, password, userType, businessName, firstName, lastName }
-        : { email, password, businessName, userAmount };
+      const requestBody = businessType === 'Individual' ? { email, password, userType, businessName, firstName, lastName } : { email, password, businessName, userAmount };
   
       const response = await fetch(`${serverURL}/${endpoint}`, {
         method: 'POST',
@@ -58,7 +61,8 @@ const SignUpScreen = () => {
       });
   
       if (!response.ok) {
-        const { message = 'Unknown error' } = await response.json();
+        const { message = 'Email already in use' } = await response.json();
+        setCanSignIn(true);
         throw new Error(message);
       }
   
