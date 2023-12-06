@@ -13,7 +13,7 @@ const BusinessPurchaseScreen = () => {
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState(0);
-  const [creditPrice, setCreditPrice] = useState(5.99);
+  const [creditPrice, setCreditPrice] = useState(2.99);
 
   const handlePurchase = async (productTitle) => {
     try {

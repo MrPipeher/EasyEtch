@@ -13,7 +13,7 @@ const PurchaseScreen = () => {
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState(0);
-  const [creditPrice, setCreditPrice] = useState(5.99);
+  const [creditPrice, setCreditPrice] = useState(2.99);
 
   const handlePurchase = async (productTitle) => {
     try {
@@ -128,14 +128,14 @@ const PurchaseScreen = () => {
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[60%] text-black text-base text-center">Notes per month: 40</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$25</Text>
                           </View>
                         </TouchableOpacity>
 
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
                             <Text className = "w-[60%] text-black text-base text-center">Notes per month: 70</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$100</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
                           </View>
                         </TouchableOpacity>
                       </>
