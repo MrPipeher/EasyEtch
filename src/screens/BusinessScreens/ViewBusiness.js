@@ -153,9 +153,8 @@ const ViewBusiness = () => {
 
           {/* Header */}
           <View className = "h-[10%] flex-row mx-4 justify-center items-center">
-            <View className = "bg-white border border-black w-[40%]">
-              <Text className = "text-center text-black font-bold text-xl">{businessName}</Text>
-              <Text className = "text-center text-black font-bold text-xl">Users: {currentUsers} / {userAmount}</Text>
+            <View className = "w-[40%]">
+              <Text className = "text-center text-white font-bold text-xl">{businessName}</Text>
             </View>
 
             <View className = "absolute right-0 w-[25%] max-w-[100] bg-white border border-black rounded-full">
@@ -190,7 +189,7 @@ const ViewBusiness = () => {
 
           {/* Select Profile Container */}
           <View className = "h-[20%] space-y-2">
-            <Text className = "text-center text-white font-bold text-xl">Select a Profile:</Text>
+            <Text className = "text-center text-white font-bold text-xl">Select a Profile: ({currentUsers} / {userAmount})</Text>
 
             <TextInput
               className = "text-center text-black bg-white w-[75%] self-center border border-black"
@@ -225,9 +224,9 @@ const ViewBusiness = () => {
             />
 
             {/* Basic Info*/}
-            <View className = "h-[30%] w-[75%] self-center justify-center bg-white border border-black">
+            <View className = "h-[35%] w-[75%] self-center justify-center bg-white border border-black">
 
-              <Text className = "text-black text-base mx-2">Name: {selectedProfile.firstName} {selectedProfile.lastName}</Text>
+              <Text className = "text-black text-base mx-2 ">Name: {selectedProfile.firstName} {selectedProfile.lastName}</Text>
               <Text className = "text-black text-base mx-2">Email: {selectedProfile.email}</Text>
               <TouchableOpacity onPress={handleProfessionToggle}> 
                 <Text className = "text-black text-base mx-2">Profession: {selectedProfile.profession}</Text>

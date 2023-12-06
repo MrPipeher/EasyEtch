@@ -116,8 +116,8 @@ const BusinessPurchaseScreen = () => {
             <View className = "h-[20%]">
                   
               <Text className = "text-white text-2xl font-bold text-center">Contact Us:</Text>
-              <Text className = "text-white text-2xl font-bold text-center">Email: easyetchsupport@gmail.com</Text>
-              <Text className = "text-white text-2xl font-bold text-center">Phone: (404) 518-9797</Text>
+              <Text className = "text-white text-2xl font-bold text-center">easyetchsupport@gmail.com</Text>
+              <Text className = "text-white text-2xl font-bold text-center">(404) 518-9797</Text>
                     
             </View>
 
@@ -140,7 +140,7 @@ const BusinessPurchaseScreen = () => {
                   />
 
                   <TouchableOpacity className = "w-[30%] h-full justify-center items-center" onPress={() => handlePurchase('Credits1')}>
-                    <View className = "w-[75%] h-[80%] justify-center items-center rounded-2xl bg-green-200"> 
+                    <View className = "w-[75%] h-[80%] justify-center items-center rounded-2xl bg-green-500"> 
                       <Text className = "text-black text-base text-center">${price.toFixed(2)}</Text>
                     </View>
                   </TouchableOpacity>

@@ -166,7 +166,7 @@ const PurchaseScreen = () => {
                   />
 
                   <TouchableOpacity className = "w-[30%] h-full justify-center items-center" onPress={() => handlePurchase('Credits1')}>
-                    <View className = "w-[75%] h-[80%] justify-center items-center rounded-2xl bg-green-200"> 
+                    <View className = "w-[75%] h-[80%] justify-center items-center rounded-2xl bg-green-500"> 
                       <Text className = "text-black text-base text-center">${price.toFixed(2)}</Text>
                     </View>
                   </TouchableOpacity>
