@@ -81,38 +81,45 @@ const BusinessPurchaseScreen = () => {
             {/* Header */}
             <View className = "h-[10%]"/>
 
-            {/*Sub Info*/}
-            <View className = "h-[40%] w-[80%]">
+            <View className = "h-[10%] justify-center items-center">
 
-              <View className="w-full h-full">
+              <Text className = "text-white text-2xl font-bold text-center">Subscriptions (30 days)</Text>
 
-                <Text className = "text-white text-2xl font-bold text-center">Subscriptions (30 days)</Text>
-
-                  <View className = "w-full h-full justify-evenly">
-                    {subscription === 'active' ? (
-                      <>
-                        <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
-                          <Text className = "w-[60%] text-black text-base text-center">Next Payment: {formattedBillingCycleEnd}</Text>
-                          <Text className = "w-[60%] text-black text-base text-center">Notes per month: {subscriptionCredits}</Text>
-                          <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
-                        </View>
-                      </>
-                    ) : (
-                      <>
-                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('default')}>
-                          <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">call for details</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">n/a</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  </View>
-
-              </View>
             </View>
 
-            <View className = "h-[10%]"/>
+            {/*Sub Info*/}
+            <View className = "h-[15%] w-[80%]">
+
+                <View className = "w-full h-full justify-evenly">
+                  {subscription === 'active' ? (
+                    <>
+                      <View className = "flex-row justify-center items-center w-full h-[40%] border-2 border-black bg-white rounded-lg"> 
+                        <Text className = "w-[60%] text-black text-base text-center">Next Payment: {formattedBillingCycleEnd}</Text>
+                        <Text className = "w-[60%] text-black text-base text-center">Notes per month: {subscriptionCredits}</Text>
+                        <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <TouchableOpacity className = "w-full h-[40%]" onPress={() => handlePurchase('default')}>
+                        <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
+                          <Text className = "w-[60%] text-black text-base text-center">contact us</Text>
+                          <Text className = "w-[20%] text-black text-base text-center">price</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                </View>
+
+            </View>
+
+            <View className = "h-[20%]">
+                  
+              <Text className = "text-white text-2xl font-bold text-center">Contact Us:</Text>
+              <Text className = "text-white text-2xl font-bold text-center">Email: easyetchsupport@gmail.com</Text>
+              <Text className = "text-white text-2xl font-bold text-center">Phone: (404) 518-9797</Text>
+                    
+            </View>
 
             <Text className = "text-white text-2xl font-bold text-center">1 Credit = 1 Note</Text>
             <Text className = "text-white text-2xl font-bold text-center">{creditPrice}</Text>
@@ -138,12 +145,6 @@ const BusinessPurchaseScreen = () => {
                     </View>
                   </TouchableOpacity>
                 </View>
-              </View>
-
-              <View className = "w-[40%] h-[20%] bg-white rounded-full justify-center items-center">
-                <TouchableOpacity className = "justify-center" onPress={navigateToGenerate}>
-                  <Text className = " text-black text-base text-center">Go Back</Text>
-                </TouchableOpacity>
               </View>
 
             </View>
