@@ -117,7 +117,6 @@ const BusinessPurchaseScreen = () => {
                   
               <Text className = "text-white text-2xl font-bold text-center">Contact Us:</Text>
               <Text className = "text-white text-2xl font-bold text-center">easyetchsupport@gmail.com</Text>
-              <Text className = "text-white text-2xl font-bold text-center">(404) 518-9797</Text>
                     
             </View>
 

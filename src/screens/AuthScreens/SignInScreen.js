@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as WebBrowser from 'expo-web-browser';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -40,6 +41,14 @@ const SignInScreen = () => {
     navigation.navigate('ForgotPassword');
   };
 
+  const openYoutubeVideo = async () => {
+    try {
+      await WebBrowser.openBrowserAsync('https://youtu.be/33VtnTBJcHw');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View className = "bg-white flex-1">
 
@@ -52,7 +61,7 @@ const SignInScreen = () => {
           colors={['#88daf7', '#66c4ff', '#008bff']}>
 
           {/* Header */}
-          <View className = "h-[40%] justify-center items-center">
+          <View className = "h-[30%] justify-center items-center">
 
             {/* Logo */}
             <Image 
@@ -63,7 +72,7 @@ const SignInScreen = () => {
           </View>
 
           {/* Container */}
-          <View className = "h-[50%] w-full justify-center items-center">
+          <View className = "h-[55%] w-full justify-center items-center">
 
             {error && (
               <Text className = "text-red-500 text-base m-2">{error}</Text>
@@ -118,10 +127,14 @@ const SignInScreen = () => {
           </View>
 
           {/* Footer */}
-          <View className = "h-[5%] justify-center items-center">
+          <View className = "h-[15%] justify-evenly items-center">
 
             <TouchableOpacity onPress={navigateToForgotPassword}>
               <Text className = "text-white text-2xl">Forgot password?</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={openYoutubeVideo}>
+              <Text className = "text-white text-2xl">Need help?</Text>
             </TouchableOpacity>
 
           </View>

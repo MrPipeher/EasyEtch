@@ -65,7 +65,6 @@ const SettingsScreen = () => {
             <View className = "h-[20%] w-full items-center">
               <Text className = "text-white text-xl text-center">Contact Us:</Text>
               <Text className = "text-white text-xl text-center">Email: easyetchsupport@gmail.com</Text>
-              <Text className = "text-white text-xl text-center pb-4">Phone: (404) 518-9797</Text>
             </View>
 
             <View className = "h-[20%] w-full items-center">

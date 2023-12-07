@@ -138,6 +138,8 @@ const PurchaseScreen = () => {
                             <Text className = "w-[20%] text-black text-base text-center">$50</Text>
                           </View>
                         </TouchableOpacity>
+
+                        <Text className = "w-[75%] text-black self-center font-bold text-2xl text-center">Use the same EMAIL you signed in with during CHECKOUT!</Text>
                       </>
                     )}
                   </View>
