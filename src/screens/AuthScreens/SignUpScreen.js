@@ -94,7 +94,7 @@ const SignUpScreen = () => {
               <View className = "h-[10%]"/>
 
               {/* Account Type */}
-              <View className = "h-[10%] w-full items-center">
+              {/* <View className = "h-[10%] w-full items-center">
 
                 <Text className = "text-white text-lg">Account Type:</Text>
 
@@ -127,7 +127,7 @@ const SignUpScreen = () => {
                     </View>
                   )}
                 </View>
-              </View>
+              </View> */}
 
               {businessType === 'Individual' ? (<>
 
@@ -168,7 +168,7 @@ const SignUpScreen = () => {
                 </View> 
 
                 {/* Business */}
-                <View className = "h-[10%] w-full items-center">
+                {/* <View className = "h-[10%] w-full items-center">
 
                   <Text className = "text-white text-lg">Do you work for a business?</Text>
 
@@ -201,7 +201,7 @@ const SignUpScreen = () => {
                       </View>
                     )}
                   </View>
-                </View> 
+                </View>  */}
                 
                 {/* Error Messages */}
                 <View className = "h-[5%] w-full items-center">
