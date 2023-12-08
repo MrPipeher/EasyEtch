@@ -17,7 +17,7 @@ const SignUpScreen = () => {
 
   const [businessType, setBusinessType] = useState('Individual');
   const [userType, setUserType] = useState('Host Home');
-  const [workForBusiness, setWorkForBusiness] = useState('');
+  const [workForBusiness, setWorkForBusiness] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
