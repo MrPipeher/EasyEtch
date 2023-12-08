@@ -61,7 +61,7 @@ const SignUpScreen = () => {
       });
   
       if (!response.ok) {
-        const { message = 'Email already in use' } = await response.json();
+        const { message = `Email already in use. If you just verified your email, click 'Go Back' then sign in!` } = await response.json();
         setCanSignIn(true);
         throw new Error(message);
       }

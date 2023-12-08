@@ -213,9 +213,9 @@ const CreateHostHomeProfileScreen = () => {
 
             {/* Footer */}
             <View className = "h-[15%] flex-row items-center justify-evenly">
-              <View className = " h-[50%] w-[30%] bg-white/20 border-2 border-white rounded-full justify-center my-2">
+              <View className = " h-[50%] w-[30%] bg-green-500 border-2 border-white rounded-full justify-center my-2">
                 <TouchableOpacity className = "w-full h-full justify-center" onPress={handleProfileCreation}>
-                  <Text className = "text-white text-xl text-center">Create</Text>
+                  <Text className = "text-white text-xl text-center">Save</Text>
                 </TouchableOpacity>
               </View>
 

@@ -59,7 +59,8 @@ const UserNavigator = () => {
             headerShown: false,
             tabBarStyle: {
               backgroundColor: 'white',
-              borderColor: 'black',
+              borderColor: '#34abeb',
+              borderWidth: 2,
               width: wp(100),
               maxWidth: 1080,
               alignSelf: 'center',
@@ -117,6 +118,9 @@ const UserNavigator = () => {
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
+              backgroundColor: 'white',
+              borderColor: '#34abeb',
+              borderWidth: 2,
               backgroundColor: 'white',
               borderColor: 'black',
               width: wp(100),
