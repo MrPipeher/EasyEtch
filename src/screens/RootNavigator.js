@@ -17,7 +17,7 @@ const RootNavigator = () => {
   const serverURL = 'https://easyetch.onrender.com';
 
   // Production: 'https://easyetch.onrender.com';
-  // Testing: 'http://localhost:5000'
+  // Testing: 'http://localhost:5000' 10.0.0.70:5000
 
   const [profileOwner, setProfileOwner] = useState(null);
 

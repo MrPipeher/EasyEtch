@@ -13,7 +13,7 @@ const PurchaseScreen = () => {
   const serverURL = useServerURL();
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState(0);
-  const [creditPrice, setCreditPrice] = useState(2.99);
+  const [creditPrice, setCreditPrice] = useState(1);
 
   const handlePurchase = async (productTitle) => {
     try {
@@ -119,7 +119,7 @@ const PurchaseScreen = () => {
                     {subscription === 'active' ? (
                       <>
                         <View className = "flex-row justify-center items-center w-full h-[20%] border-2 border-black bg-white rounded-lg"> 
-                          <Text className = "w-[60%] text-black text-base text-center">Notes per month: {subscriptionCredits}</Text>
+                          <Text className = "w-[60%] text-black text-base text-center">Unlimited</Text>
                           <Text className = "w-[20%] text-black text-base text-center">Owned</Text>
                         </View>
                       </>
@@ -127,17 +127,17 @@ const PurchaseScreen = () => {
                       <>
                         <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-1')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 40</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$25</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Unlimited</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$10/month</Text>
                           </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
+                        {/* <TouchableOpacity className = "w-full h-[20%]" onPress={() => handlePurchase('HH-Tier-2')}>
                           <View className = "flex-row justify-center items-center w-full h-full border-2 border-black bg-white rounded-lg"> 
-                            <Text className = "w-[60%] text-black text-base text-center">Notes per month: 70</Text>
-                            <Text className = "w-[20%] text-black text-base text-center">$50</Text>
+                            <Text className = "w-[60%] text-black text-base text-center">Limit: 60 per Day</Text>
+                            <Text className = "w-[20%] text-black text-base text-center">$20/month</Text>
                           </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </>
                     )}
                   </View>
@@ -146,9 +146,8 @@ const PurchaseScreen = () => {
             </View>
 
             <View className = "h-[10%]"/>
-
-            <Text className = "text-white text-2xl font-bold text-center">1 Credit = 1 Note</Text>
-            <Text className = "text-white text-2xl font-bold text-center">{creditPrice}</Text>
+            
+            <Text className = "text-white text-2xl font-bold text-center">Don't want a subscription? Pay as you Go:</Text>
 
             {/* Credits */}
             <View className = "h-[40%] w-full items-center">
