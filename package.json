@@ -2,13 +2,13 @@
   "name": "easyetch",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "homepage": "https://easyetch.org/",
+  "homepage": "https://mrpipeher.github.io/EasyEtch/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "deploy": "expo export:web && echo easyetch.org > web-build/CNAME && gh-pages -d web-build"
+    "deploy": "expo export:web && gh-pages -d web-build"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
