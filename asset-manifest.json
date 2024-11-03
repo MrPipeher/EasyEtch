@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.js": "/easyetch/static/js/main.12ed7145.js",
-    "static/js/40.9b4a2cc5.js": "/easyetch/static/js/40.9b4a2cc5.js",
-    "static/media/Logo.png": "/easyetch/static/media/Logo.180d881248a1ca6f7bcc.png",
-    "favicon.ico": "/easyetch/favicon.ico",
-    "static/media/money.png": "/easyetch/static/media/money.ec3917a0c7597e6f28f1.png",
-    "static/media/edit.png": "/easyetch/static/media/edit.9fd71c55ed5fcd516d44.png",
-    "static/media/settings.png": "/easyetch/static/media/settings.2ca8af129ed1d363d281.png",
-    "static/media/password.png": "/easyetch/static/media/password.601e924c30ac49f10ee4.png",
-    "static/media/user.png": "/easyetch/static/media/user.eec4d2e96a9a1745351a.png",
-    "index.html": "/easyetch/index.html",
-    "favicon-32.png": "/easyetch/favicon-32.png",
-    "favicon-16.png": "/easyetch/favicon-16.png",
-    "serve.json": "/easyetch/serve.json",
-    "manifest.json": "/easyetch/manifest.json",
-    "main.12ed7145.js.map": "/easyetch/static/js/main.12ed7145.js.map",
-    "40.9b4a2cc5.js.map": "/easyetch/static/js/40.9b4a2cc5.js.map"
+    "main.js": "/EasyEtch/static/js/main.98caaea3.js",
+    "static/js/40.b1a2205a.js": "/EasyEtch/static/js/40.b1a2205a.js",
+    "static/media/Logo.png": "/EasyEtch/static/media/Logo.180d881248a1ca6f7bcc.png",
+    "favicon.ico": "/EasyEtch/favicon.ico",
+    "static/media/money.png": "/EasyEtch/static/media/money.ec3917a0c7597e6f28f1.png",
+    "static/media/edit.png": "/EasyEtch/static/media/edit.9fd71c55ed5fcd516d44.png",
+    "static/media/settings.png": "/EasyEtch/static/media/settings.2ca8af129ed1d363d281.png",
+    "static/media/password.png": "/EasyEtch/static/media/password.601e924c30ac49f10ee4.png",
+    "static/media/user.png": "/EasyEtch/static/media/user.eec4d2e96a9a1745351a.png",
+    "index.html": "/EasyEtch/index.html",
+    "favicon-32.png": "/EasyEtch/favicon-32.png",
+    "favicon-16.png": "/EasyEtch/favicon-16.png",
+    "serve.json": "/EasyEtch/serve.json",
+    "manifest.json": "/EasyEtch/manifest.json",
+    "main.98caaea3.js.map": "/EasyEtch/static/js/main.98caaea3.js.map",
+    "40.b1a2205a.js.map": "/EasyEtch/static/js/40.b1a2205a.js.map"
   },
   "entrypoints": [
-    "static/js/40.9b4a2cc5.js",
-    "static/js/main.12ed7145.js"
+    "static/js/40.b1a2205a.js",
+    "static/js/main.98caaea3.js"
   ]
 }
