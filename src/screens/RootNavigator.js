@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   
-  const serverURL = 'https://acserver.org';
+  const serverURL = 'http://10.0.0.70:5000';
 
   // Production: 'https://easyetch.onrender.com';
   // Testing: 'http://localhost:5000' 10.0.0.70:5000
