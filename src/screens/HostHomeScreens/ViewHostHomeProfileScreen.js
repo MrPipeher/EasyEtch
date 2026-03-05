@@ -1,318 +1,127 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, ScrollView } from 'react-native';
-import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
-import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Picker } from '@react-native-picker/picker';
-import Modal from 'react-native-modal';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { signOut } from 'firebase/auth';
+import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
+import { apiFetch } from '../../components/ApiConfig';
 
-const DeleteProfileModal = ({ isVisible, onCancel, onDelete }) => {
-  return (
-    <Modal isVisible={isVisible} transparent={false}>
-      <View className = "h-[75%] w-[75%] bg-white justify-center items-center self-center space-y-8">
-
-        <Text className = "text-black text-center text-base">Are you sure you want to delete your profile? This action cannot be undone.</Text>
-
-        <View className = "h-[20%] w-[40%] border-2 border-black rounded-2xl justify-center">
-          <TouchableOpacity className = "h-full w-full justify-center" onPress={onCancel}>
-            <Text className = "text-black text-center text-base">Cancel</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View className = "h-[20%] w-[40%] border-2 bg-red-500 border-black rounded-2xl justify-center">
-          <TouchableOpacity className = "h-full w-full justify-center" onPress={onDelete}>
-            <Text className = "text-white text-center text-base">Delete</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-    </Modal>
-  );
-};
-
-const ViewHostHomeProfileScreen = () => {
-  const { profiles, selectedProfile, setSelectedProfile, updateProfile, deleteProfile } = useHostHomeProfileContext();
-  const [newActivity, setNewActivity] = useState('');
+export default function ViewHostHomeProfileScreen() {
   const navigation = useNavigation();
-  const [isModalVisible, setModalVisible] = useState(false);
+  const user = FIREBASE_AUTH.currentUser;
+  
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleProfileSelect = (profile) => {
-    setSelectedProfile(profile);
-  };
+  useFocusEffect(
+    useCallback(() => { fetchProfiles(); }, [user])
+  );
 
-  const handleAddActivity = () => {
-    if (newActivity.trim() !== '') {
-      setSelectedProfile({ ...selectedProfile, activities: [...selectedProfile.activities, newActivity] });
-      setNewActivity('');
-    }
-  };
-
-  const handleDeleteActivity = (activity) => {
-    const updatedActivities = selectedProfile.activities.filter((item) => item !== activity);
-    setSelectedProfile({ ...selectedProfile, activities: updatedActivities });
-  };
-
-  const handleUpdateProfile = async () => {
+  const fetchProfiles = async () => {
+    if (!user) return;
+    setLoading(true);
     try {
-      await updateProfile(selectedProfile);
-      console.log('Profile updated successfully:', selectedProfile);
+      const data = await apiFetch(`/hostHome/profiles?profileOwner=${user.email}`);
+      setProfiles(data);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      Alert.alert('Error', 'Could not load your clients. Is the server running?');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDeleteProfile = async () => {
-    // Open the modal
-    setModalVisible(true);
+  const handleSignOut = () => {
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Sign Out', style: 'destructive', onPress: () => signOut(FIREBASE_AUTH) }
+    ]);
   };
 
-  const handleCancel = () => {
-    // Close the modal
-    setModalVisible(false);
-  };
+  const renderProfileCard = ({ item }) => (
+    <View style={styles.card}>
+      <TouchableOpacity 
+        style={styles.cardBody}
+        onPress={() => navigation.navigate('GenerateNotes', { profile: item })}
+        activeOpacity={0.7}
+      >
+        <View style={styles.cardHeader}>
+          <Text style={styles.clientName}>{item.profileName}</Text>
+          <Text style={styles.clientGender}>{item.profileGender || 'Client'}</Text>
+        </View>
+        
+        {item.profileGoals ? (
+          <Text style={styles.clientGoal} numberOfLines={2}>
+            <Text style={styles.boldText}>Goal: </Text>{item.profileGoals}
+          </Text>
+        ) : null}
+      </TouchableOpacity>
 
-  const handleConfirmDelete = async () => {
-    // Perform deletion logic
-    try {
-      await deleteProfile(selectedProfile.profileId);
-      // Add any additional logic after successful deletion
-    } catch (error) {
-      console.error('Error deleting profile:', error);
-    }
-
-    // Close the modal
-    setModalVisible(false);
-  };
-
-  const handleGenderToggle = () => {
-    setSelectedProfile(prevProfile => ({
-      ...prevProfile,
-      profileGender: prevProfile.profileGender === 'Male' ? 'Female' : 'Male',
-    }));
-  };  
-
-  const navigateToCreate = () => {
-    navigation.navigate('CreateProfile');
-  };
+      <View style={styles.cardFooter}>
+        <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('EditProfile', { profile: item })}>
+          <Text style={styles.editText}>Edit ⚙️</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.generateButton} onPress={() => navigation.navigate('GenerateNotes', { profile: item })}>
+          <Text style={styles.generateText}>Generate Note ➔</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   return (
-    <View className = "bg-white flex-1">
-
-      {/* Main Container */}
-      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
-
-        {/* Background Gradient */}
-        <LinearGradient 
-          className = "h-full w-full absolute" 
-          colors={['#88daf7', '#66c4ff', '#008bff']}>
-
-          <View className = "h-[10%] space-y-2">
-
-            <View className = "absolute inset-x-0 bottom-0">
-
-              <Text className = "text-center text-white">Select a Profile:</Text>
-
-              <View className = "flex-row justify-center space-x-2">
-                <View className = "w-[60%] h-full border-2 border-sky-500 bg-white self-center ">
-                  <Picker
-                    selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
-                    onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
-                  >
-                    {profiles.map((item) => (
-                      <Picker.Item
-                        key={item.profileId.toString()}
-                        label={item.profileName}
-                        value={item.profileId.toString()}
-                      />
-                    ))}
-                  </Picker>
-                </View>
-
-                <View className = "w-[20%] h-[100%] bg-green-500 border-2 border-white rounded-full justify-center">
-                  <TouchableOpacity onPress={navigateToCreate}> 
-                    <Text className = "text-white text-base text-center">Add New</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-
-          </View>
-
-          {!selectedProfile && (
-            <View className = "h-[85%] justify-center">
-
-              <View className = "items-center">
-                <Text className = "text-white text-2xl m-2">Click 'Add New' to create your first profile! </Text>
-              </View>
-            </View>
-          )}
-
-          {selectedProfile && (
-          <View className = "h-[85%]">
-
-            <DeleteProfileModal
-              isVisible={isModalVisible}
-              onCancel={handleCancel}
-              onDelete={handleConfirmDelete}
-            />
-
-            {/* Basic Info*/}
-            <View className = "h-[30%] justify-center items-center">
-
-              <Text className = "text-white text-base">Name</Text>
-
-              <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
-                <TextInput
-                  className="h-full w-full text-black text-base text-center self-center"
-                  placeholder="Profile Name"
-                  placeholderTextColor={'gray'}
-                  value={selectedProfile.profileName}
-                  onChangeText={(text) => setSelectedProfile({ ...selectedProfile, profileName: text })}
-                  secureTextEntry={false}
-                />
-              </View>
-
-              <Text className = "text-white text-base">Gender</Text>
-
-              <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
-                <TouchableOpacity onPress={handleGenderToggle}> 
-                  <Text className = "text-black text-base text-center">{selectedProfile.profileGender}</Text>
-                </TouchableOpacity>
-              </View>
-
-              <Text className = "text-white text-base">Goals</Text>
-
-              <View className = "w-[75%] h-[18%] bg-white rounded-full justify-center">
-                <TextInput
-                  className="h-full w-full text-black text-base text-center self-center"
-                  placeholder="Profile Goals"
-                  placeholderTextColor={'gray'}
-                  value={selectedProfile.profileGoals}
-                  onChangeText={(text) => setSelectedProfile({ ...selectedProfile, profileGoals: text })}
-                  secureTextEntry={false}
-                />
-              </View>
-
-            </View>
-
-            {/* Medications */}
-            
-            <View className = "h-[20%]">
-              <Text className = "text-white text-xl text-center">Medication Time:</Text>
-
-              <View className = "flex-row h-[70%] justify-evenly items-center">
-                {selectedProfile.morningMedication ? (
-                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, morningMedication: !selectedProfile.morningMedication })}>
-                      <Text className = "text-white text-xl text-center">Morning</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, morningMedication: !selectedProfile.morningMedication })}>
-                      <Text className = "text-white text-xl text-center">Morning</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-
-                {selectedProfile.afternoonMedication ? (
-                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, afternoonMedication: !selectedProfile.afternoonMedication })}>
-                      <Text className = "text-white text-xl text-center">Afternoon</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, afternoonMedication: !selectedProfile.afternoonMedication })}>
-                      <Text className = "text-white text-xl text-center">Afternoon</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-
-                {selectedProfile.nightMedication ? (
-                  <View className = "w-[30%] h-[75%] border-2 border-green-500 bg-green-500 rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, nightMedication: !selectedProfile.nightMedication })}>
-                      <Text className = "text-white text-xl text-center">Night</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View className = "w-[30%] h-[75%] border-2 border-white rounded-full justify-center items-center">
-                    <TouchableOpacity className = "w-full h-full justify-center" onPress={() => setSelectedProfile({ ...selectedProfile, nightMedication: !selectedProfile.nightMedication })}>
-                      <Text className = "text-white text-xl text-center">Night</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
-
-            {/* Activities */}
-            <View className = "h-[40%]">
-              <View className = "flex-row h-[20%] justify-evenly items-center my-2">
-
-                <View className = "w-[60%] h-[100%] bg-white rounded-full">
-                  <TextInput
-                    className="h-full w-full text-black text-base text-center"
-                    placeholder="Add Activity"
-                    placeholderTextColor={'gray'}
-                    onChangeText={(text) => setNewActivity(text)}
-                    value={newActivity}
-                    secureTextEntry={false}
-                  />
-                </View>
-                <View className = "w-[30%] h-[100%] border-2 border-white rounded-full justify-center items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleAddActivity}>
-                    <Text className = "text-white text-xl text-center">Save</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View className = "h-[60%] bg-white border-2 border-white rounded-2xl py-2 m-4">
-                <FlatList
-                  data={selectedProfile.activities}
-                  renderItem={({ item, index }) => (
-                    <ScrollView>
-                      <View className = "flex-row">
-
-                        <Text className = "w-[75%] text-center text-black">{item}</Text>
-
-                        <View className = "w-[25%]">
-                          <TouchableOpacity className="w-full h-full justify-center" onPress={() => handleDeleteActivity(item)}>
-                            <Text className="text-red-500 text-base text-center">X</Text>
-                          </TouchableOpacity>
-                        </View>
-
-                      </View>
-                    </ScrollView>
-                  )}
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-            </View>
-            
-            {/* Footer */}
-            <View className = "h-[10%]">
-              <View className = "flex-row h-[70%] justify-evenly items-center">
-
-                <View className = "w-[30%] h-[75%] bg-white/20 border-2 border-white rounded-full justify-center items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleUpdateProfile}>
-                    <Text className = "text-white text-xl text-center">Update</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View className = "w-[30%] h-[75%] bg-red-500 border-2 border-red-500 rounded-full justify-center items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleDeleteProfile}>
-                    <Text className = "text-white text-xl text-center">Delete</Text>
-                  </TouchableOpacity>
-                </View>
-                
-              </View>
-            </View>
-
-          </View>)}
-        </LinearGradient>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>My Clients</Text>
+        <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
+
+      {loading ? (
+        <View style={styles.centerContainer}><ActivityIndicator size="large" color="#007AFF" /></View>
+      ) : profiles.length === 0 ? (
+        <View style={styles.centerContainer}>
+          <Text style={styles.emptyText}>You haven't added any clients yet.</Text>
+          <Text style={styles.emptySubtext}>Tap the + button to create one.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={profiles}
+          keyExtractor={(item) => item.profileId}
+          renderItem={renderProfileCard}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+
+      <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('CreateProfile')} activeOpacity={0.8}>
+        <Text style={styles.fabIcon}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
-export default ViewHostHomeProfileScreen;
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F2F2F7' },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingTop: 60, paddingBottom: 20, backgroundColor: '#F2F2F7' },
+  title: { fontSize: 34, fontWeight: 'bold', color: '#000' },
+  signOutButton: { padding: 8 },
+  signOutText: { fontSize: 17, color: '#FF3B30', fontWeight: '600' },
+  listContainer: { paddingHorizontal: 20, paddingBottom: 100 },
+  card: { backgroundColor: '#FFFFFF', borderRadius: 16, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+  cardBody: { padding: 20, paddingBottom: 16 },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  clientName: { fontSize: 22, fontWeight: 'bold', color: '#1C1C1E' },
+  clientGender: { fontSize: 14, color: '#8E8E93', backgroundColor: '#E5E5EA', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, overflow: 'hidden' },
+  clientGoal: { fontSize: 15, color: '#3A3A3C', lineHeight: 22 },
+  boldText: { fontWeight: 'bold', color: '#000' },
+  cardFooter: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#F2F2F7', paddingHorizontal: 8, paddingVertical: 8 },
+  editButton: { flex: 1, paddingVertical: 12, alignItems: 'center', borderRightWidth: 1, borderRightColor: '#F2F2F7' },
+  editText: { fontSize: 16, fontWeight: '600', color: '#8E8E93' },
+  generateButton: { flex: 1, paddingVertical: 12, alignItems: 'center' },
+  generateText: { fontSize: 16, fontWeight: 'bold', color: '#007AFF' },
+  centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 40 },
+  emptyText: { fontSize: 18, fontWeight: '600', color: '#3A3A3C', textAlign: 'center', marginBottom: 8 },
+  emptySubtext: { fontSize: 15, color: '#8E8E93', textAlign: 'center' },
+  fab: { position: 'absolute', bottom: 30, right: 24, width: 60, height: 60, borderRadius: 30, backgroundColor: '#007AFF', justifyContent: 'center', alignItems: 'center', shadowColor: '#007AFF', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6 },
+  fabIcon: { fontSize: 32, color: '#FFF', fontWeight: 'bold', lineHeight: 34 },
+});

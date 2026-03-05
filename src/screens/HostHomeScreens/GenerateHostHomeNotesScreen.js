@@ -1,302 +1,347 @@
-import React, { useState } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useUserContext } from '../../components/UserContext';
-import { useHostHomeProfileContext } from '../../components/HostHomeProfileContext';
-import { Picker } from '@react-native-picker/picker';
-import { LinearGradient } from 'expo-linear-gradient';
+// src/screens/HostHomeScreens/GenerateHostHomeNotesScreen.js
+import React, { useState } from 'react';
+import { 
+  View, 
+  Text, 
+  ScrollView, 
+  TouchableOpacity, 
+  StyleSheet, 
+  ActivityIndicator, 
+  Switch, 
+  Alert,
+  Platform
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
+import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
+import { apiFetch } from '../../components/ApiConfig';
 
-const GenerateHostHomeNotesScreen = () => {
+export default function GenerateHostHomeNotesScreen() {
   const navigation = useNavigation();
-  const { profiles, selectedProfile, setSelectedProfile, note, setNote, dayProgram, setDayProgram } = useHostHomeProfileContext();
-  const { userCredits, setUserCredits, profileOwner, serverURL, isBusiness } = useUserContext();
-  const [loading, setLoading] = useState(false);
-
-  const handleProfileSelect = (profile) => {
-    setSelectedProfile(profile);
-  };
-
-  const handleToggleDayProgram = () => {
-    setDayProgram(!dayProgram); // Toggle dayProgram value
-  };
+  const route = useRoute();
   
-  const navigateToPurchase = () => {
-    navigation.navigate('Purchase');
+  // We get the profile that was passed from the Dashboard card!
+  const profile = route.params?.profile;
+  const user = FIREBASE_AUTH.currentUser;
+
+  const [dayProgram, setDayProgram] = useState(false);
+  const [workedOnGoal, setWorkedOnGoal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [note, setNote] = useState('');
+
+  // If somehow no profile was passed, go back
+  if (!profile) {
+    navigation.goBack();
+    return null;
+  }
+
+  const handleGenerate = async () => {
+    setLoading(true);
+    try {
+      const data = await apiFetch(`/hostHome/generate?profileOwner=${user.email}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          selectedProfile: profile,
+          dayProgram: dayProgram,
+          workedOnGoal: workedOnGoal,
+        }),
+      });
+      setNote(data.generatedText);
+    } catch (error) {
+      console.error('Error generating note:', error);
+      Alert.alert('Error', 'Failed to generate the note. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCopy = async () => {
     await Clipboard.setStringAsync(note);
-    Alert.alert('Note Saved!', 'Your note has been saved to your clipboard!')
+    Alert.alert('Copied! 📋', 'The note has been copied to your clipboard.', [
+      { text: 'OK', style: 'default' }
+    ]);
   };
 
-  const handleFinished = () => {
-    setNote('');
-  };
-
-  const handleGenerate = async () => {
-
-    if (userCredits === 0) {
-      console.error('Error: Please purchase more credits or subscribe to continue.');
-      return;
-    }
-
-    if (note) {
-      setNote('');
-    }
-
-    //Start Loading
-    setLoading(true);
-    
-    try {
-      const response = await fetch(`${serverURL}/hostHome/generate?profileOwner=${profileOwner}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          selectedProfile,
-          dayProgram,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data) {
-        setNote(data.generatedText);
-        setUserCredits(data.remainingCredits);
-      } else {
-        console.error('Error:', data.error);
-      }
-    } catch (error) {
-      console.error('Error sending selected profile to server:', error);
-    }
-
-    setLoading(false);
-  };
-
-  const getCurrentDate = () => {
+  const handleSave = () => {
     const currentDate = new Date();
-    const month = currentDate.getMonth() + 1; // Months are zero-based
-    const day = currentDate.getDate();
-    const year = currentDate.getFullYear();
+    const dateString = `${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`;
+    const filename = `${profile.profileName}_${dateString}.txt`;
 
-    return `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}/${year}`;
-  };
-
-  const handleSave = async () => {
-    try {
-      const formattedDate = getCurrentDate();
-      const filename = `${selectedProfile.profileName}_${formattedDate}.txt`;
-
-      // Create a Blob containing the text
+    if (Platform.OS === 'web') {
+      // Create a Blob and download it (Perfect for her phone browser!)
       const blob = new Blob([note], { type: 'text/plain' });
-
-      // Create a download link and trigger a click event to download the file
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = filename;
       link.click();
-    } catch (error) {
-      console.error('Error saving file:', error);
-      // Handle error as needed
+    } else {
+      // If you ever run this as a native app, Expo FileSystem/Sharing would go here.
+      // But for GitHub Pages web app, the above is all you need.
+      Alert.alert('Notice', 'File saving is optimized for the web browser version.');
     }
   };
 
+  // --- LOADING STATE ---
   if (loading) {
     return (
-      <View className = "bg-white flex-1">
-  
-        {/* Main Container */}
-        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
-  
-          {/* Background Gradient */}
-          <LinearGradient 
-            className = "h-full w-full absolute" 
-            colors={['#88daf7', '#66c4ff', '#008bff']}>
-  
-            <View className = "h-[20%]"/>
-
-            <View className = "h-[60%] justify-center">
-
-              <Text className = "text-white text-3xl text-center">Generating Note..</Text>
-
-            </View>
-
-            <View className = "h-[20%] justify-center items-center">
-
-              <Text className = "text-white text-base text-center">We accept 07</Text>
-
-            </View>
-          
-          </LinearGradient>
-        </View>
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.loadingText}>Writing note for {profile.profileName}...</Text>
       </View>
     );
   }
 
+  // --- RESULT STATE (Note is generated) ---
   if (note) {
     return (
-      <View className = "bg-white flex-1">
-  
-        {/* Main Container */}
-        <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
-  
-          {/* Background Gradient */}
-          <LinearGradient 
-            className = "h-full w-full absolute" 
-            colors={['#88daf7', '#66c4ff', '#008bff']}>
-  
-            <View className = "h-[10%]"/>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Generated Note</Text>
+        </View>
 
-            <View className = "h-[60%]">
+        <ScrollView style={styles.noteScroll} contentContainerStyle={{ padding: 20 }}>
+          <View style={styles.noteCard}>
+            <Text style={styles.noteText}>{note}</Text>
+          </View>
+        </ScrollView>
 
-              <View className = "h-[80%] w-[80%] bg-white justify-center self-center p-4">
+        <View style={styles.actionContainer}>
+          <TouchableOpacity style={styles.primaryButton} onPress={handleCopy}>
+            <Text style={styles.primaryButtonText}>Copy to Clipboard</Text>
+          </TouchableOpacity>
 
-                <ScrollView>
-                  <Text className = "text-black text-base text-center">{note}</Text>
-                </ScrollView>
-
-              </View>
-
-            </View>
-
-            <View className = "h-[30%] items-center">
-                
-              <View className = "flex-row w-full h-[50%] justify-evenly">
-                <View className = "w-[40%] h-[50%] bg-green-500 rounded-full items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleCopy}>
-                    <Text className = "text-white text-xl text-center">Copy</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View className = "w-[40%] h-[50%] bg-white border-2 border-green-500 rounded-full items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleSave}>
-                    <Text className = "text-black text-xl text-center">Save</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View className = "h-[50%] w-full justify-center items-center">
-                <View className = "w-[40%] h-[50%] bg-white border-2 border-white rounded-full">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleFinished}>
-                    <Text className = "text-black text-xl text-center">Go Back</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-            </View>
-          
-          </LinearGradient>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.secondaryButton} onPress={handleSave}>
+              <Text style={styles.secondaryButtonText}>Save as .txt</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={[styles.secondaryButton, styles.resetButton]} onPress={() => setNote('')}>
+              <Text style={styles.resetButtonText}>Start Over</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
   }
 
+  // --- SETUP STATE (Before generating) ---
   return (
-    <View className = "bg-white flex-1">
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Text style={styles.backButtonText}>➔ Back</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>New Note</Text>
+        <Text style={styles.subtitle}>For {profile.profileName}</Text>
+      </View>
 
-      {/* Main Container */}
-      <View className = "h-[100%] w-[100%] max-w-[1080] self-center">
-
-        {/* Background Gradient */}
-        <LinearGradient 
-          className = "h-full w-full absolute" 
-          colors={['#88daf7', '#66c4ff', '#008bff']}>
-
-          <View className = "h-[10%] justify-center">
-
-            <Text className = "text-center text-white">Select a Profile:</Text>
-
-            <View className = "w-[50%] border-2 border-sky-500 bg-white self-center">
-              <Picker
-                selectedValue={selectedProfile ? selectedProfile.profileId.toString() : ''}
-                onValueChange={(itemValue) => handleProfileSelect(profiles.find(item => item.profileId.toString() === itemValue))}
-              >
-                {profiles.map((item) => (
-                  <Picker.Item
-                    key={item.profileId.toString()}
-                    label={item.profileName}
-                    value={item.profileId.toString()}
-                  />
-                ))}
-              </Picker>
+      <View style={styles.formContainer}>
+        <View style={styles.card}>
+          
+          {/* First Toggle: Day Program */}
+          <View style={styles.row}>
+            <View style={styles.rowText}>
+              <Text style={styles.rowTitle}>Attended Day Program?</Text>
+              <Text style={styles.rowSubtitle}>Include morning program activities</Text>
             </View>
-
+            <Switch
+              value={dayProgram}
+              onValueChange={setDayProgram}
+              trackColor={{ false: '#E5E5EA', true: '#34C759' }}
+              ios_backgroundColor="#E5E5EA"
+            />
           </View>
 
-          {selectedProfile && (
-          <View className = "h-[90%] w-[75%] justify-center self-center">
+          {/* Divider line between toggles */}
+          <View style={{ height: 1, backgroundColor: '#E5E5EA', marginVertical: 16 }} />
 
-            <View className = "h-[15%] space-y-1">
-              <Text className = "text-white text-xl font-bold text-center">Goals:</Text>
-              <View className = "h-[50%] w-[75%] bg-white justify-center self-center rounded-full">
-                <Text className = "text-black text-center text-base">{selectedProfile.profileGoals}</Text>
-              </View>
+          {/* Second Toggle: Worked on Goal */}
+          <View style={styles.row}>
+            <View style={styles.rowText}>
+              <Text style={styles.rowTitle}>Worked on Goal?</Text>
+              <Text style={styles.rowSubtitle}>Include a specific action taken towards: {profile.profileGoals}</Text>
             </View>
+            <Switch
+              value={workedOnGoal}
+              onValueChange={setWorkedOnGoal}
+              trackColor={{ false: '#E5E5EA', true: '#007AFF' }} // Make this one blue so they look distinct!
+              ios_backgroundColor="#E5E5EA"
+            />
+          </View>
 
-            {/* Basic Info*/}
-            <View className = "h-[15%] space-y-1">
+        </View>
+      </View>
 
-              <Text className = "text-white text-xl font-bold text-center pt-2">Medication Time:</Text>
-
-              <View className = " bg-white m-4 p-2 justify-center rounded-2xl">
-                <Text className = "text-black">-Morning: {selectedProfile.morningMedication ? 'Yes' : 'No'} </Text>
-                <Text className = "text-black">-Afternoon: {selectedProfile.afternoonMedication ? 'Yes' : 'No'} </Text>
-                <Text className = "text-black">-Night: {selectedProfile.nightMedication ? 'Yes' : 'No'} </Text>
-              </View>
-                
-            </View>
-
-            {/* Activities */}
-            <View className = "h-[40%] space-y-1 pt-8">
-
-              <Text className = "text-white text-xl font-bold text-center">Activities:</Text>
-
-              <View className = "h-[40%] m-4 p-2 bg-white rounded-2xl">
-                <ScrollView>
-                  {selectedProfile.activities.map((item, index) => (
-                    <Text key={index} className = "text-black text-transform: capitalize">
-                      -{item}
-                    </Text>
-                  ))}
-                </ScrollView>
-              </View>
-
-              <View className = "w-[60%] h-[30%] bg-white border-2 border-white rounded-full self-center items-center">
-                <TouchableOpacity className = "w-full h-full justify-center" onPress={handleToggleDayProgram}>
-                  <Text className = "text-black text-xl text-center">Day Program: {dayProgram ? 'Yes' : 'No'}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            
-            {/* Footer */}
-            <View className = "h-[30%]">
-                
-              <View className = "h-full w-full items-center space-y-4">
-              
-                <Text className="text-white font-bold text-xl">Credits: {userCredits}</Text>
-
-                <View className = "w-[50%] h-[30%] bg-white border-2 border-white rounded-full justify-center items-center">
-                  <TouchableOpacity className = "w-full h-full justify-center" onPress={handleGenerate}>
-                    <Text className = "text-black text-xl text-center">Generate!</Text>
-                  </TouchableOpacity>
-                </View>
-
-                {!isBusiness && (
-                  <TouchableOpacity onPress={navigateToPurchase}>
-                    <Text className = "text-white font-bold text-xl">Buy Credits?</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-
-            </View>
-
-          </View>)}
-        </LinearGradient>
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.generateButton} onPress={handleGenerate}>
+          <Text style={styles.generateButtonText}>Generate Magic ✨</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default GenerateHostHomeNotesScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F2F2F7', // iOS light gray
+  },
+  centerContainer: {
+    flex: 1,
+    backgroundColor: '#F2F2F7',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 18,
+    color: '#8E8E93',
+    fontWeight: '500',
+  },
+  header: {
+    paddingTop: 60,
+    paddingHorizontal: 24,
+    paddingBottom: 20,
+    backgroundColor: '#F2F2F7',
+  },
+  backButton: {
+    marginBottom: 12,
+  },
+  backButtonText: {
+    fontSize: 17,
+    color: '#007AFF',
+    fontWeight: '600',
+  },
+  title: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  subtitle: {
+    fontSize: 22,
+    color: '#8E8E93',
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  formContainer: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rowText: {
+    flex: 1,
+    paddingRight: 16,
+  },
+  rowTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
+  },
+  rowSubtitle: {
+    fontSize: 14,
+    color: '#8E8E93',
+    marginTop: 4,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    right: 20,
+  },
+  generateButton: {
+    backgroundColor: '#007AFF', // Apple Blue
+    height: 60,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  generateButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  noteScroll: {
+    flex: 1,
+  },
+  noteCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+  },
+  noteText: {
+    fontSize: 18,
+    color: '#1C1C1E',
+    lineHeight: 28, // High line height for easy reading
+  },
+  actionContainer: {
+    padding: 20,
+    paddingBottom: 40,
+    backgroundColor: '#F2F2F7',
+  },
+  primaryButton: {
+    backgroundColor: '#34C759', // Apple Green for success/copy
+    height: 60,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  primaryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  secondaryButton: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    height: 56,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 6,
+    borderWidth: 1,
+    borderColor: '#D1D1D6',
+  },
+  secondaryButtonText: {
+    color: '#000',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  resetButton: {
+    marginLeft: 6,
+    marginRight: 0,
+    borderColor: '#FF3B30',
+  },
+  resetButtonText: {
+    color: '#FF3B30',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+});

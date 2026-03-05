@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
-import { 
-  View, Text, TextInput, TouchableOpacity, StyleSheet, 
-  ScrollView, Switch, Alert, ActivityIndicator, KeyboardAvoidingView, Platform 
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Switch, Alert, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../components/FirebaseConfig';
 import { apiFetch } from '../../components/ApiConfig';
 
-export default function CreateHostHomeProfileScreen() {
+export default function EditHostHomeProfileScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const profile = route.params?.profile;
   const user = FIREBASE_AUTH.currentUser;
 
-  const [loading, setLoading] = useState(false);
-  const [profileName, setProfileName] = useState('');
-  const [profileGender, setProfileGender] = useState('Female'); 
-  const [profileGoals, setProfileGoals] = useState('');
-  const [morningMedication, setMorningMedication] = useState(false);
-  const [afternoonMedication, setAfternoonMedication] = useState(false);
-  const [nightMedication, setNightMedication] = useState(false);
+  if (!profile) { navigation.goBack(); return null; }
 
-  // Use a dynamic array instead of a comma-separated string!
-  const [activities, setActivities] = useState(['']); 
+  const [loading, setLoading] = useState(false);
+  
+  // Initialize state with existing profile data
+  const [profileName, setProfileName] = useState(profile.profileName);
+  const [profileGender, setProfileGender] = useState(profile.profileGender || '');
+  const [profileGoals, setProfileGoals] = useState(profile.profileGoals || '');
+  const [morningMedication, setMorningMedication] = useState(profile.morningMedication);
+  const [afternoonMedication, setAfternoonMedication] = useState(profile.afternoonMedication);
+  const [nightMedication, setNightMedication] = useState(profile.nightMedication);
+  
+  // Activities array state
+  const [activities, setActivities] = useState(profile.activities && profile.activities.length > 0 ? profile.activities : ['']);
 
   const handleUpdateActivity = (text, index) => {
     const newActivities = [...activities];
@@ -37,7 +40,7 @@ export default function CreateHostHomeProfileScreen() {
     setActivities([...activities, '']);
   };
 
-  const handleCreate = async () => {
+  const handleSave = async () => {
     if (!profileName.trim()) {
       Alert.alert('Hold up!', 'Please enter the client\'s name.');
       return;
@@ -45,11 +48,10 @@ export default function CreateHostHomeProfileScreen() {
 
     setLoading(true);
 
-    // Remove any empty boxes before sending to the server
+    // Filter out empty activities before saving
     const cleanedActivities = activities.map(a => a.trim()).filter(a => a !== '');
 
-    const payload = {
-      profileOwner: user.email,
+    const updatedProfileData = {
       profileName: profileName.trim(),
       profileGender: profileGender.trim(),
       profileGoals: profileGoals.trim(),
@@ -60,81 +62,104 @@ export default function CreateHostHomeProfileScreen() {
     };
 
     try {
-      await apiFetch('/hostHome/createprofile', {
-        method: 'POST',
-        body: JSON.stringify(payload),
+      await apiFetch('/hostHome/updateprofile', {
+        method: 'PUT',
+        body: JSON.stringify({
+          profileOwner: user.email,
+          profileId: profile.profileId,
+          updatedProfileData
+        }),
       });
       
-      Alert.alert('Success! 🎉', `${profileName}'s profile has been created.`, [
-        { text: 'Awesome', onPress: () => navigation.goBack() }
+      Alert.alert('Saved!', 'Client profile updated successfully.', [
+        { text: 'OK', onPress: () => navigation.navigate('ViewProfiles') }
       ]);
     } catch (error) {
-      console.error('Error creating profile:', error);
-      Alert.alert('Error', 'Could not create the profile. Try again.');
+      Alert.alert('Error', 'Could not update the profile.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Client',
+      `Are you sure you want to delete ${profileName}? This cannot be undone.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Delete', 
+          style: 'destructive', 
+          onPress: async () => {
+            setLoading(true);
+            try {
+              await apiFetch('/hostHome/deleteprofile', {
+                method: 'DELETE',
+                body: JSON.stringify({ profileOwner: user.email, profileId: profile.profileId }),
+              });
+              navigation.navigate('ViewProfiles');
+            } catch (error) {
+              Alert.alert('Error', 'Could not delete the profile.');
+              setLoading(false);
+            }
+          }
+        }
+      ]
+    );
   };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>➔ Back</Text>
+          <Text style={styles.backButtonText}>➔ Cancel</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>New Client</Text>
+        <Text style={styles.title}>Edit Client</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
-        {/* Basic Info Card */}
+        {/* Basic Info */}
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Basic Info</Text>
-          
           <Text style={styles.label}>Client Name</Text>
-          <TextInput style={styles.input} placeholder="e.g. John Doe" placeholderTextColor="#C7C7CC" value={profileName} onChangeText={setProfileName} />
+          <TextInput style={styles.input} value={profileName} onChangeText={setProfileName} />
 
           <Text style={styles.label}>Gender</Text>
-          <TextInput style={styles.input} placeholder="Male / Female" placeholderTextColor="#C7C7CC" value={profileGender} onChangeText={setProfileGender} />
+          <TextInput style={styles.input} value={profileGender} onChangeText={setProfileGender} />
 
           <Text style={styles.label}>Primary Goal</Text>
-          <TextInput style={[styles.input, styles.textArea]} placeholder="e.g. Improve money management skills" placeholderTextColor="#C7C7CC" multiline numberOfLines={3} value={profileGoals} onChangeText={setProfileGoals} />
+          <TextInput style={[styles.input, styles.textArea]} multiline value={profileGoals} onChangeText={setProfileGoals} />
         </View>
 
-        {/* Medication Card */}
+        {/* Medications */}
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Medication Schedule</Text>
-          <Text style={styles.subtext}>When does this client take medication?</Text>
-
+          <Text style={styles.sectionTitle}>Medications</Text>
           <View style={styles.switchRow}>
             <Text style={styles.switchLabel}>Morning Meds</Text>
             <Switch value={morningMedication} onValueChange={setMorningMedication} trackColor={{ true: '#34C759' }} />
           </View>
           <View style={styles.divider} />
-          
           <View style={styles.switchRow}>
             <Text style={styles.switchLabel}>Afternoon Meds</Text>
             <Switch value={afternoonMedication} onValueChange={setAfternoonMedication} trackColor={{ true: '#34C759' }} />
           </View>
           <View style={styles.divider} />
-
           <View style={styles.switchRow}>
             <Text style={styles.switchLabel}>Night Meds</Text>
             <Switch value={nightMedication} onValueChange={setNightMedication} trackColor={{ true: '#34C759' }} />
           </View>
         </View>
 
-        {/* Dynamic Activities Card */}
+        {/* Dynamic Activities List */}
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Daily Activities</Text>
-          <Text style={styles.subtext}>Add the activities they usually do.</Text>
+          <Text style={styles.subtext}>Edit individually or add new ones.</Text>
           
           {activities.map((activity, index) => (
             <View key={index} style={styles.activityRow}>
               <TextInput
                 style={[styles.input, styles.activityInput]}
                 placeholder="e.g. Coloring"
-                placeholderTextColor="#C7C7CC"
                 value={activity}
                 onChangeText={(text) => handleUpdateActivity(text, index)}
               />
@@ -149,14 +174,18 @@ export default function CreateHostHomeProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Bottom padding */}
+        {/* Danger Zone */}
+        <TouchableOpacity style={styles.deleteProfileBtn} onPress={handleDelete}>
+          <Text style={styles.deleteProfileText}>Delete Client</Text>
+        </TouchableOpacity>
+
         <View style={{ height: 100 }} />
       </ScrollView>
 
       {/* Floating Save Button */}
       <View style={styles.footer}>
-        <TouchableOpacity style={[styles.saveButton, loading && styles.saveButtonDisabled]} onPress={handleCreate} disabled={loading}>
-          {loading ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.saveButtonText}>Save Client</Text>}
+        <TouchableOpacity style={[styles.saveButton, loading && styles.saveButtonDisabled]} onPress={handleSave} disabled={loading}>
+          {loading ? <ActivityIndicator color="#FFFFFF" /> : <Text style={styles.saveButtonText}>Save Changes</Text>}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -188,6 +217,10 @@ const styles = StyleSheet.create({
   addActivityBtn: { alignSelf: 'flex-start', paddingVertical: 8 },
   addActivityText: { fontSize: 17, color: '#007AFF', fontWeight: '600' },
   
+  // Delete Profile Button
+  deleteProfileBtn: { backgroundColor: '#FFEBEB', borderRadius: 16, padding: 20, alignItems: 'center', marginTop: 10 },
+  deleteProfileText: { color: '#FF3B30', fontSize: 18, fontWeight: 'bold' },
+
   footer: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: Platform.OS === 'ios' ? 40 : 20, backgroundColor: 'rgba(242, 242, 247, 0.9)' },
   saveButton: { backgroundColor: '#007AFF', height: 60, borderRadius: 16, justifyContent: 'center', alignItems: 'center', shadowColor: '#007AFF', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 },
   saveButtonDisabled: { backgroundColor: '#A1C6EA' },
