@@ -3,6 +3,9 @@
     "name": "EasyEtch",
     "slug": "EasyEtch",
     "version": "1.0.0",
+    "experiments": {
+      "baseUrl": "/EasyEtch"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,7 +14,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
+    "assetBundlePatterns":[
       "**/*"
     ],
     "ios": {
