@@ -128,98 +128,102 @@ export default function GenerateHostHomeNotesScreen() {
         style={styles.container} 
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setNote('')} style={styles.backButton}>
-            <Text style={styles.backButtonText}>➔ Back to Options</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>Daily Note</Text>
-          <Text style={styles.subtitle}>Tap text below to edit directly</Text>
-        </View>
-
-        <ScrollView style={styles.noteScroll} contentContainerStyle={{ padding: 20 }}>
-          {/* Editable Note Area */}
-          <View style={styles.noteCard}>
-            <TextInput
-              style={styles.noteInput}
-              value={note}
-              onChangeText={setNote}
-              multiline
-              scrollEnabled={false}
-              placeholder="Your note will appear here..."
-              placeholderTextColor="#8E8E93"
-            />
-          </View>
-
-          {/* AI Adjust Tool Section */}
-          <View style={styles.refineCard}>
-            <Text style={styles.refineTitle}>🪄 Ask AI to Adjust Note</Text>
-
-            {/* Quick action chips */}
-            <View style={styles.chipRow}>
-              <TouchableOpacity 
-                style={styles.chip} 
-                onPress={() => handleRefine("Make it a bit shorter and more concise")}
-                disabled={refining}
-              >
-                <Text style={styles.chipText}>✂️ Make Shorter</Text>
+        <ScrollView style={styles.noteScroll} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.innerWrapper}>
+            
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => setNote('')} style={styles.backButton}>
+                <Text style={styles.backButtonText}>➔ Back to Options</Text>
               </TouchableOpacity>
-              <TouchableOpacity 
-                style={styles.chip} 
-                onPress={() => handleRefine("Add that vitals were taken and recorded within normal limits")}
-                disabled={refining}
-              >
-                <Text style={styles.chipText}>🩺 Add Vitals</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={styles.chip} 
-                onPress={() => handleRefine("Add more details about the evening and relaxing before bed")}
-                disabled={refining}
-              >
-                <Text style={styles.chipText}>🌙 More Evening</Text>
-              </TouchableOpacity>
+              <Text style={styles.title}>Daily Note</Text>
+              <Text style={styles.subtitle}>Tap text below to edit directly</Text>
             </View>
 
-            {/* Custom instruction input */}
-            <View style={styles.refineInputRow}>
+            {/* Editable Note Area */}
+            <View style={styles.noteCard}>
               <TextInput
-                style={styles.refineInput}
-                placeholder="e.g. mention she watched a movie after dinner"
+                style={styles.noteInput}
+                value={note}
+                onChangeText={setNote}
+                multiline
+                numberOfLines={12} // Forces browser textarea to be tall
+                placeholder="Your note will appear here..."
                 placeholderTextColor="#8E8E93"
-                value={refineInstruction}
-                onChangeText={setRefineInstruction}
-                editable={!refining}
               />
-              <TouchableOpacity 
-                style={[styles.refineButton, (!refineInstruction.trim() || refining) && styles.buttonDisabled]} 
-                onPress={() => handleRefine(refineInstruction)}
-                disabled={!refineInstruction.trim() || refining}
-              >
-                {refining ? (
-                  <ActivityIndicator size="small" color="#FFFFFF" />
-                ) : (
-                  <Text style={styles.refineButtonText}>Update</Text>
-                )}
-              </TouchableOpacity>
             </View>
+
+            {/* AI Adjust Tool Section */}
+            <View style={styles.refineCard}>
+              <Text style={styles.refineTitle}>🪄 Ask AI to Adjust Note</Text>
+
+              {/* Quick action chips */}
+              <View style={styles.chipRow}>
+                <TouchableOpacity 
+                  style={styles.chip} 
+                  onPress={() => handleRefine("Make it a bit shorter and more concise")}
+                  disabled={refining}
+                >
+                  <Text style={styles.chipText}>✂️ Make Shorter</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.chip} 
+                  onPress={() => handleRefine("Add that vitals were taken and recorded within normal limits")}
+                  disabled={refining}
+                >
+                  <Text style={styles.chipText}>🩺 Add Vitals</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.chip} 
+                  onPress={() => handleRefine("Add more details about the evening and relaxing before bed")}
+                  disabled={refining}
+                >
+                  <Text style={styles.chipText}>🌙 More Evening</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Custom instruction input */}
+              <View style={styles.refineInputRow}>
+                <TextInput
+                  style={styles.refineInput}
+                  placeholder="e.g. mention she watched a movie after dinner"
+                  placeholderTextColor="#8E8E93"
+                  value={refineInstruction}
+                  onChangeText={setRefineInstruction}
+                  editable={!refining}
+                />
+                <TouchableOpacity 
+                  style={[styles.refineButton, (!refineInstruction.trim() || refining) && styles.buttonDisabled]} 
+                  onPress={() => handleRefine(refineInstruction)}
+                  disabled={!refineInstruction.trim() || refining}
+                >
+                  {refining ? (
+                    <ActivityIndicator size="small" color="#FFFFFF" />
+                  ) : (
+                    <Text style={styles.refineButtonText}>Update</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Action Buttons */}
+            <View style={styles.actionSection}>
+              <TouchableOpacity style={styles.primaryButton} onPress={handleCopy}>
+                <Text style={styles.primaryButtonText}>Copy to Clipboard 📋</Text>
+              </TouchableOpacity>
+
+              <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.secondaryButton} onPress={handleSave}>
+                  <Text style={styles.secondaryButtonText}>Save as .txt</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={[styles.secondaryButton, styles.resetButton]} onPress={() => setNote('')}>
+                  <Text style={styles.resetButtonText}>Start Over</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
           </View>
         </ScrollView>
-
-        {/* Action Buttons */}
-        <View style={styles.actionContainer}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleCopy}>
-            <Text style={styles.primaryButtonText}>Copy to Clipboard 📋</Text>
-          </TouchableOpacity>
-
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.secondaryButton} onPress={handleSave}>
-              <Text style={styles.secondaryButtonText}>Save as .txt</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={[styles.secondaryButton, styles.resetButton]} onPress={() => setNote('')}>
-              <Text style={styles.resetButtonText}>Start Over</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </KeyboardAvoidingView>
     );
   }
@@ -230,16 +234,17 @@ export default function GenerateHostHomeNotesScreen() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Text style={styles.backButtonText}>➔ Back</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>New Note</Text>
-          <Text style={styles.subtitle}>For {profile.profileName}</Text>
-        </View>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.innerWrapper}>
+          
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+              <Text style={styles.backButtonText}>➔ Back</Text>
+            </TouchableOpacity>
+            <Text style={styles.title}>New Note</Text>
+            <Text style={styles.subtitle}>For {profile.profileName}</Text>
+          </View>
 
-        <View style={styles.formContainer}>
           <View style={styles.card}>
             
             {/* Toggle 1: Day Program */}
@@ -309,14 +314,14 @@ export default function GenerateHostHomeNotesScreen() {
             />
           </View>
 
+          <View style={{ marginTop: 24 }}>
+            <TouchableOpacity style={styles.generateButton} onPress={handleGenerate}>
+              <Text style={styles.generateButtonText}>Generate Magic ✨</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </ScrollView>
-
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.generateButton} onPress={handleGenerate}>
-          <Text style={styles.generateButtonText}>Generate Magic ✨</Text>
-        </TouchableOpacity>
-      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -325,6 +330,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F2F2F7',
+  },
+  scrollContent: {
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    alignItems: 'center', // Centers innerWrapper on desktop
+  },
+  innerWrapper: {
+    width: '100%',
+    maxWidth: 780, // Keeps it comfortably sized on PC screens
   },
   centerContainer: {
     flex: 1,
@@ -341,10 +355,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 24,
-    paddingBottom: 16,
-    backgroundColor: '#F2F2F7',
+    marginBottom: 20,
   },
   backButton: {
     marginBottom: 10,
@@ -355,19 +366,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontSize: 34,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#000',
   },
   subtitle: {
-    fontSize: 17,
+    fontSize: 16,
     color: '#8E8E93',
     fontWeight: '500',
     marginTop: 4,
-  },
-  formContainer: {
-    paddingHorizontal: 20,
-    marginTop: 8,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -420,30 +427,24 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     color: '#000',
-    minHeight: 70,
+    minHeight: 80,
     textAlignVertical: 'top',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
   },
   generateButton: {
     backgroundColor: '#007AFF',
-    height: 58,
+    height: 56,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#007AFF',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   generateButtonText: {
     color: '#FFFFFF',
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   noteScroll: {
@@ -452,7 +453,7 @@ const styles = StyleSheet.create({
   noteCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
-    padding: 18,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
@@ -460,10 +461,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   noteInput: {
-    fontSize: 17,
+    fontSize: 16,
     color: '#1C1C1E',
     lineHeight: 26,
     textAlignVertical: 'top',
+    minHeight: 260, // Gives plenty of vertical space
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'sans-serif',
+    ...(Platform.OS === 'web' && {
+      outlineStyle: 'none',
+      resize: 'vertical', // Allows dragging the bottom corner on PC if desired
+    }),
   },
   refineCard: {
     backgroundColor: '#FFFFFF',
@@ -512,11 +519,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#000',
     marginRight: 8,
+    ...(Platform.OS === 'web' && {
+      outlineStyle: 'none',
+    }),
   },
   refineButton: {
     backgroundColor: '#007AFF',
     paddingHorizontal: 16,
-    height: 44,
+    height: 42,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
@@ -529,13 +539,8 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     opacity: 0.5,
   },
-  actionContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
-    backgroundColor: '#F2F2F7',
-    borderTopWidth: 1,
-    borderColor: '#E5E5EA',
+  actionSection: {
+    marginBottom: 40,
   },
   primaryButton: {
     backgroundColor: '#34C759',
@@ -544,6 +549,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    shadowColor: '#34C759',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
   },
   primaryButtonText: {
     color: '#FFFFFF',
